@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated compiler and visualization artifacts
+torch_compile_debug/
+torchinductor_*/
+trace/
+cache/
+tlparse/
+*.log
+
+# Local environments and editors
+.venv/
+venv/
+.idea/
+.vscode/
