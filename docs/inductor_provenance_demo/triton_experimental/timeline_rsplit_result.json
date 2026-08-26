@@ -1,0 +1,42 @@
+{
+  "torch": "2.14.0a0+git8e86e0a",
+  "torch_npu": "2.14.0a0+git83cc452",
+  "device": "Ascend910B2",
+  "backend": "triton_experimental",
+  "output": 2503.212646484375,
+  "trace": "/home/z50063656/Tracking/triton_experimental_delivery/wheel_timeline_rsplit_npu7_20260827_v9/triton_experimental_rsplit.1787762318603495930.pt.trace.json",
+  "summary": {
+    "trace_root": "list",
+    "event_count": 59,
+    "device_kernel_names": [
+      "triton_unk_fused_mul_relu_sin_sum_0",
+      "triton_unk_fused_mul_relu_sin_sum_1"
+    ],
+    "device_kernel_stack_names": [
+      "triton_unk_fused_mul_relu_sin_sum_0",
+      "triton_unk_fused_mul_relu_sin_sum_1"
+    ],
+    "device_kernel_stacks": {
+      "triton_unk_fused_mul_relu_sin_sum_0": [
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py\", line 18, in forward\n    return (activated * x).sum()\n           ^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py\", line 18, in forward\n    return (activated * x).sum()\n            ^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py\", line 17, in forward\n    activated = torch.relu(torch.sin(x))\n                ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py\", line 17, in forward\n    activated = torch.relu(torch.sin(x))\n                           ^^^^^^^^^^^^^\n"
+      ],
+      "triton_unk_fused_mul_relu_sin_sum_1": [
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py\", line 18, in forward\n    return (activated * x).sum()\n           ^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py\", line 18, in forward\n    return (activated * x).sum()\n            ^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py\", line 17, in forward\n    activated = torch.relu(torch.sin(x))\n                ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py\", line 17, in forward\n    activated = torch.relu(torch.sin(x))\n                           ^^^^^^^^^^^^^\n"
+      ]
+    },
+    "cpu_launch_names": [
+      "triton_unk_fused_mul_relu_sin_sum_0",
+      "triton_unk_fused_mul_relu_sin_sum_1"
+    ],
+    "torch_to_npu_flow_count": 4,
+    "ac2g_flow_count": 0,
+    "uid_event_count": 0,
+    "temporary_kernel_category_count": 0
+  }
+}

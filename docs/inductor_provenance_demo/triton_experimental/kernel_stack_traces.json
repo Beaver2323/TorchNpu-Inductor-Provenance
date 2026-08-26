@@ -1,0 +1,7 @@
+{
+  "triton_unk_fused_add_mul_relu_0:1": [
+    "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/static_probe.py\", line 21, in forward\n    return activated * 2\n           ^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/static_probe.py\", line 20, in forward\n    activated = torch.relu(added)\n                ^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/static_probe.py\", line 19, in forward\n    added = x + 1\n            ^^^^^\n"
+  ]
+}

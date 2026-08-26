@@ -1,0 +1,39 @@
+{
+  "torch": "2.14.0a0+git8e86e0a",
+  "torch_npu": "2.14.0a0+git83cc452",
+  "torch_npu_module": "/home/z50063656/Tracking/triton_experimental_delivery/wheel_target_20260827_v10/torch_npu/__init__.py",
+  "device": "Ascend910B2",
+  "provenance_level": 1,
+  "max_abs_diff": 0.0,
+  "experimental_marker": true,
+  "mapping_path": "/home/z50063656/Tracking/triton_experimental_delivery/wheel_static_npu4_20260827_v10/compile_debug/torchinductor/model__0_inference_0.0/inductor_provenance_tracking_node_mappings.json",
+  "stack_path": null,
+  "output_code_path": "/home/z50063656/Tracking/triton_experimental_delivery/wheel_static_npu4_20260827_v10/compile_debug/torchinductor/model__0_inference_0.0/output_code.py",
+  "kernel_keys": [
+    "triton_unk_fused_add_mul_relu_0:1"
+  ],
+  "kernel_to_post": {
+    "triton_unk_fused_add_mul_relu_0:1": [
+      "mul",
+      "relu",
+      "add"
+    ]
+  },
+  "post_to_kernel": {
+    "mul": [
+      "triton_unk_fused_add_mul_relu_0:1"
+    ],
+    "relu": [
+      "triton_unk_fused_add_mul_relu_0:1"
+    ],
+    "add": [
+      "triton_unk_fused_add_mul_relu_0:1"
+    ]
+  },
+  "stack_keys": [],
+  "fxgraph_cache_hit": 0,
+  "inductor_counters": {
+    "fxgraph_cache_bypass": 1,
+    "async_compile_cache_miss": 1
+  }
+}

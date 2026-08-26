@@ -2,6 +2,12 @@
 
 > 第一次接触本项目时，建议先阅读 [NPU 适配新手入门与源码导读](./inductor_provenance_npu_beginner_guide.md)，再使用本文作为深入源码和设计细节的参考。
 
+> 当前交付范围（2026-08-27）：本文保留需求变更前的多后端研究作为历史背景；正式
+> 实现只覆盖 `torch_npu/_inductor/triton_experimental`。官方目标仓为
+> `https://gitcode.com/Ascend/pytorch`，开发 fork 为
+> `https://gitcode.com/gcw_3ffySSwy/pytorch`。本 GitHub 仓和
+> `rmch/npu_inductor_2.13.0` 均不是源码交付目标。
+
 ## 模块设计目标与背景
 
 ### 1. 调研对象与结论
@@ -13,7 +19,10 @@
 1. **上游数据模型与设备无关，可以直接复用。** `NodeSource`、pre-grad/post-grad 映射、IR `origins`、结构化日志、FX graph cache 和 AOTInductor `kernel_information.json` 都不依赖 CUDA。
 2. **未适配的 torch_npu 只能获得图级数据；当前工作分支已经补齐普通 NPU Triton kernel 的完整 provenance。** 修改前实机 baseline 的 `preToPost`/`postToPre` 正常而 `cppCodeToPost`/`postToCppCode` 为空；修改后同一个融合 kernel 已与 `add`、`relu`、`mul` 建立双向关系，并在真实 Ascend 910B2 上通过回归测试和 demo。
 3. **静态 tlparse 三栏高亮无需修改 tlparse。** `tlparse 0.4.8` 已把 NPU Python wrapper 第 132 行的 Triton `.run()` 调用映射到三个 post-grad 节点。HTML 中应检查 `pyCodeToPost`/`postToPyCode`；`cppCodeToPost`/`postToCppCode` 行号表只用于 AOT C++ wrapper，JIT Python wrapper 下为空是正常结果。
-4. **Profiler 时间线回填是第二阶段工作。** 上游实现内部依赖 Kineto/CUDA 的 trace 结构，而 torch_npu 导出的是 Ascend/CANN trace，文件结构、flow 名称和 kernel 关联方式都不同，不能直接复用 `torch._inductor.profiler.inductor_trace_handler`。
+4. **Profiler 时间线回填已经在 `triton_experimental` 完成专项适配。** NPU 侧接受
+   Ascend trace 的 list/dict 根结构，把尾置 `torch_to_npu` flow 临时归一化为社区
+   处理器需要的关系，再将源码 stack 写回原始 trace；forward、backward 和 rsplit
+   partial/combine 已通过真实 NPU 验证。该结论不扩展到其他 NPU 后端。
 
 ### 2. 分析基线
 
@@ -586,6 +595,11 @@ tlparse/src/provenance.js::findCorrespondingLines
 
 ### 3. 第二阶段：NPU profiler timeline provenance
 
+> 状态更新：以下内容是早期设计方案。当前交付已按该方向在
+> `triton_experimental` 实现 NPU adapter，并完成 forward/backward、rsplit、gzip、
+> list/dict root 和事件上限验证；其中对 CATLASS、MLIR/DVM 等其他后端的设想不属于
+> 当前范围。
+
 建议在 torch_npu 内新增 NPU 专用 handler/adapter，再评估是否将通用接口上推 PyTorch：
 
 1. 使用 `torch_npu.profiler.profile` 和只接收路径的 `export_chrome_trace(path)`。
@@ -668,7 +682,10 @@ TorchInductor Provenance Tracking 的主体已经是跨设备设计：FX provena
 
 已完成：官方文档用法解析、PyTorch 完整调用链、torch_npu 各后端静态差距、8 张 910B2 环境探测、Tracking 隔离环境搭建、CPU/NPU Inductor 实机 baseline、torch_npu editable 构建安装、普通 NPU Triton provenance 改造、最新 33 项契约回归、普通与 FlexAttention forward template 的非空 kernel mapping/stack artifact、显式与默认 BlockMask forward 的 `tlparse 0.4.8` 三栏联动验证、默认 BlockMask 的 PyTorch 2.14 兼容修复、FlexAttention dK/dV 四分支与 combo 调度契约、默认 BlockMask backward 探针/反向 FX/稀疏哨兵限界，以及跨进程 FX Graph cache miss/hit 和可重复演示文档。
 
-待完成：先解除默认 BlockMask backward 的 BishengIR dK/dV 长编译，再完成 dQ/dK/dV 数值、backward output code/mapping/tlparse 与四分支 E2E；之后继续 combo 真实执行、CATLASS、MLIR/AKG、DVM、多流 extern 和 AOTI 的专项实机覆盖。profiler timeline 仍是独立第二阶段，不属于本轮静态 provenance 基线的阻塞项。详细 backward 证据见 [默认 BlockMask backward 编译调查](./npu_default_block_mask_backward_investigation.md)。
+当前交付待完成项不再包含默认 BlockMask backward、CATLASS、MLIR/AKG、DVM 或多流
+extern；这些内容只保留为历史研究。`triton_experimental` 的 JIT 静态与 runtime
+timeline 已完成，AOTInductor `kernel_information.json` 因当前 NPU AOTI 设备支持范围
+和共享 lazy/ABI 基线问题尚未验收。
 
 ### 参考源码
 

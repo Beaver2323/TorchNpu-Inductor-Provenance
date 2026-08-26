@@ -6,6 +6,12 @@
 >
 > 基线日期：2026-08-20
 
+> 当前范围说明（2026-08-27）：本仓是前期研究和文档仓，不是源码交付目标。官方目标
+> 仓为 `https://gitcode.com/Ascend/pytorch`，开发 fork 为
+> `https://gitcode.com/gcw_3ffySSwy/pytorch`。当前正式交付只覆盖
+> `torch_npu/_inductor/triton_experimental`；本文的其他后端与 FlexAttention 内容作为
+> 历史研究保留。
+
 本文面向第一次接触 `torch.compile`、TorchInductor、FX 图和昇腾 NPU codegen 的开发者。目标不是只教你运行一个命令，而是让你读完后能够回答以下问题：
 
 1. Provenance Tracking 解决什么问题？
@@ -28,7 +34,9 @@ Provenance 的中文含义是“来源追踪”。TorchInductor Provenance Track
   -> 最终生成的 kernel 调用
 ```
 
-本项目的目标，是让这条原本在 PyTorch 中已经存在的通用链路也覆盖 torch_npu 自定义的 Triton Ascend、CATLASS、MLIR、DVM 等 codegen 路径。
+当前项目的交付目标，是让这条 PyTorch 通用链路覆盖 torch_npu 的
+`triton_experimental` 后端。CATLASS、MLIR、DVM 等路径是需求变更前的历史研究，
+不属于当前实现或验收范围。
 
 ### 2. 为什么仅看生成代码不够
 
@@ -185,6 +193,11 @@ Profiler timeline：这个 kernel 在什么时候运行、耗时多久？
 
 ### 7. 当前工作状态总览
 
+> 本节各多后端表格记录的是 2026-08-20 的历史研究快照，不是当前交付清单。
+> 2026-08-27 的正式结论是：`triton_experimental` 的 JIT 静态 level 1/2、
+> forward/backward timeline 和 rsplit partial/combine timeline 已完成；AOTInductor
+> 尚未验收；其他 NPU 后端不在范围内。
+
 #### 7.1 已端到端完成
 
 | 项目 | 状态 | 证据 |
@@ -225,8 +238,8 @@ Profiler timeline：这个 kernel 在什么时候运行、耗时多久？
 | 项目 | 当前结论 |
 | --- | --- |
 | cache hit provenance | 已通过跨进程真实 NPU 回归；hit 从 trace 重放完整 artifact |
-| AOTI `kernel_information.json` | 上游机制存在，尚未完成 NPU 打包/加载 E2E |
-| Ascend profiler timeline stack 回填 | 不能直接套用 CUDA/Kineto，需要 NPU 专用 adapter |
+| AOTI `kernel_information.json` | 当前基线受 NPU AOTI 设备支持和共享 lazy/ABI 问题阻塞，尚未验收 |
+| Ascend profiler timeline stack 回填 | 已为 `triton_experimental` 实现 NPU adapter 并完成真实 NPU E2E |
 
 ### 8. 当前 Git 和运行时状态
 
@@ -1216,7 +1229,9 @@ mapping 与 tlparse HTML。这一边界及复现步骤见
 combo 已完成调度契约但仍缺真实执行；CATLASS、MLIR/AKG、DVM 和 multistream extern
 仍需真实路径专项用例。cache hit 已完成，AOTI 仍需要扩展覆盖。
 
-Ascend profiler timeline stack 回填是独立第二阶段，当前尚未形成完整实现和 E2E 证据。
+Ascend profiler timeline stack 回填现已在 `triton_experimental` 完成：真实 NPU
+forward/backward 和 rsplit partial/combine kernel 均已获得源码 stack；list/dict trace
+根、gzip、事件上限和状态清理也有专项测试。该结论不扩展到其他 NPU 后端。
 
 ### 4. 推荐源码阅读顺序
 

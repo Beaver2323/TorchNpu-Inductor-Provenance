@@ -1,0 +1,67 @@
+{
+  "torch": "2.14.0a0+git8e86e0a",
+  "torch_npu": "2.14.0a0+git83cc452",
+  "device": "Ascend910B2",
+  "backend": "triton_experimental",
+  "output_checksum": 2414.53662109375,
+  "grad_checksum": 84.47332763671875,
+  "trace": "/home/z50063656/Tracking/triton_experimental_delivery/wheel_timeline_forward_backward_npu4_20260827_v10/triton_experimental.1787762954559806650.pt.trace.json",
+  "summary": {
+    "trace_root": "list",
+    "event_count": 72,
+    "flow_names": [
+      [
+        "enqueue_to_dequeue",
+        4
+      ],
+      [
+        "torch_to_npu",
+        4
+      ],
+      [
+        "fwdbwd",
+        2
+      ],
+      [
+        "HostToDevice12884901888",
+        2
+      ],
+      [
+        "HostToDevice30064771072",
+        2
+      ]
+    ],
+    "device_triton_names": [
+      "triton_unk_fused_mul_relu_sin_0",
+      "k_fused_add_cos_mul_relu_sin_threshold_backward_0"
+    ],
+    "device_triton_stack_names": [
+      "triton_unk_fused_mul_relu_sin_0",
+      "k_fused_add_cos_mul_relu_sin_threshold_backward_0"
+    ],
+    "device_triton_stacks": {
+      "triton_unk_fused_mul_relu_sin_0": [
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/timeline_probe.py\", line 19, in forward\n    return activated * x\n           ^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/timeline_probe.py\", line 18, in forward\n    activated = torch.relu(torch.sin(x))\n                ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/timeline_probe.py\", line 18, in forward\n    activated = torch.relu(torch.sin(x))\n                           ^^^^^^^^^^^^^\n"
+      ],
+      "k_fused_add_cos_mul_relu_sin_threshold_backward_0": [
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/timeline_probe.py\", line 18, in forward\n    activated = torch.relu(torch.sin(x))\n                           ^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/timeline_probe.py\", line 19, in forward\n    return activated * x\n           ^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/timeline_probe.py\", line 18, in forward\n    activated = torch.relu(torch.sin(x))\n                ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/timeline_probe.py\", line 18, in forward\n    activated = torch.relu(torch.sin(x))\n                           ^^^^^^^^^^^^^\n"
+      ]
+    },
+    "forward_cpu_triton_launches": [
+      "triton_unk_fused_mul_relu_sin_0"
+    ],
+    "backward_cpu_triton_launches": [
+      "k_fused_add_cos_mul_relu_sin_threshold_backward_0"
+    ],
+    "stack_event_count": 3,
+    "torch_to_npu_flow_count": 4,
+    "ac2g_flow_count": 0,
+    "uid_event_count": 0,
+    "temporary_kernel_category_count": 0
+  }
+}
