@@ -30,12 +30,12 @@ checksum=9206.284180
 
 ## 本次报告入口
 
-- [tlparse 总入口](./npu_provenance_verified_20260820/tlparse/index.html)
-- [Provenance 三栏页面](./npu_provenance_verified_20260820/tlparse/provenance_tracking_-_0_0_0.html)
-- [生成的 NPU Python wrapper](./npu_provenance_verified_20260820/tlparse/-_0_0_0/inductor_output_code_cerigynkxbuxlt37bc2lwbobk4jusslzfgabt7s6cnibut7flq3k_12.html)
-- [原始节点映射 JSON](./npu_provenance_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_14.json)
-- [Kernel stack readable 页面](./npu_provenance_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_15_readable.html)
-- [本次原始 TORCH_TRACE log](./npu_provenance_verified_20260820/trace/dedicated_log_torch_trace_cozqxwd7.log)
+- [当前 `triton_experimental` 三栏页面](./inductor_provenance_demo/triton_experimental/provenance_tracking.html)
+- [当前静态节点映射 JSON](./inductor_provenance_demo/triton_experimental/node_mappings.json)
+- [当前 kernel stack JSON](./inductor_provenance_demo/triton_experimental/kernel_stack_traces.json)
+
+需求变更前的普通 NPU 演示产物没有发布到本仓；其原始路径
+`npu_provenance_verified_20260820/` 仅作为历史实验记录，不再提供会跳转到 404 的链接。
 
 打开总入口后找到 `Provenance Tracking`，进入 `provenance_tracking_-_0_0_0`。也可以直接打开上面的三栏页面。
 

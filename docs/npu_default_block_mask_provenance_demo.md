@@ -147,14 +147,17 @@ triton_flex_attention_fwd_mask_in.run(...)
 ## 关键文件
 
 - [可重复运行探针](../examples/npu_default_block_mask_provenance_probe.py)
-- [结果 JSON](./npu_default_block_mask_provenance_grid_verified_20260820/run/result.json)
-- [运行日志](./npu_default_block_mask_provenance_grid_verified_20260820.log)
-- [原始 mapping](./npu_default_block_mask_provenance_grid_verified_20260820/run/debug/torchinductor/model__0_inference_0.0/inductor_provenance_tracking_node_mappings.json)
-- [生成代码](./npu_default_block_mask_provenance_grid_verified_20260820/run/debug/torchinductor/model__0_inference_0.0/output_code.py)
-- [tlparse 入口](./npu_default_block_mask_provenance_grid_verified_20260820/tlparse/index.html)
-- [三栏 provenance 页面](./npu_default_block_mask_provenance_grid_verified_20260820/tlparse/provenance_tracking_-_0_0_0.html)
-- [tlparse mapping](./npu_default_block_mask_provenance_grid_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_14.json)
-- [kernel stack 页面](./npu_default_block_mask_provenance_grid_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_15_readable.html)
+- 结果 JSON：`npu_default_block_mask_provenance_grid_verified_20260820/run/result.json`
+- 运行日志：`npu_default_block_mask_provenance_grid_verified_20260820.log`
+- 原始 mapping：`npu_default_block_mask_provenance_grid_verified_20260820/run/debug/torchinductor/model__0_inference_0.0/inductor_provenance_tracking_node_mappings.json`
+- 生成代码：`npu_default_block_mask_provenance_grid_verified_20260820/run/debug/torchinductor/model__0_inference_0.0/output_code.py`
+- tlparse 入口：`npu_default_block_mask_provenance_grid_verified_20260820/tlparse/index.html`
+- 三栏 provenance 页面：`npu_default_block_mask_provenance_grid_verified_20260820/tlparse/provenance_tracking_-_0_0_0.html`
+- tlparse mapping：`npu_default_block_mask_provenance_grid_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_14.json`
+- kernel stack 页面：`npu_default_block_mask_provenance_grid_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_15_readable.html`
+
+> 上述 BlockMask 产物目录未随本仓发布；当前可点击演示见
+> [`triton_experimental` 产物索引](./inductor_provenance_demo/triton_experimental/README.md)。
 
 ## 当前覆盖边界
 
@@ -168,5 +171,5 @@ backward `output_code.py` 生成前，当前没有反向 kernel mapping 或可�
 
 - [backward 探针](../examples/npu_default_block_mask_backward_provenance_probe.py)
 - [调查、artifact 与复现命令](./npu_default_block_mask_backward_investigation.md)
-- [修复前 dK/dV artifact](./npu_default_block_mask_backward_device1_20260821)
-- [修复后 dK/dV artifact](./npu_default_block_mask_backward_lowering_bound_20260821)
+- 修复前 dK/dV artifact：`npu_default_block_mask_backward_device1_20260821/`（未发布）
+- 修复后 dK/dV artifact：`npu_default_block_mask_backward_lowering_bound_20260821/`（未发布）

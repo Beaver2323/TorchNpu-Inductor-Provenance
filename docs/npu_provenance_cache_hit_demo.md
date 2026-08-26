@@ -71,15 +71,19 @@ mapping 和 stack JSON。
 
 ## 本轮证据
 
-- [cache miss 运行日志](./npu_provenance_cache_hit_verified_20260820/miss/run.log)
-- [cache hit 运行日志](./npu_provenance_cache_hit_verified_20260820/hit/run.log)
-- [cache miss tlparse](./npu_provenance_cache_hit_verified_20260820/miss/tlparse/index.html)
-- [cache hit tlparse](./npu_provenance_cache_hit_verified_20260820/hit/tlparse/index.html)
-- [cache hit 三栏页面](./npu_provenance_cache_hit_verified_20260820/hit/tlparse/provenance_tracking_-_0_0_0.html)
-- [cache hit 事件](./npu_provenance_cache_hit_verified_20260820/hit/tlparse/-_0_0_0/fx_graph_cache_hit_13.json)
-- [cache hit mapping](./npu_provenance_cache_hit_verified_20260820/hit/tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_10.json)
-- [cache hit stack](./npu_provenance_cache_hit_verified_20260820/hit/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_11.json)
-- [cache hit stack 可读页面](./npu_provenance_cache_hit_verified_20260820/hit/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_11_readable.html)
+> 以下是早期 cache miss/hit 研究的原始主机路径，产物目录未发布到本仓，因此保留为
+> 不可点击的证据索引；当前已发布演示见
+> [`triton_experimental` 产物索引](./inductor_provenance_demo/triton_experimental/README.md)。
+
+- cache miss 运行日志：`npu_provenance_cache_hit_verified_20260820/miss/run.log`
+- cache hit 运行日志：`npu_provenance_cache_hit_verified_20260820/hit/run.log`
+- cache miss tlparse：`npu_provenance_cache_hit_verified_20260820/miss/tlparse/index.html`
+- cache hit tlparse：`npu_provenance_cache_hit_verified_20260820/hit/tlparse/index.html`
+- cache hit 三栏页面：`npu_provenance_cache_hit_verified_20260820/hit/tlparse/provenance_tracking_-_0_0_0.html`
+- cache hit 事件：`npu_provenance_cache_hit_verified_20260820/hit/tlparse/-_0_0_0/fx_graph_cache_hit_13.json`
+- cache hit mapping：`npu_provenance_cache_hit_verified_20260820/hit/tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_10.json`
+- cache hit stack：`npu_provenance_cache_hit_verified_20260820/hit/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_11.json`
+- cache hit stack 可读页面：`npu_provenance_cache_hit_verified_20260820/hit/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_11_readable.html`
 
 本轮 tlparse 统计为：
 

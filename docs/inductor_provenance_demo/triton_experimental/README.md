@@ -6,17 +6,20 @@ provenance（来源追踪）是什么、如何实现、如何运行，以及当�
 
 ### 仓库与交付关系
 
-- 官方目标仓：`https://gitcode.com/Ascend/pytorch`
-- 开发 fork：`https://gitcode.com/gcw_3ffySSwy/pytorch`
+- [官方目标仓](https://gitcode.com/Ascend/pytorch)
+- [开发 fork](https://gitcode.com/gcw_3ffySSwy/pytorch)
 - 当前 worktree 的 `origin` 指向官方仓，`fork` 指向开发 fork；交付时应把分支 push
   到 `fork`，再向 `origin` 发起 PR。
 - 源码已推送到开发 fork 的 `codex/triton-experimental-provenance-delivery` 分支，
   当前提交为 `bb356bffb`，官方基线为 `83cc45248`。
-- `https://gitcode.com/rmch/npu_inductor_2.13.0` 是架构师个人预合入/历史参考仓，
+- [架构师个人预合入/历史参考仓](https://gitcode.com/rmch/npu_inductor_2.13.0)
+  是历史参考，
   不是目标仓或 fork。
-- `https://github.com/Beaver2323/TorchNpu-Inductor-Provenance` 是前期研究与文档仓，
+- [本 GitHub 仓](https://github.com/Beaver2323/TorchNpu-Inductor-Provenance)
+  是前期研究与文档仓，
   不是源码交付目标。
-- `https://gitcode.com/AllenGuanC/inductor-meta-worktree` 只用于复用工作流程。
+- [工作流参考仓](https://gitcode.com/AllenGuanC/inductor-meta-worktree)
+  只用于复用工作流程。
 
 ## 1. 当前结论
 
@@ -277,7 +280,8 @@ export TORCH_DEVICE_BACKEND_AUTOLOAD=0
 export ASCEND_RT_VISIBLE_DEVICES=7
 
 export TORCH_TRACE=/home/z50063656/Tracking/triton_experimental_delivery/my_torch_trace
-python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/static_probe.py \
+export DEMO_ROOT=/path/to/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental
+python "$DEMO_ROOT/static_probe.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_static_run \
   --expect-mapped
 
@@ -294,7 +298,8 @@ tlparse -i "$TORCH_TRACE"/*.log \
 
 ## 10. 如何阅读三栏 HTML
 
-仓库已保存可直接打开的页面 `provenance_tracking.html`。它来自本轮 wheel 运行后
+仓库已保存可下载后离线打开的页面
+[provenance_tracking.html](./provenance_tracking.html)。它来自本轮 wheel 运行后
 生成的 per-graph 页面 `provenance_tracking_-_0_0_0.html`。
 
 三栏含义：
@@ -334,25 +339,31 @@ compile id、forward/backward 或重编译时，会有多个 provenance 页面�
 
 ## 11. 生成运行时时间线
 
+先把本仓演示目录设置为 `DEMO_ROOT`：
+
+```bash
+export DEMO_ROOT=/path/to/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental
+```
+
 普通 forward/backward：
 
 ```bash
-python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/timeline_probe.py \
+python "$DEMO_ROOT/timeline_probe.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_timeline_forward_backward
 ```
 
 rsplit 双 kernel：
 
 ```bash
-python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py \
+python "$DEMO_ROOT/rsplit_timeline_probe.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_timeline_rsplit
 ```
 
 得到的 `*.pt.trace.json` 可载入 Perfetto。选中以 `triton_` 或 `k_` 开头的 device
 kernel，在事件参数中查看 `stack`。仓库内提供两份可复现 trace：
 
-- `timeline_forward_backward_trace.json`
-- `timeline_rsplit_trace.json`
+- [普通 forward/backward trace](./timeline_forward_backward_trace.json)
+- [rsplit partial/combine trace](./timeline_rsplit_trace.json)
 
 ## 12. 本轮验收证据
 
@@ -407,16 +418,18 @@ Atlas A5；本机 `npu-smi` 显示为 Ascend910B2。继续修改共享 AOTI runt
 
 ## 13. 产物索引
 
-- `static_result.json`：wheel 静态运行摘要。
-- `static_level2_result.json`：basic level 2 的真实 NPU 静态运行摘要。
-- `node_mappings.json`：kernel 与 post/pre-grad 节点关系。
-- `kernel_stack_traces.json`：kernel 与 Python 源码栈关系。
-- `provenance_tracking.html`：可离线打开的 tlparse 三栏页面。
-- `timeline_forward_backward_result.json`：普通前后向摘要。
-- `timeline_forward_backward_trace.json`：普通前后向 Perfetto trace。
-- `timeline_rsplit_result.json`：rsplit 摘要。
-- `timeline_rsplit_trace.json`：rsplit Perfetto trace。
-- `static_probe.py`、`timeline_probe.py`、`rsplit_timeline_probe.py`：独立复现实验。
+- [static_result.json](./static_result.json)：wheel 静态 level 1 运行摘要。
+- [static_level2_result.json](./static_level2_result.json)：basic level 2 的真实 NPU 静态运行摘要。
+- [node_mappings.json](./node_mappings.json)：kernel 与 post/pre-grad 节点关系。
+- [kernel_stack_traces.json](./kernel_stack_traces.json)：kernel 与 Python 源码栈关系。
+- [provenance_tracking.html](./provenance_tracking.html)：下载后可离线打开的 tlparse 三栏页面。
+- [timeline_forward_backward_result.json](./timeline_forward_backward_result.json)：普通前后向摘要。
+- [timeline_forward_backward_trace.json](./timeline_forward_backward_trace.json)：普通前后向 Perfetto trace。
+- [timeline_rsplit_result.json](./timeline_rsplit_result.json)：rsplit 摘要。
+- [timeline_rsplit_trace.json](./timeline_rsplit_trace.json)：rsplit Perfetto trace。
+- [static_probe.py](./static_probe.py)：静态 provenance 独立复现实验。
+- [timeline_probe.py](./timeline_probe.py)：普通 forward/backward timeline 独立复现实验。
+- [rsplit_timeline_probe.py](./rsplit_timeline_probe.py)：rsplit timeline 独立复现实验。
 
 ## 14. 尚未完成与风险
 

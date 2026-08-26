@@ -553,11 +553,11 @@ tlparse "$TRACE_FILE" \
 provenance_tracking_-_0_0_0.html
 ```
 
-本次可直接打开：
+当前仓库可直接查看或下载：
 
-- [tlparse 总入口](./npu_provenance_verified_20260820/tlparse/index.html)
-- [NPU 三栏页面](./npu_provenance_verified_20260820/tlparse/provenance_tracking_-_0_0_0.html)
-- [kernel stack readable 页面](./npu_provenance_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_15_readable.html)
+- [`triton_experimental` 演示与产物索引](./inductor_provenance_demo/triton_experimental/README.md)
+- [NPU 三栏页面](./inductor_provenance_demo/triton_experimental/provenance_tracking.html)
+- [kernel stack JSON](./inductor_provenance_demo/triton_experimental/kernel_stack_traces.json)
 
 三栏含义：
 
@@ -1237,10 +1237,10 @@ forward/backward 和 rsplit partial/combine kernel 均已获得源码 stack；li
 
 如果你只有 30～60 分钟，按以下顺序阅读：
 
-1. [最终 NPU 可视化演示](./npu_provenance_visualization_demo.md)：先看普通 Triton 结果；
-2. [FlexAttention template 演示](./npu_template_provenance_visualization_demo.md)：再看 template 结果；
-3. [默认 BlockMask 演示](./npu_default_block_mask_provenance_demo.md)：理解图内 mask 构造和版本兼容链；
-4. [默认 BlockMask backward 编译调查](./npu_default_block_mask_backward_investigation.md)：理解训练图拆分、IR 证据和当前阻塞；
+1. [`triton_experimental` 当前演示](./inductor_provenance_demo/triton_experimental/README.md)：先看正式交付范围和可点击产物；
+2. [需求变更前的普通 NPU 研究](./npu_provenance_visualization_demo.md)：作为历史背景；
+3. [FlexAttention template 研究](./npu_template_provenance_visualization_demo.md)：作为历史背景；
+4. [默认 BlockMask backward 编译调查](./npu_default_block_mask_backward_investigation.md)：理解历史训练图调查；
 5. `src/pytorch/torch/_inductor/debug.py::set_kernel_post_grad_provenance_tracing()`：理解核心 registry；
 6. `src/pytorch/torch/_inductor/codegen/triton.py::TritonScheduling.codegen_comment()`：理解后端契约；
 7. `src/torch_npu/torch_npu/_inductor/codegen/scheduling.py::NPUTritonScheduling`：理解 NPU 修复；
@@ -1250,7 +1250,7 @@ forward/backward 和 rsplit partial/combine kernel 均已获得源码 stack；li
 
 ### 5. 项目资料导航
 
-- [当前交接与状态](./MAIN_THREAD_HANDOFF.md)
+- [`triton_experimental` 当前演示与状态](./inductor_provenance_demo/triton_experimental/README.md)
 - [完整源码研究文档](./inductor_provenance_npu_research.md)
 - [NPU 最终可视化演示](./npu_provenance_visualization_demo.md)
 - [NPU FlexAttention template 可视化演示](./npu_template_provenance_visualization_demo.md)
@@ -1261,8 +1261,8 @@ forward/backward 和 rsplit partial/combine kernel 均已获得源码 stack；li
 - [CPU provenance 可视化演示](./cpu_provenance_visualization_demo.md)
 - [NPU Inductor 环境基线](./npu_inductor_baseline_demo.md)
 - [NPU demo 脚本](../examples/npu_provenance_demo.py)
-- [最终 tlparse 总入口](./npu_provenance_verified_20260820/tlparse/index.html)
-- [最终 NPU 三栏页面](./npu_provenance_verified_20260820/tlparse/provenance_tracking_-_0_0_0.html)
+- [当前静态映射 JSON](./inductor_provenance_demo/triton_experimental/node_mappings.json)
+- [当前 NPU 三栏页面](./inductor_provenance_demo/triton_experimental/provenance_tracking.html)
 
 ### 6. 开始继续开发前的最短检查表
 

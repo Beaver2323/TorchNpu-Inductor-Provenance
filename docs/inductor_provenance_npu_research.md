@@ -33,7 +33,7 @@
 | Python 运行时 | `/home/z50063656/envs/Tracking/bin/python` | Python 3.11.15、`torch 2.14.0a0+git8e86e0a`、editable `torch_npu 2.14.0a0+git83cc452` |
 | NPU 运行时 | CANN 9.0.1，8 张 Ascend 910B2，每张 65536 MiB HBM | `npu-smi info` 实测均为 `Health: OK` |
 | Triton Ascend | `triton-ascend 3.2.2`，源码提交 `8bd9f380d2786002b84b5248f00838c26f900515` | Tracking 环境已通过 CPU/NPU Inductor 验证；distribution `triton` 元数据版本为 3.5.0 |
-| 官方文档 | [本地保存页面](./TorchInductor%20and%20AOTInductor%20Provenance%20Tracking%20%E2%80%94%20PyTorch%202.13%20documentation.html) | 使用方式与产物清单 |
+| 官方文档 | PyTorch 2.13 Provenance Tracking 文档的本地研究快照（未发布到本仓） | 使用方式与产物清单 |
 
 PyTorch 2.13 文档描述的架构与当前 2.14 alpha 源码一致，但行号和部分 NPU 分支已经演进。本文以当前实际运行环境为主基线，并把文档中的稳定概念作为功能契约。torch_npu 的嵌套子模块存在与本任务无关的未跟踪状态，本任务保留这些状态，只修改 provenance 相关 Python 文件和测试。
 

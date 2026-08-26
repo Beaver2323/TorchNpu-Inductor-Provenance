@@ -43,14 +43,17 @@ triton_flex_attention_fwd_mask_in.run(...)
 关键文件：
 
 - [可重复运行脚本](../examples/npu_template_provenance_demo.py)
-- [运行结果](./npu_template_provenance_verified_20260820/run/result.json)
-- [运行日志](./npu_template_provenance_verified_20260820/demo.log)
-- [原始 mapping](./npu_template_provenance_verified_20260820/run/debug/torchinductor/model__0_inference_0.0/inductor_provenance_tracking_node_mappings.json)
-- [原始 output_code.py](./npu_template_provenance_verified_20260820/run/debug/torchinductor/model__0_inference_0.0/output_code.py)
-- [tlparse 总入口](./npu_template_provenance_verified_20260820/tlparse/index.html)
-- [三栏 provenance 页面](./npu_template_provenance_verified_20260820/tlparse/provenance_tracking_-_0_0_0.html)
-- [tlparse mapping](./npu_template_provenance_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_14.json)
-- [kernel stack 页面](./npu_template_provenance_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_15_readable.html)
+- 运行结果：`npu_template_provenance_verified_20260820/run/result.json`
+- 运行日志：`npu_template_provenance_verified_20260820/demo.log`
+- 原始 mapping：`npu_template_provenance_verified_20260820/run/debug/torchinductor/model__0_inference_0.0/inductor_provenance_tracking_node_mappings.json`
+- 原始 output code：`npu_template_provenance_verified_20260820/run/debug/torchinductor/model__0_inference_0.0/output_code.py`
+- tlparse 总入口：`npu_template_provenance_verified_20260820/tlparse/index.html`
+- 三栏 provenance 页面：`npu_template_provenance_verified_20260820/tlparse/provenance_tracking_-_0_0_0.html`
+- tlparse mapping：`npu_template_provenance_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_14.json`
+- kernel stack 页面：`npu_template_provenance_verified_20260820/tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_15_readable.html`
+
+> 上述 template 产物目录未随本仓发布；当前可点击演示见
+> [`triton_experimental` 产物索引](./inductor_provenance_demo/triton_experimental/README.md)。
 
 ## 如何复现
 

@@ -40,16 +40,34 @@ The final validation used PyTorch `release/2.14`, an isolated install of the
 matching `torch_npu` validation wheel, Triton Ascend `release/3.2.2`, and Ascend
 910B2 devices.
 
-## Start here
+## Current `triton_experimental` demo
 
-1. [`triton_experimental` provenance demo and artifact index](docs/inductor_provenance_demo/triton_experimental/README.md)
-2. [Beginner guide](docs/inductor_provenance_npu_beginner_guide.md)
-3. [Full research notes](docs/inductor_provenance_npu_research.md)
-4. [CPU visualization demo](docs/cpu_provenance_visualization_demo.md)
-5. [NPU visualization demo](docs/npu_provenance_visualization_demo.md)
-6. [FlexAttention template demo](docs/npu_template_provenance_visualization_demo.md)
-7. [Default BlockMask demo](docs/npu_default_block_mask_provenance_demo.md)
-8. [Default BlockMask backward investigation](docs/npu_default_block_mask_backward_investigation.md)
+1. [Guide and artifact index](docs/inductor_provenance_demo/triton_experimental/README.md)
+2. [Static three-panel provenance HTML](docs/inductor_provenance_demo/triton_experimental/provenance_tracking.html)
+3. Static JSON: [node mappings](docs/inductor_provenance_demo/triton_experimental/node_mappings.json),
+   [kernel stacks](docs/inductor_provenance_demo/triton_experimental/kernel_stack_traces.json),
+   [level 1 result](docs/inductor_provenance_demo/triton_experimental/static_result.json), and
+   [level 2 result](docs/inductor_provenance_demo/triton_experimental/static_level2_result.json)
+4. Forward/backward timeline: [result](docs/inductor_provenance_demo/triton_experimental/timeline_forward_backward_result.json)
+   and [Perfetto trace](docs/inductor_provenance_demo/triton_experimental/timeline_forward_backward_trace.json)
+5. Rsplit timeline: [result](docs/inductor_provenance_demo/triton_experimental/timeline_rsplit_result.json)
+   and [Perfetto trace](docs/inductor_provenance_demo/triton_experimental/timeline_rsplit_trace.json)
+6. Reproduction scripts: [static](docs/inductor_provenance_demo/triton_experimental/static_probe.py),
+   [forward/backward timeline](docs/inductor_provenance_demo/triton_experimental/timeline_probe.py), and
+   [rsplit timeline](docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py)
+
+Download the HTML to open the interactive three-panel view locally. Load the
+timeline trace JSON files into Perfetto.
+
+## Historical research
+
+- [Beginner guide](docs/inductor_provenance_npu_beginner_guide.md)
+- [Full research notes](docs/inductor_provenance_npu_research.md)
+- [CPU visualization research](docs/cpu_provenance_visualization_demo.md)
+- [Earlier NPU visualization research](docs/npu_provenance_visualization_demo.md)
+- [FlexAttention template research](docs/npu_template_provenance_visualization_demo.md)
+- [Default BlockMask research](docs/npu_default_block_mask_provenance_demo.md)
+- [Default BlockMask backward investigation](docs/npu_default_block_mask_backward_investigation.md)
 
 ## Repository layout
 

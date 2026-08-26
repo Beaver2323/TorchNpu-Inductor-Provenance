@@ -73,10 +73,13 @@ Stats { ok: 142 }
 
 ## 本次报告入口
 
-- [tlparse 总入口](./cpu_provenance_tlparse/index.html)
-- [Provenance 三栏高亮器](./cpu_provenance_tlparse/provenance_tracking_-_0_0_0.html)
-- [Kernel stack readable 页面](./cpu_provenance_tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_14_readable.html)
-- [原始节点映射 JSON](./cpu_provenance_tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_13.json)
+> 本节记录的是早期 CPU 研究产物路径，产物目录未发布到本仓。当前已发布且可点击的
+> NPU 演示入口见 [`triton_experimental` 产物索引](./inductor_provenance_demo/triton_experimental/README.md)。
+
+- tlparse 总入口：`cpu_provenance_tlparse/index.html`
+- Provenance 三栏高亮器：`cpu_provenance_tlparse/provenance_tracking_-_0_0_0.html`
+- Kernel stack readable 页面：`cpu_provenance_tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_14_readable.html`
+- 原始节点映射 JSON：`cpu_provenance_tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_13.json`
 
 在总入口中找到 **Provenance Tracking**，点击
 `provenance_tracking_-_0_0_0`。三栏分别是：
