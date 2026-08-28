@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-28",
+  "device": "Ascend910B2",
+  "visible_device": 6,
+  "backend": "triton_experimental",
+  "provenance_tracking_level": 2,
+  "provenance_tracking_to_timeline": true,
+  "suite": {
+    "test_file": "test/profiler/test_inductor_provenance_models.py",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 238.232
+  },
+  "models": [
+    {
+      "name": "Llama-style RMSNorm + SwiGLU residual block",
+      "status": "PASS",
+      "base_shape": [2, 32, 256],
+      "alternate_shape": [3, 24, 256],
+      "validated": [
+        "forward outputs",
+        "backward input gradients",
+        "all parameter gradients",
+        "dynamic-shape reuse",
+        "static provenance mappings",
+        "forward and backward timeline stacks"
+      ],
+      "mapping_files": 2,
+      "generated_device_kernel_minimum": 6
+    },
+    {
+      "name": "ConvNeXt block",
+      "status": "PASS_WITH_BACKEND_BOUNDARY",
+      "base_shape": [2, 64, 16, 16],
+      "alternate_shape": [1, 64, 20, 12],
+      "validated": [
+        "forward outputs",
+        "dynamic batch and spatial shapes",
+        "static provenance mappings",
+        "inference timeline stacks"
+      ],
+      "mapping_files": 2,
+      "generated_device_kernels": 4,
+      "not_validated_as_pass": [
+        "backward"
+      ],
+      "backend_boundary": [
+        "fused convolution backward emits an invalid Python assignment",
+        "fallback execution rejects a non-contiguous NPU memory format"
+      ]
+    },
+    {
+      "name": "torch.nn.TransformerEncoderLayer",
+      "status": "PASS_WITH_BACKEND_BOUNDARY",
+      "base_shape": [2, 32, 256],
+      "alternate_shape": [3, 24, 256],
+      "validated": [
+        "base-shape forward outputs",
+        "base-shape backward input gradients",
+        "base-shape all parameter gradients",
+        "alternate-shape dynamic forward outputs",
+        "static provenance mappings",
+        "base-shape forward and backward timeline stacks"
+      ],
+      "mapping_files": 2,
+      "generated_device_kernel_minimum": 10,
+      "not_validated_as_pass": [
+        "alternate-shape backward"
+      ],
+      "backend_boundary": [
+        "a fused select-backward store mask cannot broadcast",
+        "all Triton configs fail compilation, including the small-block fallback"
+      ]
+    }
+  ]
+}

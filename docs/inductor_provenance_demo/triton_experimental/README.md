@@ -35,8 +35,13 @@ provenance（来源追踪）是什么、如何实现、如何运行，以及当�
 - 普通前向融合 kernel 的静态映射正确，数值误差为 0。
 - 普通前向与 backward kernel 都带有正确源码栈。
 - rsplit reduction 产生的 partial 和 combine 两个 kernel 都带有正确源码栈。
+- Llama 风格 RMSNorm + SwiGLU 残差块在两组动态形状上的前向、反向、输入梯度和
+  参数梯度均正确；9 个 timeline kernel 事件都能回溯到模块源码。
+- ConvNeXt 块的两组动态前向，以及 TransformerEncoderLayer 的基准前反向和第二形状
+  动态前向均通过模块级 provenance 验证；超出该范围的后端限制单独记录，不计为通过。
 - NPU 原始 trace 的事件根、名称、分类和 flow 没有被适配器的临时格式污染。
-- tlparse 使用 `--inductor-provenance` 成功解析 137 条结构化日志记录。
+- tlparse 使用 `--inductor-provenance` 成功解析最小案例的 137 条、Llama 案例的 250 条
+  结构化日志记录。
 
 本任务范围只包括 `triton_experimental`。默认 NPU Inductor、MLIR、DVM、AKG、
 CATLASS 和 torchair 不属于本交付范围。
@@ -174,8 +179,9 @@ backward 值得单独验证，是因为它由 AOTAutograd 延迟编译，使用
 
 不要求一定使用 FlexAttention backward。任何能稳定进入
 `triton_experimental`、产生真实 backward Triton kernel，并覆盖相同关联链路的模型
-都可验证基础 contract。本交付选择小型 `sin + relu + mul` 模型，编译快且证据清晰。
-FlexAttention backward 只能作为更复杂的模板/融合专项，不能替代基础链路验证。
+都可验证基础 contract。本交付保留小型 `sin + relu + mul` 作为快速 smoke test，并把
+完整通过的 Llama 风格 RMSNorm + SwiGLU 残差块作为远端主演示。FlexAttention backward
+只能作为更复杂的模板/融合专项，不能替代基础链路验证。
 
 rsplit reduction 一次 scheduler 计划会发射两个运行时 kernel：partial 先写 workspace，
 combine 再归并。如果只在整个 schedule 末尾登记一次，两个 launch 中至少一个没有独立
@@ -270,6 +276,10 @@ profiler schema 适配单测：
 python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/test/profiler/test_inductor_profiler.py -v
 ```
 
+代表性模块的结构化验证范围见
+[model_validation_result.json](./model_validation_result.json)。其中 Llama 案例完整通过；
+ConvNeXt 和 Transformer 的后端边界未混入 PASS 计数。
+
 ## 9. 生成静态 tlparse 页面
 
 ```bash
@@ -290,6 +300,22 @@ tlparse -i "$TORCH_TRACE"/*.log \
   --no-browser
 ```
 
+远端主演示使用 Llama 风格 RMSNorm + SwiGLU 残差块，同时覆盖动态形状、forward、
+backward、输入/参数梯度、静态映射和运行时 timeline：
+
+```bash
+export TORCH_TRACE=/home/z50063656/Tracking/triton_experimental_delivery/my_llama_trace
+python "$DEMO_ROOT/llama_swiglu_demo.py" \
+  --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_llama_run
+
+tlparse -i "$TORCH_TRACE"/*.log \
+  -o /home/z50063656/Tracking/triton_experimental_delivery/my_llama_tlparse \
+  --no-browser
+```
+
+探针会要求输出目录尚不存在，并在一个运行中验证 `[2, 32, 256]` 与
+`[3, 24, 256]` 两组形状。
+
 验证 basic level 2 时给 probe 增加 `--level 2`；本轮真实 NPU 结果仍映射到同一个
 `triton_unk_fused_add_mul_relu_0:1 -> add/relu/mul`，数值误差为 0。
 
@@ -298,9 +324,10 @@ tlparse -i "$TORCH_TRACE"/*.log \
 
 ## 10. 如何阅读三栏 HTML
 
-仓库已保存可下载后离线打开的页面
-[provenance_tracking.html](./provenance_tracking.html)。它来自本轮 wheel 运行后
-生成的 per-graph 页面 `provenance_tracking_-_0_0_0.html`。
+主演示页面是
+[Llama 三栏 provenance HTML](./llama_swiglu/provenance_tracking.html)，包含同一编译
+ID 下的 forward/backward 图与生成代码。原来的
+[三操作 smoke 页面](./provenance_tracking.html)继续保留，便于第一次阅读时快速定位。
 
 三栏含义：
 
@@ -318,13 +345,25 @@ tlparse -i "$TORCH_TRACE"/*.log \
 4. 加粗表示当前 provenance 功能覆盖并可交互的节点或 kernel；普通文本不代表错误。
 5. kernel 名末尾的 `:1` 是一次调用的 debug handle，不是 Triton launch 参数。
 
-本演示中：
+Llama 主演示中，右栏可看到多个 Triton 与 extern kernel handle。例如：
 
 ```text
-triton_unk_fused_add_mul_relu_0:1
-  <-> post-grad: add, relu, mul
-  <-> 用户模型: x + 1, relu, * 2
+triton_unk_fused_mean_mul_pow_rsqrt_0:1
+  <-> post-grad: mean, pow, rsqrt, add, mul ...
+  <-> 用户模型: RMSNorm variance / normalization
+
+triton_unk_fused_mul_silu_view_1:4
+  <-> post-grad: mul, div, exp, neg, view ...
+  <-> 用户模型: SwiGLU gate/up projection
+
+triton_unk_fused_add_addmm_view_2:6
+  <-> post-grad: add, addmm, view
+  <-> 用户模型: down projection + residual
 ```
+
+同一页面还包含 backward 的 `silu_backward`、reduction 和 RMSNorm gradient 映射。
+完整原始关系见
+[llama_swiglu_node_mappings.json](./llama_swiglu/llama_swiglu_node_mappings.json)。
 
 JIT 模式的第三栏是 Python wrapper，因此 tlparse 内部有效行号映射是
 `pyCodeToPost/postToPyCode`。原始 JSON 为兼容历史格式仍使用
@@ -352,6 +391,13 @@ python "$DEMO_ROOT/timeline_probe.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_timeline_forward_backward
 ```
 
+Llama 动态形状前反向主演示：
+
+```bash
+python "$DEMO_ROOT/llama_swiglu_demo.py" \
+  --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_llama_run
+```
+
 rsplit 双 kernel：
 
 ```bash
@@ -360,8 +406,9 @@ python "$DEMO_ROOT/rsplit_timeline_probe.py" \
 ```
 
 得到的 `*.pt.trace.json` 可载入 Perfetto。选中以 `triton_` 或 `k_` 开头的 device
-kernel，在事件参数中查看 `stack`。仓库内提供两份可复现 trace：
+kernel，在事件参数中查看 `stack`。仓库内提供三份可复现 trace：
 
+- [Llama forward/backward trace](./llama_swiglu/llama_swiglu_timeline_trace.json)
 - [普通 forward/backward trace](./timeline_forward_backward_trace.json)
 - [rsplit partial/combine trace](./timeline_rsplit_trace.json)
 
@@ -371,20 +418,42 @@ kernel，在事件参数中查看 `stack`。仓库内提供两份可复现 trace
 | --- | --- | --- |
 | wheel 构建 | PASS | 34 MiB，zip 完整性通过 |
 | wheel 源码一致性 | PASS | 三个产品文件与 staged 源码 SHA256 一致 |
-| profiler 适配单测 | PASS | 4/4（list/dict、gzip、事件上限/清理） |
+| profiler 适配单测 | PASS | 12/12（含同名防串线、长名称恢复、模块前反向） |
 | rsplit 发射顺序单测 | PASS | 1/1 |
-| NPU 静态映射单测 | PASS | final v10 在物理 NPU 7 重跑 1/1，36.707 秒 |
+| NPU 静态映射套件 | PASS | 5/5（level 0/1/2、动态形状 mapping 隔离） |
 | 静态 probe | PASS | Ascend910B2，max abs diff = 0 |
 | level 2 静态 probe | PASS | 同一 kernel→add/relu/mul 映射，max abs diff = 0 |
 | tlparse | PASS | Stats `{ ok: 137 }` |
 | forward/backward timeline | PASS | 两个 device kernel 均有 stack |
 | rsplit timeline | PASS | partial/combine 两个 device kernel 均有 stack |
-| AOTInductor 可行性门禁 | BLOCKED | 当前硬件/基线不满足 NPU AOTI 验证前提，详见下节 |
+| 代表性模型/模块套件 | PASS | NPU 6 串行回归 3/3，无 skip，238.232 秒 |
+| Llama 远端主演示 | PASS | 两组动态形状、9 个 timeline kernel 事件、tlparse 250 条 |
+| AOTInductor 可行性门禁 | BLOCKED | 当前硬件/基线不满足 NPU AOTI 验证前提，详见 12.2 节 |
 
-静态 probe 中 `fxgraph_cache_hit=0`、`fxgraph_cache_bypass=1` 是当前 torch_npu 自定义
-pre-grad pass 未实现 `uuid()` 导致的已知 cache bypass，不是 provenance 映射失败。
+静态 probe 中 `fxgraph_cache_hit=0`、`fxgraph_cache_bypass=1` 的原始 trace 原因是
+`Unsupported post grad custom pass`：`triton_experimental/fx_passes.py` 把普通
+`_composed` callable 安装到 `post_grad_custom_post_pass`，没有提供缓存键所需的
+`CustomGraphPass.uuid()`。这是自定义 post-grad pass 的 cache identity 限制，不是
+provenance 映射失败；本轮 trace 没有把 pre-grad pass 记录为直接 bypass 原因。
 
-### 12.1 为什么本轮不能把 AOTInductor 标为完成
+### 12.1 代表性模块 provenance A/B 因果排除
+
+2026-08-28 在同一 Ascend910B2、物理 NPU 6 上关闭编译缓存，对两个失败边界做了独立
+A/B。A 组为 level 0 且关闭 timeline provenance，B 组为 level 2 且打开 timeline
+provenance；两组在相同位置生成相同失败 kernel。
+
+- ConvNeXt 两组的失败源码 SHA256 都是
+  `4347d006bc6bffc75c1f1707ee680208933ecf49e8c3b85159144766f34cf506`，并在同一行
+  生成非法 Python 赋值。
+- Transformer 两组失败 kernel 源码区域 SHA256 都是
+  `f994c3761019a9f80abd49b444875b939c97a05e24a18c54f72e5899cdeb5722`，同样因
+  `tl.store` mask 无法广播而耗尽所有 Triton config。
+
+因此两个边界均为 `NOT_CAUSED_BY_PROVENANCE`。完整证据见
+[provenance_ab_result.json](./provenance_ab_result.json)，复现入口为
+[provenance_ab_probe.py](./provenance_ab_probe.py)。
+
+### 12.2 为什么本轮不能把 AOTInductor 标为完成
 
 社区 AOTInductor 的 provenance 会在 `.pt2` 包内生成
 `model/data/aotinductor/model/kernel_information.json`。它与 JIT 静态 JSON 使用相同的
@@ -418,6 +487,15 @@ Atlas A5；本机 `npu-smi` 显示为 Ascend910B2。继续修改共享 AOTI runt
 
 ## 13. 产物索引
 
+- [Llama 三栏 HTML](./llama_swiglu/provenance_tracking.html)：当前远端主演示。
+- [Llama 验证结果](./llama_swiglu/llama_swiglu_result.json)：两组形状、数值/梯度和 timeline 摘要。
+- [Llama node mappings](./llama_swiglu/llama_swiglu_node_mappings.json)：forward/backward 静态映射。
+- [Llama kernel stacks](./llama_swiglu/llama_swiglu_kernel_stacks.json)：运行时 kernel 源码栈。
+- [Llama timeline trace](./llama_swiglu/llama_swiglu_timeline_trace.json)：可载入 Perfetto。
+- [llama_swiglu_demo.py](./llama_swiglu_demo.py)：主演示独立复现脚本。
+- [model_validation_result.json](./model_validation_result.json)：三种代表性模型/模块验证矩阵。
+- [provenance_ab_result.json](./provenance_ab_result.json)：level 0/2 因果对照。
+- [provenance_ab_probe.py](./provenance_ab_probe.py)：边界 A/B 独立探针。
 - [static_result.json](./static_result.json)：wheel 静态 level 1 运行摘要。
 - [static_level2_result.json](./static_level2_result.json)：basic level 2 的真实 NPU 静态运行摘要。
 - [node_mappings.json](./node_mappings.json)：kernel 与 post/pre-grad 节点关系。
@@ -437,12 +515,14 @@ Atlas A5；本机 `npu-smi` 显示为 Ascend910B2。继续修改共享 AOTI runt
   避免与其他进程修改环境发生冲突。
 - `triton_experimental` 的 AOTInductor `kernel_information.json` 尚未验收；本轮已完成
   可行性门禁，确认当前 910B2 + PyTorch/torch_npu 2.14 基线同时受设备支持范围和共享
-  AOTI lazy/ABI 问题阻塞。不能用已通过的 JIT JSON 代替，恢复条件见 12.1 节。
+  AOTI lazy/ABI 问题阻塞。不能用已通过的 JIT JSON 代替，恢复条件见 12.2 节。
 - level 2 静态映射、gzip、事件上限/状态清理和 list/dict trace root 均已完成专项
   回归；level 2 runtime timeline 尚未单独重复采集，因为 timeline 开关会把有效级别
   至少提升到 1，运行时关联算法与显式 level 1 相同。
 - 当前验证 wheel 禁用了 torchair；如需要完整发布 wheel，应在标准发布构建环境中重新
   启用 torchair，而不是把本验证 wheel 当成正式发行包。
+- ConvNeXt backward 和 Transformer 第二动态形状 backward 的边界均已用 level 0/2
+  A/B 排除 provenance 因果；它们没有被包装成通过案例。
 - 本地验证 wheel 的版本标签来自基线 commit `83cc452`；功能源码随后以提交
   `bb356bffb` 推送到开发 fork。判断验证 wheel 内容时仍应结合本页记录的 wheel SHA
   和文件哈希，不能只看版本字符串。

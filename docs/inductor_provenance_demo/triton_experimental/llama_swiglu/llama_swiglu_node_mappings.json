@@ -1,0 +1,622 @@
+{
+  "schema_version": 1,
+  "model": "Llama-style RMSNorm + SwiGLU residual block",
+  "graphs": [
+    {
+      "source": "torchinductor/model__0_backward_2.1/inductor_provenance_tracking_node_mappings.json",
+      "data": {
+        "preToPost": {
+          "linear_2": [
+            "permute_2"
+          ],
+          "linear": [
+            "view_1",
+            "permute"
+          ],
+          "silu": [
+            "neg",
+            "exp",
+            "add_39",
+            "div"
+          ],
+          "linear_1": [
+            "view_3",
+            "permute_1"
+          ],
+          "normalized": [
+            "mul_13"
+          ]
+        },
+        "postToPre": {
+          "permute_2": [
+            "linear_2"
+          ],
+          "view_1": [
+            "linear"
+          ],
+          "neg": [
+            "silu"
+          ],
+          "exp": [
+            "silu"
+          ],
+          "add_39": [
+            "silu"
+          ],
+          "div": [
+            "silu"
+          ],
+          "view_3": [
+            "linear_1"
+          ],
+          "permute_1": [
+            "linear_1"
+          ],
+          "permute": [
+            "linear"
+          ],
+          "mul_13": [
+            "normalized"
+          ]
+        },
+        "cppCodeToPost": {
+          "triton_unk_fused_mean_mul_pow_rsqrt_0:1": [
+            "mean",
+            "pow_1",
+            "rsqrt",
+            "add_tensor",
+            "convert_element_type_default_1",
+            "mul_17",
+            "mul_13"
+          ],
+          "extern_kernels.addmm:2": [
+            "addmm"
+          ],
+          "extern_kernels.addmm:3": [
+            "addmm_1"
+          ],
+          "triton_unk_fused_mul_silu_view_1:4": [
+            "mul_46",
+            "div",
+            "view_1",
+            "add_39",
+            "exp",
+            "neg",
+            "view_3"
+          ],
+          "extern_kernels.mm:5": [
+            "mm_default"
+          ],
+          "triton_unk_fused_add_addmm_view_2:6": [
+            "add_68",
+            "view_5",
+            "add_tensor_1"
+          ],
+          "triton_unk_fused_sum_view_0:7": [
+            "sum_1",
+            "view_6"
+          ],
+          "extern_kernels.mm:8": [
+            "mm"
+          ],
+          "triton_unk_fused_mul_silu_silu_backward_view_1:9": [
+            "mul_67",
+            "view_8",
+            "div",
+            "view_1",
+            "add_39",
+            "exp",
+            "neg",
+            "mul_71",
+            "mul_69",
+            "mul_68",
+            "view_3",
+            "sigmoid",
+            "add_73",
+            "mul_70",
+            "sub_32"
+          ],
+          "triton_unk_fused_mul_silu_sum_view_2:10": [
+            "sum_2",
+            "view_9",
+            "mul_67",
+            "view_8",
+            "div",
+            "view_1",
+            "add_39",
+            "exp",
+            "neg"
+          ],
+          "triton_unk_fused_mul_silu_sum_view_2:11": [
+            "sum_3",
+            "view_12",
+            "mul_71",
+            "mul_69",
+            "mul_68",
+            "view_8",
+            "view_3",
+            "sigmoid",
+            "view_1",
+            "add_73",
+            "mul_70",
+            "sub_32"
+          ],
+          "extern_kernels.mm:12": [
+            "mm_2"
+          ],
+          "extern_kernels.mm:13": [
+            "mm_4"
+          ],
+          "triton_unk_fused_add_mul_sum_view_3:14": [
+            "sum_4",
+            "mul_72",
+            "add_74",
+            "view_11",
+            "view_14",
+            "mul_13"
+          ],
+          "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15": [
+            "sum_5",
+            "mul_74",
+            "mul_73",
+            "add_74",
+            "view_11",
+            "view_14",
+            "add_76",
+            "add_75",
+            "mul_75",
+            "mul_79",
+            "div_1",
+            "expand",
+            "mul_77",
+            "mul_76",
+            "pow_2",
+            "mul_78",
+            "pow_3"
+          ],
+          "extern_kernels.mm:16": [
+            "mm_1"
+          ],
+          "extern_kernels.mm:17": [
+            "mm_3"
+          ],
+          "extern_kernels.mm:18": [
+            "mm_5"
+          ]
+        },
+        "postToCppCode": {
+          "mean": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "pow_1": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "rsqrt": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "add_tensor": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "convert_element_type_default_1": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "mul_17": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "mul_13": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1",
+            "triton_unk_fused_add_mul_sum_view_3:14"
+          ],
+          "addmm": [
+            "extern_kernels.addmm:2"
+          ],
+          "addmm_1": [
+            "extern_kernels.addmm:3"
+          ],
+          "mul_46": [
+            "triton_unk_fused_mul_silu_view_1:4"
+          ],
+          "div": [
+            "triton_unk_fused_mul_silu_view_1:4",
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:10"
+          ],
+          "view_1": [
+            "triton_unk_fused_mul_silu_view_1:4",
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:10",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "add_39": [
+            "triton_unk_fused_mul_silu_view_1:4",
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:10"
+          ],
+          "exp": [
+            "triton_unk_fused_mul_silu_view_1:4",
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:10"
+          ],
+          "neg": [
+            "triton_unk_fused_mul_silu_view_1:4",
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:10"
+          ],
+          "view_3": [
+            "triton_unk_fused_mul_silu_view_1:4",
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "mm_default": [
+            "extern_kernels.mm:5"
+          ],
+          "add_68": [
+            "triton_unk_fused_add_addmm_view_2:6"
+          ],
+          "view_5": [
+            "triton_unk_fused_add_addmm_view_2:6"
+          ],
+          "add_tensor_1": [
+            "triton_unk_fused_add_addmm_view_2:6"
+          ],
+          "sum_1": [
+            "triton_unk_fused_sum_view_0:7"
+          ],
+          "view_6": [
+            "triton_unk_fused_sum_view_0:7"
+          ],
+          "mm": [
+            "extern_kernels.mm:8"
+          ],
+          "mul_67": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:10"
+          ],
+          "view_8": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:10",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "mul_71": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "mul_69": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "mul_68": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "sigmoid": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "add_73": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "mul_70": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "sub_32": [
+            "triton_unk_fused_mul_silu_silu_backward_view_1:9",
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "sum_2": [
+            "triton_unk_fused_mul_silu_sum_view_2:10"
+          ],
+          "view_9": [
+            "triton_unk_fused_mul_silu_sum_view_2:10"
+          ],
+          "sum_3": [
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "view_12": [
+            "triton_unk_fused_mul_silu_sum_view_2:11"
+          ],
+          "mm_2": [
+            "extern_kernels.mm:12"
+          ],
+          "mm_4": [
+            "extern_kernels.mm:13"
+          ],
+          "sum_4": [
+            "triton_unk_fused_add_mul_sum_view_3:14"
+          ],
+          "mul_72": [
+            "triton_unk_fused_add_mul_sum_view_3:14"
+          ],
+          "add_74": [
+            "triton_unk_fused_add_mul_sum_view_3:14",
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "view_11": [
+            "triton_unk_fused_add_mul_sum_view_3:14",
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "view_14": [
+            "triton_unk_fused_add_mul_sum_view_3:14",
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "sum_5": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "mul_74": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "mul_73": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "add_76": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "add_75": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "mul_75": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "mul_79": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "div_1": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "expand": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "mul_77": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "mul_76": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "pow_2": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "mul_78": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "pow_3": [
+            "triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15"
+          ],
+          "mm_1": [
+            "extern_kernels.mm:16"
+          ],
+          "mm_3": [
+            "extern_kernels.mm:17"
+          ],
+          "mm_5": [
+            "extern_kernels.mm:18"
+          ]
+        }
+      }
+    },
+    {
+      "source": "torchinductor/model__0_forward_1.0/inductor_provenance_tracking_node_mappings.json",
+      "data": {
+        "preToPost": {
+          "pow_1": [
+            "pow_1"
+          ],
+          "variance": [
+            "mean"
+          ],
+          "rsqrt": [
+            "rsqrt"
+          ],
+          "normalized": [
+            "mul_13"
+          ],
+          "normalized_1": [
+            "mul_17"
+          ],
+          "linear": [
+            "mul_27",
+            "view",
+            "permute",
+            "addmm",
+            "view_1"
+          ],
+          "silu": [
+            "neg",
+            "exp",
+            "add_39",
+            "div"
+          ],
+          "linear_1": [
+            "permute_1",
+            "addmm_1",
+            "view_3"
+          ],
+          "gated": [
+            "mul_46"
+          ],
+          "linear_2": [
+            "view_4",
+            "permute_2",
+            "mm_default",
+            "add_tensor_1",
+            "view_5"
+          ],
+          "add_1": [
+            "add_68"
+          ]
+        },
+        "postToPre": {
+          "pow_1": [
+            "pow_1"
+          ],
+          "mean": [
+            "variance"
+          ],
+          "rsqrt": [
+            "rsqrt"
+          ],
+          "mul_13": [
+            "normalized"
+          ],
+          "mul_17": [
+            "normalized_1"
+          ],
+          "mul_27": [
+            "linear"
+          ],
+          "view": [
+            "linear"
+          ],
+          "permute": [
+            "linear"
+          ],
+          "addmm": [
+            "linear"
+          ],
+          "view_1": [
+            "linear"
+          ],
+          "neg": [
+            "silu"
+          ],
+          "exp": [
+            "silu"
+          ],
+          "add_39": [
+            "silu"
+          ],
+          "div": [
+            "silu"
+          ],
+          "permute_1": [
+            "linear_1"
+          ],
+          "addmm_1": [
+            "linear_1"
+          ],
+          "view_3": [
+            "linear_1"
+          ],
+          "mul_46": [
+            "gated"
+          ],
+          "view_4": [
+            "linear_2"
+          ],
+          "permute_2": [
+            "linear_2"
+          ],
+          "mm_default": [
+            "linear_2"
+          ],
+          "add_tensor_1": [
+            "linear_2"
+          ],
+          "view_5": [
+            "linear_2"
+          ],
+          "add_68": [
+            "add_1"
+          ]
+        },
+        "cppCodeToPost": {
+          "triton_unk_fused_mean_mul_pow_rsqrt_0:1": [
+            "mean",
+            "pow_1",
+            "rsqrt",
+            "add_tensor",
+            "convert_element_type_default_1",
+            "mul_17",
+            "mul_13"
+          ],
+          "extern_kernels.addmm:2": [
+            "addmm"
+          ],
+          "extern_kernels.addmm:3": [
+            "addmm_1"
+          ],
+          "triton_unk_fused_mul_silu_view_1:4": [
+            "mul_46",
+            "div",
+            "view_1",
+            "add_39",
+            "exp",
+            "neg",
+            "view_3"
+          ],
+          "extern_kernels.mm:5": [
+            "mm_default"
+          ],
+          "triton_unk_fused_add_addmm_view_2:6": [
+            "add_68",
+            "view_5",
+            "add_tensor_1"
+          ]
+        },
+        "postToCppCode": {
+          "mean": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "pow_1": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "rsqrt": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "add_tensor": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "convert_element_type_default_1": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "mul_17": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "mul_13": [
+            "triton_unk_fused_mean_mul_pow_rsqrt_0:1"
+          ],
+          "addmm": [
+            "extern_kernels.addmm:2"
+          ],
+          "addmm_1": [
+            "extern_kernels.addmm:3"
+          ],
+          "mul_46": [
+            "triton_unk_fused_mul_silu_view_1:4"
+          ],
+          "div": [
+            "triton_unk_fused_mul_silu_view_1:4"
+          ],
+          "view_1": [
+            "triton_unk_fused_mul_silu_view_1:4"
+          ],
+          "add_39": [
+            "triton_unk_fused_mul_silu_view_1:4"
+          ],
+          "exp": [
+            "triton_unk_fused_mul_silu_view_1:4"
+          ],
+          "neg": [
+            "triton_unk_fused_mul_silu_view_1:4"
+          ],
+          "view_3": [
+            "triton_unk_fused_mul_silu_view_1:4"
+          ],
+          "mm_default": [
+            "extern_kernels.mm:5"
+          ],
+          "add_68": [
+            "triton_unk_fused_add_addmm_view_2:6"
+          ],
+          "view_5": [
+            "triton_unk_fused_add_addmm_view_2:6"
+          ],
+          "add_tensor_1": [
+            "triton_unk_fused_add_addmm_view_2:6"
+          ]
+        }
+      }
+    }
+  ]
+}

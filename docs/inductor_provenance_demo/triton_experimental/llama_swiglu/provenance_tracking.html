@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inductor Provenance Tracking Highlighter</title>
+    <style>
+        body {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.url-inputs {
+    display: flex;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.url-input {
+    flex: 1;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.url-input input {
+    width: 100%;
+    padding: 5px;
+}
+
+.editor-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.editor {
+    height: 100%;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+    flex: 1;
+    font-family: monospace;
+}
+
+.line {
+    padding: 2px 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    width: 100%;
+    min-width: max-content; /* Ensure line fills horizontally beyond visible area */
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+}
+
+.highlight {
+    background-color: yellow;
+    transition: background-color 0.2s ease;
+}
+
+.mapped-line {
+    font-weight: bold;
+}
+
+.line-number {
+    color: #888;
+    display: inline-block;
+    width: 30px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.divider {
+    width: 3px;
+    background-color: #ccc;
+    cursor: col-resize;
+}
+
+.line-content {
+    white-space: pre;
+    display: inline;
+}
+
+.json-popup {
+    display: none;
+    position: fixed;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
+    z-index: 1000;
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.json-popup .close-button {
+    position: sticky;
+    float: right;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    font-size: 20px;
+    background: white;
+    padding: 0 5px;
+    margin-left: 10px;
+}
+
+#jsonContent {
+    margin-top: 10px;
+}
+
+.toggle-container {
+    margin-left: 20px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    min-width: 200px;
+    white-space: nowrap;
+}
+
+.toggle-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.file-input {
+    display: none;
+}
+
+.url-input {
+    flex: 1;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-label {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.file-label:hover {
+    background-color: #e0e0e0;
+}
+
+.has-match {
+    font-weight: bold;
+}
+    </style>
+</head>
+
+<body>
+    <div class="editor-container">
+        <div id="preGradGraph" class="editor">
+            <pre>class GraphModule(torch.nn.Module):
+    def forward(self, s77: &quot;Sym(s77)&quot;, s27: &quot;Sym(s27)&quot;, L_x_: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;, L_self_modules_norm_eps: &quot;f64[][]cpu&quot;, L_self_modules_norm_parameters_weight_: &quot;f32[256][1]npu:0&quot;, L_self_modules_gate_proj_parameters_weight_: &quot;f32[512, 256][256, 1]npu:0&quot;, L_self_modules_gate_proj_parameters_bias_: &quot;f32[512][1]npu:0&quot;, L_self_modules_up_proj_parameters_weight_: &quot;f32[512, 256][256, 1]npu:0&quot;, L_self_modules_up_proj_parameters_bias_: &quot;f32[512][1]npu:0&quot;, L_self_modules_down_proj_parameters_weight_: &quot;f32[256, 512][512, 1]npu:0&quot;, L_self_modules_down_proj_parameters_bias_: &quot;f32[256][1]npu:0&quot;):
+        l_x_ = L_x_
+        l_self_modules_norm_eps = L_self_modules_norm_eps
+        l_self_modules_norm_parameters_weight_ = L_self_modules_norm_parameters_weight_
+        l_self_modules_gate_proj_parameters_weight_ = L_self_modules_gate_proj_parameters_weight_
+        l_self_modules_gate_proj_parameters_bias_ = L_self_modules_gate_proj_parameters_bias_
+        l_self_modules_up_proj_parameters_weight_ = L_self_modules_up_proj_parameters_weight_
+        l_self_modules_up_proj_parameters_bias_ = L_self_modules_up_proj_parameters_bias_
+        l_self_modules_down_proj_parameters_weight_ = L_self_modules_down_proj_parameters_weight_
+        l_self_modules_down_proj_parameters_bias_ = L_self_modules_down_proj_parameters_bias_
+
+        # File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:27 in forward, code: variance = x.pow(2).mean(dim=-1, keepdim=True)
+        pow_1: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = l_x_.pow(2)
+        variance: &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = pow_1.mean(dim = -1, keepdim = True);  pow_1 = None
+
+        # File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:28 in forward, code: normalized = x * torch.rsqrt(variance + self.eps)
+        item: &quot;Sym(zf0)&quot; = l_self_modules_norm_eps.item();  l_self_modules_norm_eps = None
+        add: &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = variance + item;  variance = item = None
+        rsqrt: &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = torch.rsqrt(add);  add = None
+        normalized: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = l_x_ * rsqrt;  rsqrt = None
+
+        # File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:29 in forward, code: return normalized * self.weight
+        normalized_1: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = normalized * l_self_modules_norm_parameters_weight_;  normalized = l_self_modules_norm_parameters_weight_ = None
+
+        # File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:43 in forward, code: gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)
+        linear: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch._C._nn.linear(normalized_1, l_self_modules_gate_proj_parameters_weight_, l_self_modules_gate_proj_parameters_bias_);  l_self_modules_gate_proj_parameters_weight_ = l_self_modules_gate_proj_parameters_bias_ = None
+        silu: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.nn.functional.silu(linear);  linear = None
+        linear_1: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch._C._nn.linear(normalized_1, l_self_modules_up_proj_parameters_weight_, l_self_modules_up_proj_parameters_bias_);  normalized_1 = l_self_modules_up_proj_parameters_weight_ = l_self_modules_up_proj_parameters_bias_ = None
+        gated: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = silu * linear_1;  silu = linear_1 = None
+
+        # File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:44 in forward, code: return self.down_proj(gated) + residual
+        linear_2: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch._C._nn.linear(gated, l_self_modules_down_proj_parameters_weight_, l_self_modules_down_proj_parameters_bias_);  gated = l_self_modules_down_proj_parameters_weight_ = l_self_modules_down_proj_parameters_bias_ = None
+        add_1: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = linear_2 + l_x_;  linear_2 = l_x_ = None
+        return (add_1,)
+
+
+ # graph id: 281464223320528</pre>
+        </div>
+        <div id="divider1" class="divider"></div>
+        <div id="postGradGraph" class="editor">
+            <pre>class GraphModule(torch.nn.Module):
+    def forward(self, primals_1: &quot;Sym(s77)&quot;, primals_2: &quot;Sym(s27)&quot;, mul_27: &quot;Sym(s27 * s77)&quot;, primals_3: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;, primals_5: &quot;f32[256][1]npu:0&quot;, primals_6: &quot;f32[512, 256][256, 1]npu:0&quot;, primals_8: &quot;f32[512, 256][256, 1]npu:0&quot;, primals_10: &quot;f32[256, 512][512, 1]npu:0&quot;, rsqrt: &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot;, view: &quot;f32[s27*s77, 256][256, 1]npu:0&quot;, addmm: &quot;f32[s27*s77, 512][512, 1]npu:0&quot;, addmm_1: &quot;f32[s27*s77, 512][512, 1]npu:0&quot;, view_4: &quot;f32[s27*s77, 512][512, 1]npu:0&quot;, tangents_1: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;):
+        # Backward of forward node: File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:44 in forward, code: return self.down_proj(gated) + residual
+        view_6: &quot;f32[s27*s77, 256][256, 1]npu:0&quot; = torch.ops.aten.reshape.default(tangents_1, [mul_27, 256])
+        permute_2: &quot;f32[512, 256][1, 512]npu:0&quot; = torch.ops.aten.permute.default(primals_10, [1, 0]);  primals_10 = None
+        permute_3: &quot;f32[256, 512][512, 1]npu:0&quot; = torch.ops.aten.permute.default(permute_2, [1, 0]);  permute_2 = None
+        mm: &quot;f32[s27*s77, 512][512, 1]npu:0&quot; = torch.ops.aten.mm.default(view_6, permute_3);  permute_3 = None
+        permute_4: &quot;f32[256, s27*s77][1, 256]npu:0&quot; = torch.ops.aten.permute.default(view_6, [1, 0])
+        mm_1: &quot;f32[256, 512][512, 1]npu:0&quot; = torch.ops.aten.mm.default(permute_4, view_4);  permute_4 = view_4 = None
+        sum_1: &quot;f32[1, 256][256, 1]npu:0&quot; = torch.ops.aten.sum.dim_IntList(view_6, [0], True);  view_6 = None
+        view_7: &quot;f32[256][1]npu:0&quot; = torch.ops.aten.reshape.default(sum_1, [256]);  sum_1 = None
+        view_8: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.reshape.default(mm, [primals_1, primals_2, 512]);  mm = None
+
+        # Backward of forward node: File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:43 in forward, code: gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)
+        view_1: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.reshape.default(addmm, [primals_1, primals_2, 512]);  addmm = None
+        neg: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.neg.default(view_1)
+        exp: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.exp.default(neg);  neg = None
+        add_39: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.add.Tensor(exp, 1);  exp = None
+        div: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.div.Tensor(view_1, add_39);  add_39 = None
+        mul_67: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(view_8, div);  div = None
+        view_3: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.reshape.default(addmm_1, [primals_1, primals_2, 512]);  addmm_1 = None
+        mul_68: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(view_8, view_3);  view_8 = view_3 = None
+        view_9: &quot;f32[s27*s77, 512][512, 1]npu:0&quot; = torch.ops.aten.reshape.default(mul_67, [mul_27, 512]);  mul_67 = None
+        permute_1: &quot;f32[256, 512][1, 256]npu:0&quot; = torch.ops.aten.permute.default(primals_8, [1, 0]);  primals_8 = None
+        permute_7: &quot;f32[512, 256][256, 1]npu:0&quot; = torch.ops.aten.permute.default(permute_1, [1, 0]);  permute_1 = None
+        mm_2: &quot;f32[s27*s77, 256][256, 1]npu:0&quot; = torch.ops.aten.mm.default(view_9, permute_7);  permute_7 = None
+        permute_8: &quot;f32[512, s27*s77][1, 512]npu:0&quot; = torch.ops.aten.permute.default(view_9, [1, 0])
+        mm_3: &quot;f32[512, 256][256, 1]npu:0&quot; = torch.ops.aten.mm.default(permute_8, view);  permute_8 = None
+        sum_2: &quot;f32[1, 512][512, 1]npu:0&quot; = torch.ops.aten.sum.dim_IntList(view_9, [0], True);  view_9 = None
+        view_10: &quot;f32[512][1]npu:0&quot; = torch.ops.aten.reshape.default(sum_2, [512]);  sum_2 = None
+        view_11: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.reshape.default(mm_2, [primals_1, primals_2, 256]);  mm_2 = None
+        sigmoid: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.sigmoid.default(view_1)
+        mul_69: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(mul_68, sigmoid);  mul_68 = None
+        sub_32: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.sub.Tensor(1, sigmoid);  sigmoid = None
+        mul_70: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(view_1, sub_32);  view_1 = sub_32 = None
+        add_73: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.add.Tensor(mul_70, 1);  mul_70 = None
+        mul_71: &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(mul_69, add_73);  mul_69 = add_73 = None
+        view_12: &quot;f32[s27*s77, 512][512, 1]npu:0&quot; = torch.ops.aten.reshape.default(mul_71, [mul_27, 512]);  mul_71 = mul_27 = None
+        permute: &quot;f32[256, 512][1, 256]npu:0&quot; = torch.ops.aten.permute.default(primals_6, [1, 0]);  primals_6 = None
+        permute_11: &quot;f32[512, 256][256, 1]npu:0&quot; = torch.ops.aten.permute.default(permute, [1, 0]);  permute = None
+        mm_4: &quot;f32[s27*s77, 256][256, 1]npu:0&quot; = torch.ops.aten.mm.default(view_12, permute_11);  permute_11 = None
+        permute_12: &quot;f32[512, s27*s77][1, 512]npu:0&quot; = torch.ops.aten.permute.default(view_12, [1, 0])
+        mm_5: &quot;f32[512, 256][256, 1]npu:0&quot; = torch.ops.aten.mm.default(permute_12, view);  permute_12 = view = None
+        sum_3: &quot;f32[1, 512][512, 1]npu:0&quot; = torch.ops.aten.sum.dim_IntList(view_12, [0], True);  view_12 = None
+        view_13: &quot;f32[512][1]npu:0&quot; = torch.ops.aten.reshape.default(sum_3, [512]);  sum_3 = None
+        view_14: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.reshape.default(mm_4, [primals_1, primals_2, 256]);  mm_4 = None
+        add_74: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.add.Tensor(view_11, view_14);  view_11 = view_14 = None
+
+        # Backward of forward node: File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:28 in forward, code: normalized = x * torch.rsqrt(variance + self.eps)
+        mul_13: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(primals_3, rsqrt)
+
+        # Backward of forward node: File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:29 in forward, code: return normalized * self.weight
+        mul_72: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(add_74, mul_13);  mul_13 = None
+        mul_73: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(add_74, primals_5);  add_74 = primals_5 = None
+        sum_4: &quot;f32[1, 1, 256][256, 256, 1]npu:0&quot; = torch.ops.aten.sum.dim_IntList(mul_72, [0, 1], True);  mul_72 = None
+        view_15: &quot;f32[256][1]npu:0&quot; = torch.ops.aten.reshape.default(sum_4, [256]);  sum_4 = None
+
+        # Backward of forward node: File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:28 in forward, code: normalized = x * torch.rsqrt(variance + self.eps)
+        mul_74: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(mul_73, primals_3)
+        mul_75: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(mul_73, rsqrt);  mul_73 = None
+        sum_5: &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = torch.ops.aten.sum.dim_IntList(mul_74, [2], True);  mul_74 = None
+        add_75: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.add.Tensor(tangents_1, mul_75);  tangents_1 = mul_75 = None
+        mul_76: &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = torch.ops.aten.mul.Scalar(sum_5, -0.5);  sum_5 = None
+        pow_2: &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = torch.ops.aten.pow.Tensor_Scalar(rsqrt, 3);  rsqrt = None
+        mul_77: &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(mul_76, pow_2);  mul_76 = pow_2 = None
+
+        # Backward of forward node: File: /home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py:27 in forward, code: variance = x.pow(2).mean(dim=-1, keepdim=True)
+        expand: &quot;f32[s77, s27, 256][s27, 1, 0]npu:0&quot; = torch.ops.aten.expand.default(mul_77, [primals_1, primals_2, 256]);  mul_77 = primals_1 = primals_2 = None
+        div_1: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.div.Scalar(expand, 256);  expand = None
+        pow_3: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.pow.Tensor_Scalar(primals_3, 1.0);  primals_3 = None
+        mul_78: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.mul.Scalar(pow_3, 2.0);  pow_3 = None
+        mul_79: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.mul.Tensor(div_1, mul_78);  div_1 = mul_78 = None
+        add_76: &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = torch.ops.aten.add.Tensor(add_75, mul_79);  add_75 = mul_79 = None
+        return (None, None, add_76, None, view_15, mm_5, view_13, mm_3, view_10, mm_1, view_7)
+</pre>
+        </div>
+        <div id="divider2" class="divider"></div>
+        <div id="generatedCode" class="editor">
+            <pre><pre style="background-color:#ffffff;">
+<span style="font-style:italic;color:#969896;"># AOT ID: [&#39;0_backward&#39;]
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">ctypes </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">c_void_p, c_long, c_int
+</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">torch
+</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">math
+</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">random
+</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">os
+</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">tempfile
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">math </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">inf, nan
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">cmath </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">nanj
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._inductor.hooks </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">run_intermediate_hooks
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._inductor.utils </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">maybe_profile
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._inductor.codegen.memory_planning </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">_align </span><span style="font-weight:bold;color:#a71d5d;">as </span><span style="color:#323232;">align
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">device, empty_strided
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._inductor.async_compile </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">AsyncCompile
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._inductor.select_algorithm </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">extern_kernels
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._C._dynamo.guards </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">copy_if_misaligned
+</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">triton
+</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">triton.language </span><span style="font-weight:bold;color:#a71d5d;">as </span><span style="color:#323232;">tl
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._inductor.runtime.triton_heuristics </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">start_graph, end_graph
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch_npu._inductor.triton_experimental </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">npu_triton_heuristics
+</span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch_npu._inductor.triton_experimental </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">get_current_raw_stream </span><span style="font-weight:bold;color:#a71d5d;">as </span><span style="color:#323232;">get_raw_stream
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">aten </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.ops.aten
+</span><span style="color:#323232;">inductor_ops </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.ops.inductor
+</span><span style="color:#323232;">_quantized </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.ops._quantized
+</span><span style="color:#323232;">assert_size_stride </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards.assert_size_stride
+</span><span style="color:#323232;">assert_size_stride_grouped </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards.assert_size_stride_grouped
+</span><span style="color:#323232;">assert_alignment </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards.assert_alignment
+</span><span style="color:#323232;">empty_strided_cpu </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards._empty_strided_cpu
+</span><span style="color:#323232;">empty_strided_cpu_pinned </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards._empty_strided_cpu_pinned
+</span><span style="color:#323232;">empty_strided_cuda </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards._empty_strided_cuda
+</span><span style="color:#323232;">empty_strided_xpu </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards._empty_strided_xpu
+</span><span style="color:#323232;">empty_strided_mtia </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards._empty_strided_mtia
+</span><span style="color:#323232;">reinterpret_tensor </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._dynamo.guards._reinterpret_tensor
+</span><span style="color:#323232;">alloc_from_pool </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.ops.inductor._alloc_from_pool
+</span><span style="color:#323232;">async_compile </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">AsyncCompile()
+</span><span style="color:#323232;">empty_strided_p2p </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._distributed_c10d._SymmetricMemory.empty_strided_p2p
+</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">torch_npu
+</span><span style="color:#323232;">empty_strided_npu </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">torch_npu.</span><span style="color:#0086b3;">_C</span><span style="color:#323232;">._empty_strided_npu
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="font-style:italic;color:#969896;"># kernel path: /tmp/llama_swiglu_inductor_cache_20260829_v2/tmpfop_bm99/gb/cgbuoyatkbgyybqnqswi765dlqtfigdyw55y6nflgpk2a6sphzhf.py
+</span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_6, sum_1], Original ATen: [aten.view, aten.sum]
+</span><span style="font-style:italic;color:#969896;"># Source node to ATen node mapping:
+</span><span style="font-style:italic;color:#969896;">#   sum_1 =&gt; sum_1
+</span><span style="font-style:italic;color:#969896;">#   view_6 =&gt; view_6
+</span><span style="font-style:italic;color:#969896;"># Graph fragment:
+</span><span style="font-style:italic;color:#969896;">#   %tangents_1 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = PlaceHolder[target=tangents_1]
+</span><span style="font-style:italic;color:#969896;">#   %view_6 : Tensor &quot;f32[s27*s77, 256][256, 1]npu:0&quot;[num_users=3] = call_function[target=torch.ops.aten.reshape.default](args = (%tangents_1, [%mul_27, 256]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %sum_1 : Tensor &quot;f32[1, 256][256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%view_6, [0], True), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   return %sum_1
+</span><span style="color:#323232;">triton_unk_fused_sum_view_0 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">async_compile.triton(</span><span style="color:#183691;">&#39;triton_unk_fused_sum_view_0&#39;</span><span style="color:#323232;">, </span><span style="color:#183691;">&#39;&#39;&#39;
+</span><span style="color:#183691;">import triton
+</span><span style="color:#183691;">import triton.language as tl
+</span><span style="color:#183691;">from triton.compiler.compiler import AttrsDescriptor
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch._inductor.runtime import triton_helpers, triton_heuristics
+</span><span style="color:#183691;">from torch._inductor.runtime.triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">from torch._inductor.runtime.hints import AutotuneHint, ReductionHint, TileHint, DeviceProperties
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental import npu_triton_heuristics
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental.npu_triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from triton.language.extra.cann.extension import extract_slice
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">@npu_triton_heuristics.reduction(
+</span><span style="color:#183691;">    size_hints={&#39;x&#39;: 256, &#39;r0_&#39;: 64},
+</span><span style="color:#183691;">    reduction_hint=ReductionHint.OUTER,
+</span><span style="color:#183691;">    filename=__file__,
+</span><span style="color:#183691;">    triton_meta={&#39;signature&#39;: {&#39;in_ptr0&#39;: &#39;*fp32&#39;, &#39;out_ptr0&#39;: &#39;*fp32&#39;, &#39;xnumel&#39;: &#39;i32&#39;, &#39;r0_numel&#39;: &#39;i32&#39;, &#39;r0_1numel&#39;: &#39;i32&#39;}, &#39;device&#39;: DeviceProperties(type=&#39;npu&#39;, index=0, multi_processor_count=48, cc=&#39;Ascend910B2&#39;, major=None, regs_per_multiprocessor=None, max_threads_per_multi_processor=None, max_threads_per_block=1024, warp_size=None), &#39;constants&#39;: </span><span style="color:#0086b3;">{}</span><span style="color:#183691;">, &#39;mix_mode&#39;: &#39;aiv&#39;, &#39;configs&#39;: [AttrsDescriptor.from_dict({&#39;arg_properties&#39;: {&#39;tt.divisibility&#39;: (0, 1, 2), &#39;tt.equal_to&#39;: ()}, &#39;cls&#39;: &#39;AttrsDescriptor&#39;})], &#39;block_hints&#39;: {&#39;XBLOCK_HINT&#39;: [256, {&#39;divisors&#39;: [1]}], &#39;R0_BLOCK_HINT&#39;: [-1, {&#39;divisors&#39;: [1]}]}, &#39;axis_hints&#39;: [{&#39;name&#39;: &#39;x0&#39;, &#39;length&#39;: 256, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}, {&#39;name&#39;: &#39;r0_1&#39;, &#39;length&#39;: -1, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}]},
+</span><span style="color:#183691;">    inductor_meta={&#39;grid_type&#39;: &#39;Grid1D&#39;, &#39;autotune_hints&#39;: set(), &#39;kernel_name&#39;: &#39;triton_unk_fused_sum_view_0&#39;, &#39;mutated_arg_names&#39;: [], &#39;optimize_mem&#39;: True, &#39;no_x_dim&#39;: False, &#39;num_load&#39;: 1, &#39;num_reduction&#39;: 1, &#39;npu_num_x_nodes&#39;: 1, &#39;npu_rsplit_partial&#39;: False, &#39;backend_hash&#39;: &#39;D0A5764714F6964B7DDC8949E7DA556771FD1CABBAA741D79495E9BB4C7A1FB0&#39;, &#39;assert_indirect_indexing&#39;: True, &#39;autotune_local_cache&#39;: True, &#39;autotune_pointwise&#39;: True, &#39;autotune_remote_cache&#39;: None, &#39;force_disable_caches&#39;: True, &#39;dynamic_scale_rblock&#39;: True, &#39;incremental_autotune&#39;: False, &#39;max_autotune&#39;: False, &#39;max_autotune_pointwise&#39;: False, &#39;min_split_scan_rblock&#39;: 256, &#39;spill_threshold&#39;: 16, &#39;store_cubin&#39;: False, &#39;deterministic&#39;: False, &#39;batch_invariant&#39;: False, &#39;force_filter_reduction_configs&#39;: False, &#39;mix_order_reduction_allow_multi_stages&#39;: True, &#39;dynamic_disable_pipelining&#39;: True, &#39;are_deterministic_algorithms_enabled&#39;: False}
+</span><span style="color:#183691;">)
+</span><span style="color:#183691;">@triton.jit
+</span><span style="color:#183691;">def triton_unk_fused_sum_view_0(in_ptr0, out_ptr0, xnumel, r0_numel, r0_1numel, XBLOCK : tl.constexpr, R0_BLOCK : tl.constexpr):
+</span><span style="color:#183691;">    total_thread = 48
+</span><span style="color:#183691;">    group_id = tl.program_id(0)
+</span><span style="color:#183691;">    xnumel = 256
+</span><span style="color:#183691;">    x_g_tile0 : tl.constexpr = (256) if (256) &lt; (XBLOCK) else (XBLOCK)
+</span><span style="color:#183691;">    x0numel : tl.constexpr = 256
+</span><span style="color:#183691;">    real_block_x0 : tl.constexpr = (((x_g_tile0) + 7) // 8) * 8
+</span><span style="color:#183691;">    x0_blocks : tl.constexpr = (x0numel + real_block_x0 - 1) // real_block_x0
+</span><span style="color:#183691;">    group_size = x0_blocks // total_thread
+</span><span style="color:#183691;">    group_tail = x0_blocks % total_thread
+</span><span style="color:#183691;">    if group_id &lt; group_tail:
+</span><span style="color:#183691;">        group_size = group_size + 1
+</span><span style="color:#183691;">        group_base = group_id * group_size
+</span><span style="color:#183691;">    else:
+</span><span style="color:#183691;">        group_base = group_id * group_size + group_tail
+</span><span style="color:#183691;">    for i in range(group_size):
+</span><span style="color:#183691;">        rbase = tl.arange(0, R0_BLOCK)[:, None]
+</span><span style="color:#183691;">        r0_base = tl.arange(0, R0_BLOCK)[:, None]
+</span><span style="color:#183691;">        x0offset = (group_base + i) </span><span style="color:#0086b3;">% x</span><span style="color:#183691;">0_blocks * real_block_x0
+</span><span style="color:#183691;">        x0index = x0offset + tl.arange(0, real_block_x0)[None, :]
+</span><span style="color:#183691;">        x0 = x0index
+</span><span style="color:#183691;">        x0mask = x0index &lt; x0numel
+</span><span style="color:#183691;">        xmask = x0mask
+</span><span style="color:#183691;">        rbase = r0_base
+</span><span style="color:#183691;">        rnumel = r0_numel
+</span><span style="color:#183691;">        RBLOCK: tl.constexpr = R0_BLOCK
+</span><span style="color:#183691;">        _tmp2 = tl.full([R0_BLOCK, real_block_x0], 0, tl.float32)
+</span><span style="color:#183691;">        for r0_offset in tl.range(0, r0_numel, R0_BLOCK):
+</span><span style="color:#183691;">            r0_index = r0_offset + r0_base
+</span><span style="color:#183691;">            r0_mask = r0_index &lt; r0_numel
+</span><span style="color:#183691;">            roffset = r0_offset
+</span><span style="color:#183691;">            rindex = r0_index
+</span><span style="color:#183691;">            r0_1 = r0_index
+</span><span style="color:#183691;">            tmp0 = tl.load(in_ptr0 + (x0 + 256*r0_1), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp1 = tl.broadcast_to(tmp0, [R0_BLOCK, real_block_x0])
+</span><span style="color:#183691;">            tmp3 = _tmp2 + tmp1
+</span><span style="color:#183691;">            _tmp2 = tmp3
+</span><span style="color:#183691;">        tmp2 = tl.sum(_tmp2, 0)[None, :]
+</span><span style="color:#183691;">        tl.store(out_ptr0 + (x0), tmp2, x0mask)
+</span><span style="color:#183691;">&#39;&#39;&#39;</span><span style="color:#323232;">, device_str</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu&#39;</span><span style="color:#323232;">)
+</span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">extern_kernels_extern_kernels_mm_5</span><span style="color:#323232;">(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs):
+</span><span style="color:#323232;">    </span><span style="font-style:italic;color:#969896;"># Extra indirection is only enabled for profiler timeline provenance.
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">extern_kernels.mm(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs)
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="font-style:italic;color:#969896;"># kernel path: /tmp/llama_swiglu_inductor_cache_20260829_v2/tmpfop_bm99/c4/cc4cihfl47rggey2id6kirypm4wrwq5g5hb7ougzi3rsvtjvv3aw.py
+</span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, silu, mul_67, linear_1, mul_68, sigmoid, mul_69, sub_32, mul_70, add_73, mul_71], Original ATen: [aten.view, aten.silu, aten.mul, aten.silu_backward]
+</span><span style="font-style:italic;color:#969896;"># Source node to ATen node mapping:
+</span><span style="font-style:italic;color:#969896;">#   add_73 =&gt; add_73
+</span><span style="font-style:italic;color:#969896;">#   linear =&gt; view_1
+</span><span style="font-style:italic;color:#969896;">#   linear_1 =&gt; view_3
+</span><span style="font-style:italic;color:#969896;">#   mul_67 =&gt; mul_67
+</span><span style="font-style:italic;color:#969896;">#   mul_68 =&gt; mul_68
+</span><span style="font-style:italic;color:#969896;">#   mul_69 =&gt; mul_69
+</span><span style="font-style:italic;color:#969896;">#   mul_70 =&gt; mul_70
+</span><span style="font-style:italic;color:#969896;">#   mul_71 =&gt; mul_71
+</span><span style="font-style:italic;color:#969896;">#   sigmoid =&gt; sigmoid
+</span><span style="font-style:italic;color:#969896;">#   silu =&gt; add_39, div, exp, neg
+</span><span style="font-style:italic;color:#969896;">#   sub_32 =&gt; sub_32
+</span><span style="font-style:italic;color:#969896;">#   view_8 =&gt; view_8
+</span><span style="font-style:italic;color:#969896;"># Graph fragment:
+</span><span style="font-style:italic;color:#969896;">#   %mm : Tensor &quot;f32[s27*s77, 512][512, 1]npu:0&quot; = PlaceHolder[target=mm]
+</span><span style="font-style:italic;color:#969896;">#   %addmm : Tensor &quot;f32[s27*s77, 512][512, 1]npu:0&quot; = PlaceHolder[target=addmm]
+</span><span style="font-style:italic;color:#969896;">#   %addmm_1 : Tensor &quot;f32[s27*s77, 512][512, 1]npu:0&quot; = PlaceHolder[target=addmm_1]
+</span><span style="font-style:italic;color:#969896;">#   %view_8 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=2] = call_function[target=torch.ops.aten.reshape.default](args = (%mm, [%primals_1, %primals_2, 512]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %view_1 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=4] = call_function[target=torch.ops.aten.reshape.default](args = (%addmm, [%primals_1, %primals_2, 512]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %neg : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.neg.default](args = (%view_1,), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %exp : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.exp.default](args = (%neg,), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %add_39 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%exp, 1), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %div : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.div.Tensor](args = (%view_1, %add_39), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_67 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%view_8, %div), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %view_3 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.reshape.default](args = (%addmm_1, [%primals_1, %primals_2, 512]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_68 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%view_8, %view_3), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %sigmoid : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=2] = call_function[target=torch.ops.aten.sigmoid.default](args = (%view_1,), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_69 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%mul_68, %sigmoid), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %sub_32 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (1, %sigmoid), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_70 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%view_1, %sub_32), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %add_73 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%mul_70, 1), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_71 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%mul_69, %add_73), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   return %mul_67,%mul_71
+</span><span style="color:#323232;">triton_unk_fused_mul_silu_silu_backward_view_1 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">async_compile.triton(</span><span style="color:#183691;">&#39;triton_unk_fused_mul_silu_silu_backward_view_1&#39;</span><span style="color:#323232;">, </span><span style="color:#183691;">&#39;&#39;&#39;
+</span><span style="color:#183691;">import triton
+</span><span style="color:#183691;">import triton.language as tl
+</span><span style="color:#183691;">from triton.compiler.compiler import AttrsDescriptor
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch._inductor.runtime import triton_helpers, triton_heuristics
+</span><span style="color:#183691;">from torch._inductor.runtime.triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">from torch._inductor.runtime.hints import AutotuneHint, ReductionHint, TileHint, DeviceProperties
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental import npu_triton_heuristics
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental.npu_triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from triton.language.extra.cann.extension import extract_slice
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">@npu_triton_heuristics.pointwise(
+</span><span style="color:#183691;">    size_hints={&#39;x&#39;: 32768},
+</span><span style="color:#183691;">    filename=__file__,
+</span><span style="color:#183691;">    triton_meta={&#39;signature&#39;: {&#39;in_out_ptr0&#39;: &#39;*fp32&#39;, &#39;in_ptr0&#39;: &#39;*fp32&#39;, &#39;in_ptr1&#39;: &#39;*fp32&#39;, &#39;out_ptr0&#39;: &#39;*fp32&#39;, &#39;ks0&#39;: &#39;i64&#39;, &#39;ks1&#39;: &#39;i64&#39;, &#39;xnumel&#39;: &#39;i32&#39;, &#39;x0numel&#39;: &#39;i32&#39;}, &#39;device&#39;: DeviceProperties(type=&#39;npu&#39;, index=0, multi_processor_count=48, cc=&#39;Ascend910B2&#39;, major=None, regs_per_multiprocessor=None, max_threads_per_multi_processor=None, max_threads_per_block=1024, warp_size=None), &#39;constants&#39;: </span><span style="color:#0086b3;">{}</span><span style="color:#183691;">, &#39;mix_mode&#39;: &#39;aiv&#39;, &#39;configs&#39;: [AttrsDescriptor.from_dict({&#39;arg_properties&#39;: {&#39;tt.divisibility&#39;: (0, 1, 2, 3, 6, 7), &#39;tt.equal_to&#39;: ()}, &#39;cls&#39;: &#39;AttrsDescriptor&#39;})], &#39;block_hints&#39;: {&#39;XBLOCK_HINT&#39;: [-1, {&#39;divisors&#39;: [1]}], &#39;R0_BLOCK_HINT&#39;: [{&#39;divisors&#39;: []}]}, &#39;axis_hints&#39;: [{&#39;name&#39;: &#39;x0&#39;, &#39;length&#39;: -1, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}]},
+</span><span style="color:#183691;">    inductor_meta={&#39;grid_type&#39;: &#39;Grid1D&#39;, &#39;autotune_hints&#39;: set(), &#39;kernel_name&#39;: &#39;triton_unk_fused_mul_silu_silu_backward_view_1&#39;, &#39;mutated_arg_names&#39;: [&#39;in_out_ptr0&#39;], &#39;optimize_mem&#39;: True, &#39;no_x_dim&#39;: False, &#39;num_load&#39;: 3, &#39;num_reduction&#39;: 0, &#39;npu_num_x_nodes&#39;: 1, &#39;npu_rsplit_partial&#39;: False, &#39;backend_hash&#39;: &#39;D0A5764714F6964B7DDC8949E7DA556771FD1CABBAA741D79495E9BB4C7A1FB0&#39;, &#39;assert_indirect_indexing&#39;: True, &#39;autotune_local_cache&#39;: True, &#39;autotune_pointwise&#39;: True, &#39;autotune_remote_cache&#39;: None, &#39;force_disable_caches&#39;: True, &#39;dynamic_scale_rblock&#39;: True, &#39;incremental_autotune&#39;: False, &#39;max_autotune&#39;: False, &#39;max_autotune_pointwise&#39;: False, &#39;min_split_scan_rblock&#39;: 256, &#39;spill_threshold&#39;: 16, &#39;store_cubin&#39;: False, &#39;deterministic&#39;: False, &#39;batch_invariant&#39;: False, &#39;force_filter_reduction_configs&#39;: False, &#39;mix_order_reduction_allow_multi_stages&#39;: True, &#39;dynamic_disable_pipelining&#39;: True, &#39;are_deterministic_algorithms_enabled&#39;: False},
+</span><span style="color:#183691;">    min_elem_per_thread=0
+</span><span style="color:#183691;">)
+</span><span style="color:#183691;">@triton.jit
+</span><span style="color:#183691;">def triton_unk_fused_mul_silu_silu_backward_view_1(in_out_ptr0, in_ptr0, in_ptr1, out_ptr0, ks0, ks1, xnumel, x0numel, XBLOCK : tl.constexpr):
+</span><span style="color:#183691;">    total_thread = 48
+</span><span style="color:#183691;">    group_id = tl.program_id(0)
+</span><span style="color:#183691;">    x_g_tile0 : tl.constexpr = (32768) if (32768) &lt; (XBLOCK) else (XBLOCK)
+</span><span style="color:#183691;">    real_block_x0 : tl.constexpr = (((x_g_tile0) + 7) // 8) * 8
+</span><span style="color:#183691;">    x0_blocks = (x0numel + real_block_x0 - 1) // real_block_x0
+</span><span style="color:#183691;">    group_size = x0_blocks // total_thread
+</span><span style="color:#183691;">    group_tail = x0_blocks % total_thread
+</span><span style="color:#183691;">    if group_id &lt; group_tail:
+</span><span style="color:#183691;">        group_size = group_size + 1
+</span><span style="color:#183691;">        group_base = group_id * group_size
+</span><span style="color:#183691;">    else:
+</span><span style="color:#183691;">        group_base = group_id * group_size + group_tail
+</span><span style="color:#183691;">    for i in range(group_size):
+</span><span style="color:#183691;">        x0offset = (group_base + i) </span><span style="color:#0086b3;">% x</span><span style="color:#183691;">0_blocks * real_block_x0
+</span><span style="color:#183691;">        x0index = x0offset + tl.arange(0, real_block_x0)[:]
+</span><span style="color:#183691;">        x0 = x0index
+</span><span style="color:#183691;">        x0mask = x0index &lt; x0numel
+</span><span style="color:#183691;">        xmask = x0mask
+</span><span style="color:#183691;">        tmp0 = tl.load(in_ptr0 + (x0), x0mask)
+</span><span style="color:#183691;">        tmp1 = tl.load(in_ptr1 + (x0), x0mask)
+</span><span style="color:#183691;">        tmp8 = tl.load(in_out_ptr0 + (x0), x0mask)
+</span><span style="color:#183691;">        tmp2 = -tmp1
+</span><span style="color:#183691;">        tmp3 = libdevice.exp(tmp2)
+</span><span style="color:#183691;">        tmp4 = tl.full([1], 1.0, tl.float32)
+</span><span style="color:#183691;">        tmp5 = tmp3 + tmp4
+</span><span style="color:#183691;">        tmp6 = (tmp1 / tmp5)
+</span><span style="color:#183691;">        tmp7 = tmp0 * tmp6
+</span><span style="color:#183691;">        tmp9 = tmp0 * tmp8
+</span><span style="color:#183691;">        tmp10 = tl.sigmoid(tmp1)
+</span><span style="color:#183691;">        tmp11 = tmp9 * tmp10
+</span><span style="color:#183691;">        tmp12 = tmp4 - tmp10
+</span><span style="color:#183691;">        tmp13 = tmp1 * tmp12
+</span><span style="color:#183691;">        tmp14 = tmp13 + tmp4
+</span><span style="color:#183691;">        tmp15 = tmp11 * tmp14
+</span><span style="color:#183691;">        tl.store(out_ptr0 + (x0), tmp7, x0mask)
+</span><span style="color:#183691;">        tl.store(in_out_ptr0 + (x0), tmp15, x0mask)
+</span><span style="color:#183691;">&#39;&#39;&#39;</span><span style="color:#323232;">, device_str</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu&#39;</span><span style="color:#323232;">)
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="font-style:italic;color:#969896;"># kernel path: /tmp/llama_swiglu_inductor_cache_20260829_v2/tmpfop_bm99/bz/cbz2dut4dcy6vn4g2egzl23d3qjzjk6srsnl7p6ridrthdi6jjdg.py
+</span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, silu, mul_67, view_9, sum_2], Original ATen: [aten.view, aten.silu, aten.mul, aten.sum]
+</span><span style="font-style:italic;color:#969896;"># Source node to ATen node mapping:
+</span><span style="font-style:italic;color:#969896;">#   linear =&gt; view_1
+</span><span style="font-style:italic;color:#969896;">#   mul_67 =&gt; mul_67
+</span><span style="font-style:italic;color:#969896;">#   silu =&gt; add_39, div, exp, neg
+</span><span style="font-style:italic;color:#969896;">#   sum_2 =&gt; sum_2
+</span><span style="font-style:italic;color:#969896;">#   view_8 =&gt; view_8
+</span><span style="font-style:italic;color:#969896;">#   view_9 =&gt; view_9
+</span><span style="font-style:italic;color:#969896;"># Graph fragment:
+</span><span style="font-style:italic;color:#969896;">#   %mul_67 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot; = PlaceHolder[target=mul_67]
+</span><span style="font-style:italic;color:#969896;">#   %view_8 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=2] = call_function[target=torch.ops.aten.reshape.default](args = (%mm, [%primals_1, %primals_2, 512]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %view_1 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=4] = call_function[target=torch.ops.aten.reshape.default](args = (%addmm, [%primals_1, %primals_2, 512]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %neg : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.neg.default](args = (%view_1,), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %exp : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.exp.default](args = (%neg,), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %add_39 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%exp, 1), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %div : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.div.Tensor](args = (%view_1, %add_39), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_67 : Tensor &quot;f32[s77, s27, 512][512*s27, 512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%view_8, %div), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %view_9 : Tensor &quot;f32[s27*s77, 512][512, 1]npu:0&quot;[num_users=3] = call_function[target=torch.ops.aten.reshape.default](args = (%mul_67, [%mul_27, 512]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %sum_2 : Tensor &quot;f32[1, 512][512, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%view_9, [0], True), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   return %sum_2
+</span><span style="color:#323232;">triton_unk_fused_mul_silu_sum_view_2 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">async_compile.triton(</span><span style="color:#183691;">&#39;triton_unk_fused_mul_silu_sum_view_2&#39;</span><span style="color:#323232;">, </span><span style="color:#183691;">&#39;&#39;&#39;
+</span><span style="color:#183691;">import triton
+</span><span style="color:#183691;">import triton.language as tl
+</span><span style="color:#183691;">from triton.compiler.compiler import AttrsDescriptor
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch._inductor.runtime import triton_helpers, triton_heuristics
+</span><span style="color:#183691;">from torch._inductor.runtime.triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">from torch._inductor.runtime.hints import AutotuneHint, ReductionHint, TileHint, DeviceProperties
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental import npu_triton_heuristics
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental.npu_triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from triton.language.extra.cann.extension import extract_slice
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">@npu_triton_heuristics.reduction(
+</span><span style="color:#183691;">    size_hints={&#39;x&#39;: 512, &#39;r0_&#39;: 64},
+</span><span style="color:#183691;">    reduction_hint=ReductionHint.OUTER,
+</span><span style="color:#183691;">    filename=__file__,
+</span><span style="color:#183691;">    triton_meta={&#39;signature&#39;: {&#39;in_ptr0&#39;: &#39;*fp32&#39;, &#39;out_ptr0&#39;: &#39;*fp32&#39;, &#39;xnumel&#39;: &#39;i32&#39;, &#39;r0_numel&#39;: &#39;i32&#39;, &#39;r0_1numel&#39;: &#39;i32&#39;}, &#39;device&#39;: DeviceProperties(type=&#39;npu&#39;, index=0, multi_processor_count=48, cc=&#39;Ascend910B2&#39;, major=None, regs_per_multiprocessor=None, max_threads_per_multi_processor=None, max_threads_per_block=1024, warp_size=None), &#39;constants&#39;: </span><span style="color:#0086b3;">{}</span><span style="color:#183691;">, &#39;mix_mode&#39;: &#39;aiv&#39;, &#39;configs&#39;: [AttrsDescriptor.from_dict({&#39;arg_properties&#39;: {&#39;tt.divisibility&#39;: (0, 1, 2), &#39;tt.equal_to&#39;: ()}, &#39;cls&#39;: &#39;AttrsDescriptor&#39;})], &#39;block_hints&#39;: {&#39;XBLOCK_HINT&#39;: [512, {&#39;divisors&#39;: [1]}], &#39;R0_BLOCK_HINT&#39;: [-1, {&#39;divisors&#39;: [1]}]}, &#39;axis_hints&#39;: [{&#39;name&#39;: &#39;x0&#39;, &#39;length&#39;: 512, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}, {&#39;name&#39;: &#39;r0_1&#39;, &#39;length&#39;: -1, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}]},
+</span><span style="color:#183691;">    inductor_meta={&#39;grid_type&#39;: &#39;Grid1D&#39;, &#39;autotune_hints&#39;: set(), &#39;kernel_name&#39;: &#39;triton_unk_fused_mul_silu_sum_view_2&#39;, &#39;mutated_arg_names&#39;: [], &#39;optimize_mem&#39;: True, &#39;no_x_dim&#39;: False, &#39;num_load&#39;: 1, &#39;num_reduction&#39;: 1, &#39;npu_num_x_nodes&#39;: 1, &#39;npu_rsplit_partial&#39;: False, &#39;backend_hash&#39;: &#39;D0A5764714F6964B7DDC8949E7DA556771FD1CABBAA741D79495E9BB4C7A1FB0&#39;, &#39;assert_indirect_indexing&#39;: True, &#39;autotune_local_cache&#39;: True, &#39;autotune_pointwise&#39;: True, &#39;autotune_remote_cache&#39;: None, &#39;force_disable_caches&#39;: True, &#39;dynamic_scale_rblock&#39;: True, &#39;incremental_autotune&#39;: False, &#39;max_autotune&#39;: False, &#39;max_autotune_pointwise&#39;: False, &#39;min_split_scan_rblock&#39;: 256, &#39;spill_threshold&#39;: 16, &#39;store_cubin&#39;: False, &#39;deterministic&#39;: False, &#39;batch_invariant&#39;: False, &#39;force_filter_reduction_configs&#39;: False, &#39;mix_order_reduction_allow_multi_stages&#39;: True, &#39;dynamic_disable_pipelining&#39;: True, &#39;are_deterministic_algorithms_enabled&#39;: False}
+</span><span style="color:#183691;">)
+</span><span style="color:#183691;">@triton.jit
+</span><span style="color:#183691;">def triton_unk_fused_mul_silu_sum_view_2(in_ptr0, out_ptr0, xnumel, r0_numel, r0_1numel, XBLOCK : tl.constexpr, R0_BLOCK : tl.constexpr):
+</span><span style="color:#183691;">    total_thread = 48
+</span><span style="color:#183691;">    group_id = tl.program_id(0)
+</span><span style="color:#183691;">    xnumel = 512
+</span><span style="color:#183691;">    x_g_tile0 : tl.constexpr = (512) if (512) &lt; (XBLOCK) else (XBLOCK)
+</span><span style="color:#183691;">    x0numel : tl.constexpr = 512
+</span><span style="color:#183691;">    real_block_x0 : tl.constexpr = (((x_g_tile0) + 7) // 8) * 8
+</span><span style="color:#183691;">    x0_blocks : tl.constexpr = (x0numel + real_block_x0 - 1) // real_block_x0
+</span><span style="color:#183691;">    group_size = x0_blocks // total_thread
+</span><span style="color:#183691;">    group_tail = x0_blocks % total_thread
+</span><span style="color:#183691;">    if group_id &lt; group_tail:
+</span><span style="color:#183691;">        group_size = group_size + 1
+</span><span style="color:#183691;">        group_base = group_id * group_size
+</span><span style="color:#183691;">    else:
+</span><span style="color:#183691;">        group_base = group_id * group_size + group_tail
+</span><span style="color:#183691;">    for i in range(group_size):
+</span><span style="color:#183691;">        rbase = tl.arange(0, R0_BLOCK)[:, None]
+</span><span style="color:#183691;">        r0_base = tl.arange(0, R0_BLOCK)[:, None]
+</span><span style="color:#183691;">        x0offset = (group_base + i) </span><span style="color:#0086b3;">% x</span><span style="color:#183691;">0_blocks * real_block_x0
+</span><span style="color:#183691;">        x0index = x0offset + tl.arange(0, real_block_x0)[None, :]
+</span><span style="color:#183691;">        x0 = x0index
+</span><span style="color:#183691;">        x0mask = x0index &lt; x0numel
+</span><span style="color:#183691;">        xmask = x0mask
+</span><span style="color:#183691;">        rbase = r0_base
+</span><span style="color:#183691;">        rnumel = r0_numel
+</span><span style="color:#183691;">        RBLOCK: tl.constexpr = R0_BLOCK
+</span><span style="color:#183691;">        _tmp2 = tl.full([R0_BLOCK, real_block_x0], 0, tl.float32)
+</span><span style="color:#183691;">        for r0_offset in tl.range(0, r0_numel, R0_BLOCK):
+</span><span style="color:#183691;">            r0_index = r0_offset + r0_base
+</span><span style="color:#183691;">            r0_mask = r0_index &lt; r0_numel
+</span><span style="color:#183691;">            roffset = r0_offset
+</span><span style="color:#183691;">            rindex = r0_index
+</span><span style="color:#183691;">            r0_1 = r0_index
+</span><span style="color:#183691;">            tmp0 = tl.load(in_ptr0 + (x0 + 512*r0_1), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp1 = tl.broadcast_to(tmp0, [R0_BLOCK, real_block_x0])
+</span><span style="color:#183691;">            tmp3 = _tmp2 + tmp1
+</span><span style="color:#183691;">            _tmp2 = tmp3
+</span><span style="color:#183691;">        tmp2 = tl.sum(_tmp2, 0)[None, :]
+</span><span style="color:#183691;">        tl.store(out_ptr0 + (x0), tmp2, x0mask)
+</span><span style="color:#183691;">&#39;&#39;&#39;</span><span style="color:#323232;">, device_str</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu&#39;</span><span style="color:#323232;">)
+</span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">extern_kernels_extern_kernels_mm_6</span><span style="color:#323232;">(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs):
+</span><span style="color:#323232;">    </span><span style="font-style:italic;color:#969896;"># Extra indirection is only enabled for profiler timeline provenance.
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">extern_kernels.mm(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs)
+</span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">extern_kernels_extern_kernels_mm_7</span><span style="color:#323232;">(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs):
+</span><span style="color:#323232;">    </span><span style="font-style:italic;color:#969896;"># Extra indirection is only enabled for profiler timeline provenance.
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">extern_kernels.mm(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs)
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="font-style:italic;color:#969896;"># kernel path: /tmp/llama_swiglu_inductor_cache_20260829_v2/tmpfop_bm99/m6/cm6gcdkctix5mjyzlqybot2kf3mvkpmic33alzi25w65ewzw2hlo.py
+</span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_11, view_14, add_74, normalized, mul_72, sum_4], Original ATen: [aten.view, aten.add, aten.mul, aten.sum]
+</span><span style="font-style:italic;color:#969896;"># Source node to ATen node mapping:
+</span><span style="font-style:italic;color:#969896;">#   add_74 =&gt; add_74
+</span><span style="font-style:italic;color:#969896;">#   mul_72 =&gt; mul_72
+</span><span style="font-style:italic;color:#969896;">#   normalized =&gt; mul_13
+</span><span style="font-style:italic;color:#969896;">#   sum_4 =&gt; sum_4
+</span><span style="font-style:italic;color:#969896;">#   view_11 =&gt; view_11
+</span><span style="font-style:italic;color:#969896;">#   view_14 =&gt; view_14
+</span><span style="font-style:italic;color:#969896;"># Graph fragment:
+</span><span style="font-style:italic;color:#969896;">#   %mm_2 : Tensor &quot;f32[s27*s77, 256][256, 1]npu:0&quot; = PlaceHolder[target=mm_2]
+</span><span style="font-style:italic;color:#969896;">#   %mm_4 : Tensor &quot;f32[s27*s77, 256][256, 1]npu:0&quot; = PlaceHolder[target=mm_4]
+</span><span style="font-style:italic;color:#969896;">#   %primals_3 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = PlaceHolder[target=primals_3]
+</span><span style="font-style:italic;color:#969896;">#   %rsqrt : Tensor &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = PlaceHolder[target=rsqrt]
+</span><span style="font-style:italic;color:#969896;">#   %view_11 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.reshape.default](args = (%mm_2, [%primals_1, %primals_2, 256]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %view_14 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.reshape.default](args = (%mm_4, [%primals_1, %primals_2, 256]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %add_74 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%view_11, %view_14), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_13 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%primals_3, %rsqrt), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_72 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%add_74, %mul_13), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %sum_4 : Tensor &quot;f32[1, 1, 256][256, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%mul_72, [0, 1], True), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   return %sum_4
+</span><span style="color:#323232;">triton_unk_fused_add_mul_sum_view_3 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">async_compile.triton(</span><span style="color:#183691;">&#39;triton_unk_fused_add_mul_sum_view_3&#39;</span><span style="color:#323232;">, </span><span style="color:#183691;">&#39;&#39;&#39;
+</span><span style="color:#183691;">import triton
+</span><span style="color:#183691;">import triton.language as tl
+</span><span style="color:#183691;">from triton.compiler.compiler import AttrsDescriptor
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch._inductor.runtime import triton_helpers, triton_heuristics
+</span><span style="color:#183691;">from torch._inductor.runtime.triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">from torch._inductor.runtime.hints import AutotuneHint, ReductionHint, TileHint, DeviceProperties
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental import npu_triton_heuristics
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental.npu_triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from triton.language.extra.cann.extension import extract_slice
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">@npu_triton_heuristics.reduction(
+</span><span style="color:#183691;">    size_hints={&#39;x&#39;: 256, &#39;r0_&#39;: 64},
+</span><span style="color:#183691;">    reduction_hint=ReductionHint.OUTER,
+</span><span style="color:#183691;">    filename=__file__,
+</span><span style="color:#183691;">    triton_meta={&#39;signature&#39;: {&#39;in_ptr0&#39;: &#39;*fp32&#39;, &#39;in_ptr1&#39;: &#39;*fp32&#39;, &#39;in_ptr2&#39;: &#39;*fp32&#39;, &#39;in_ptr3&#39;: &#39;*fp32&#39;, &#39;out_ptr0&#39;: &#39;*fp32&#39;, &#39;xnumel&#39;: &#39;i32&#39;, &#39;r0_numel&#39;: &#39;i32&#39;, &#39;r0_1numel&#39;: &#39;i32&#39;}, &#39;device&#39;: DeviceProperties(type=&#39;npu&#39;, index=0, multi_processor_count=48, cc=&#39;Ascend910B2&#39;, major=None, regs_per_multiprocessor=None, max_threads_per_multi_processor=None, max_threads_per_block=1024, warp_size=None), &#39;constants&#39;: </span><span style="color:#0086b3;">{}</span><span style="color:#183691;">, &#39;mix_mode&#39;: &#39;aiv&#39;, &#39;configs&#39;: [AttrsDescriptor.from_dict({&#39;arg_properties&#39;: {&#39;tt.divisibility&#39;: (0, 1, 2, 3, 4, 5), &#39;tt.equal_to&#39;: ()}, &#39;cls&#39;: &#39;AttrsDescriptor&#39;})], &#39;block_hints&#39;: {&#39;XBLOCK_HINT&#39;: [256, {&#39;divisors&#39;: [1]}], &#39;R0_BLOCK_HINT&#39;: [-1, {&#39;divisors&#39;: [1]}]}, &#39;axis_hints&#39;: [{&#39;name&#39;: &#39;x0&#39;, &#39;length&#39;: 256, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}, {&#39;name&#39;: &#39;r0_1&#39;, &#39;length&#39;: -1, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}]},
+</span><span style="color:#183691;">    inductor_meta={&#39;grid_type&#39;: &#39;Grid1D&#39;, &#39;autotune_hints&#39;: set(), &#39;kernel_name&#39;: &#39;triton_unk_fused_add_mul_sum_view_3&#39;, &#39;mutated_arg_names&#39;: [], &#39;optimize_mem&#39;: True, &#39;no_x_dim&#39;: False, &#39;num_load&#39;: 4, &#39;num_reduction&#39;: 1, &#39;npu_num_x_nodes&#39;: 1, &#39;npu_rsplit_partial&#39;: False, &#39;backend_hash&#39;: &#39;D0A5764714F6964B7DDC8949E7DA556771FD1CABBAA741D79495E9BB4C7A1FB0&#39;, &#39;assert_indirect_indexing&#39;: True, &#39;autotune_local_cache&#39;: True, &#39;autotune_pointwise&#39;: True, &#39;autotune_remote_cache&#39;: None, &#39;force_disable_caches&#39;: True, &#39;dynamic_scale_rblock&#39;: True, &#39;incremental_autotune&#39;: False, &#39;max_autotune&#39;: False, &#39;max_autotune_pointwise&#39;: False, &#39;min_split_scan_rblock&#39;: 256, &#39;spill_threshold&#39;: 16, &#39;store_cubin&#39;: False, &#39;deterministic&#39;: False, &#39;batch_invariant&#39;: False, &#39;force_filter_reduction_configs&#39;: False, &#39;mix_order_reduction_allow_multi_stages&#39;: True, &#39;dynamic_disable_pipelining&#39;: True, &#39;are_deterministic_algorithms_enabled&#39;: False}
+</span><span style="color:#183691;">)
+</span><span style="color:#183691;">@triton.jit
+</span><span style="color:#183691;">def triton_unk_fused_add_mul_sum_view_3(in_ptr0, in_ptr1, in_ptr2, in_ptr3, out_ptr0, xnumel, r0_numel, r0_1numel, XBLOCK : tl.constexpr, R0_BLOCK : tl.constexpr):
+</span><span style="color:#183691;">    total_thread = 48
+</span><span style="color:#183691;">    group_id = tl.program_id(0)
+</span><span style="color:#183691;">    xnumel = 256
+</span><span style="color:#183691;">    x_g_tile0 : tl.constexpr = (256) if (256) &lt; (XBLOCK) else (XBLOCK)
+</span><span style="color:#183691;">    x0numel : tl.constexpr = 256
+</span><span style="color:#183691;">    real_block_x0 : tl.constexpr = (((x_g_tile0) + 7) // 8) * 8
+</span><span style="color:#183691;">    x0_blocks : tl.constexpr = (x0numel + real_block_x0 - 1) // real_block_x0
+</span><span style="color:#183691;">    group_size = x0_blocks // total_thread
+</span><span style="color:#183691;">    group_tail = x0_blocks % total_thread
+</span><span style="color:#183691;">    if group_id &lt; group_tail:
+</span><span style="color:#183691;">        group_size = group_size + 1
+</span><span style="color:#183691;">        group_base = group_id * group_size
+</span><span style="color:#183691;">    else:
+</span><span style="color:#183691;">        group_base = group_id * group_size + group_tail
+</span><span style="color:#183691;">    for i in range(group_size):
+</span><span style="color:#183691;">        rbase = tl.arange(0, R0_BLOCK)[:, None]
+</span><span style="color:#183691;">        r0_base = tl.arange(0, R0_BLOCK)[:, None]
+</span><span style="color:#183691;">        x0offset = (group_base + i) </span><span style="color:#0086b3;">% x</span><span style="color:#183691;">0_blocks * real_block_x0
+</span><span style="color:#183691;">        x0index = x0offset + tl.arange(0, real_block_x0)[None, :]
+</span><span style="color:#183691;">        x0 = x0index
+</span><span style="color:#183691;">        x0mask = x0index &lt; x0numel
+</span><span style="color:#183691;">        xmask = x0mask
+</span><span style="color:#183691;">        rbase = r0_base
+</span><span style="color:#183691;">        rnumel = r0_numel
+</span><span style="color:#183691;">        RBLOCK: tl.constexpr = R0_BLOCK
+</span><span style="color:#183691;">        _tmp8 = tl.full([R0_BLOCK, real_block_x0], 0, tl.float32)
+</span><span style="color:#183691;">        for r0_offset in tl.range(0, r0_numel, R0_BLOCK):
+</span><span style="color:#183691;">            r0_index = r0_offset + r0_base
+</span><span style="color:#183691;">            r0_mask = r0_index &lt; r0_numel
+</span><span style="color:#183691;">            roffset = r0_offset
+</span><span style="color:#183691;">            rindex = r0_index
+</span><span style="color:#183691;">            r0_1 = r0_index
+</span><span style="color:#183691;">            tmp0 = tl.load(in_ptr0 + (x0 + 256*r0_1), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp1 = tl.load(in_ptr1 + (x0 + 256*r0_1), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp3 = tl.load(in_ptr2 + (x0 + 256*r0_1), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp4 = tl.load(in_ptr3 + (r0_1), r0_mask, eviction_policy=&#39;evict_last&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp2 = tmp0 + tmp1
+</span><span style="color:#183691;">            tmp5 = tmp3 * tmp4
+</span><span style="color:#183691;">            tmp6 = tmp2 * tmp5
+</span><span style="color:#183691;">            tmp7 = tl.broadcast_to(tmp6, [R0_BLOCK, real_block_x0])
+</span><span style="color:#183691;">            tmp9 = _tmp8 + tmp7
+</span><span style="color:#183691;">            _tmp8 = tmp9
+</span><span style="color:#183691;">        tmp8 = tl.sum(_tmp8, 0)[None, :]
+</span><span style="color:#183691;">        tl.store(out_ptr0 + (x0), tmp8, x0mask)
+</span><span style="color:#183691;">&#39;&#39;&#39;</span><span style="color:#323232;">, device_str</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu&#39;</span><span style="color:#323232;">)
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="font-style:italic;color:#969896;"># kernel path: /tmp/llama_swiglu_inductor_cache_20260829_v2/tmpfop_bm99/6x/c6xf2lmlfdmecbvr4c5wv376uzm2nhn52mieqahfvqhljz5wqukk.py
+</span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_11, view_14, add_74, mul_73, mul_74, mul_75, sum_5, add_75, mul_76, pow_2, mul_77, expand, div_1, pow_3, mul_78, mul_79, add_76], Original ATen: [aten.view, aten.add, aten.mul, aten.sum, aten.pow, aten.expand, aten.div]
+</span><span style="font-style:italic;color:#969896;"># Source node to ATen node mapping:
+</span><span style="font-style:italic;color:#969896;">#   add_74 =&gt; add_74
+</span><span style="font-style:italic;color:#969896;">#   add_75 =&gt; add_75
+</span><span style="font-style:italic;color:#969896;">#   add_76 =&gt; add_76
+</span><span style="font-style:italic;color:#969896;">#   div_1 =&gt; div_1
+</span><span style="font-style:italic;color:#969896;">#   expand =&gt; expand
+</span><span style="font-style:italic;color:#969896;">#   mul_73 =&gt; mul_73
+</span><span style="font-style:italic;color:#969896;">#   mul_74 =&gt; mul_74
+</span><span style="font-style:italic;color:#969896;">#   mul_75 =&gt; mul_75
+</span><span style="font-style:italic;color:#969896;">#   mul_76 =&gt; mul_76
+</span><span style="font-style:italic;color:#969896;">#   mul_77 =&gt; mul_77
+</span><span style="font-style:italic;color:#969896;">#   mul_78 =&gt; mul_78
+</span><span style="font-style:italic;color:#969896;">#   mul_79 =&gt; mul_79
+</span><span style="font-style:italic;color:#969896;">#   pow_2 =&gt; pow_2
+</span><span style="font-style:italic;color:#969896;">#   pow_3 =&gt; pow_3
+</span><span style="font-style:italic;color:#969896;">#   sum_5 =&gt; sum_5
+</span><span style="font-style:italic;color:#969896;">#   view_11 =&gt; view_11
+</span><span style="font-style:italic;color:#969896;">#   view_14 =&gt; view_14
+</span><span style="font-style:italic;color:#969896;"># Graph fragment:
+</span><span style="font-style:italic;color:#969896;">#   %mm_2 : Tensor &quot;f32[s27*s77, 256][256, 1]npu:0&quot; = PlaceHolder[target=mm_2]
+</span><span style="font-style:italic;color:#969896;">#   %mm_4 : Tensor &quot;f32[s27*s77, 256][256, 1]npu:0&quot; = PlaceHolder[target=mm_4]
+</span><span style="font-style:italic;color:#969896;">#   %primals_5 : Tensor &quot;f32[256][1]npu:0&quot; = PlaceHolder[target=primals_5]
+</span><span style="font-style:italic;color:#969896;">#   %primals_3 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = PlaceHolder[target=primals_3]
+</span><span style="font-style:italic;color:#969896;">#   %tangents_1 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot; = PlaceHolder[target=tangents_1]
+</span><span style="font-style:italic;color:#969896;">#   %rsqrt : Tensor &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot; = PlaceHolder[target=rsqrt]
+</span><span style="font-style:italic;color:#969896;">#   %sum_5 : Tensor &quot;f32[s77, s27, 1][s27, 1, s27*s77]npu:0&quot; = PlaceHolder[target=sum_5]
+</span><span style="font-style:italic;color:#969896;">#   %view_11 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.reshape.default](args = (%mm_2, [%primals_1, %primals_2, 256]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %view_14 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.reshape.default](args = (%mm_4, [%primals_1, %primals_2, 256]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %add_74 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%view_11, %view_14), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_73 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=2] = call_function[target=torch.ops.aten.mul.Tensor](args = (%add_74, %primals_5), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_74 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%mul_73, %primals_3), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_75 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%mul_73, %rsqrt), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %sum_5 : Tensor &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%mul_74, [2], True), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %add_75 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%tangents_1, %mul_75), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_76 : Tensor &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Scalar](args = (%sum_5, -0.5), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %pow_2 : Tensor &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.pow.Tensor_Scalar](args = (%rsqrt, 3), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_77 : Tensor &quot;f32[s77, s27, 1][s27, 1, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%mul_76, %pow_2), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %expand : Tensor &quot;f32[s77, s27, 256][s27, 1, 0]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.expand.default](args = (%mul_77, [%primals_1, %primals_2, 256]), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %div_1 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.div.Scalar](args = (%expand, 256), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %pow_3 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.pow.Tensor_Scalar](args = (%primals_3, 1.0), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_78 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Scalar](args = (%pow_3, 2.0), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %mul_79 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%div_1, %mul_78), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   %add_76 : Tensor &quot;f32[s77, s27, 256][256*s27, 256, 1]npu:0&quot;[num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_75, %mul_79), kwargs = {})
+</span><span style="font-style:italic;color:#969896;">#   return %sum_5,%add_76
+</span><span style="color:#323232;">triton_unk_fused_add_div_expand_mul_pow_sum_view_4 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">async_compile.triton(</span><span style="color:#183691;">&#39;triton_unk_fused_add_div_expand_mul_pow_sum_view_4&#39;</span><span style="color:#323232;">, </span><span style="color:#183691;">&#39;&#39;&#39;
+</span><span style="color:#183691;">import triton
+</span><span style="color:#183691;">import triton.language as tl
+</span><span style="color:#183691;">from triton.compiler.compiler import AttrsDescriptor
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch._inductor.runtime import triton_helpers, triton_heuristics
+</span><span style="color:#183691;">from torch._inductor.runtime.triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">from torch._inductor.runtime.hints import AutotuneHint, ReductionHint, TileHint, DeviceProperties
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental import npu_triton_heuristics
+</span><span style="color:#183691;">from torch_npu._inductor.triton_experimental.npu_triton_helpers import libdevice, math as tl_math
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">from triton.language.extra.cann.extension import extract_slice
+</span><span style="color:#183691;">
+</span><span style="color:#183691;">@npu_triton_heuristics.reduction(
+</span><span style="color:#183691;">    size_hints={&#39;x&#39;: 64, &#39;r0_&#39;: 256},
+</span><span style="color:#183691;">    reduction_hint=ReductionHint.INNER,
+</span><span style="color:#183691;">    filename=__file__,
+</span><span style="color:#183691;">    triton_meta={&#39;signature&#39;: {&#39;in_out_ptr0&#39;: &#39;*fp32&#39;, &#39;in_ptr0&#39;: &#39;*fp32&#39;, &#39;in_ptr1&#39;: &#39;*fp32&#39;, &#39;in_ptr2&#39;: &#39;*fp32&#39;, &#39;in_ptr3&#39;: &#39;*fp32&#39;, &#39;in_ptr4&#39;: &#39;*fp32&#39;, &#39;ks0&#39;: &#39;i64&#39;, &#39;ks1&#39;: &#39;i64&#39;, &#39;xnumel&#39;: &#39;i32&#39;, &#39;x0numel&#39;: &#39;i32&#39;, &#39;r0_numel&#39;: &#39;i32&#39;}, &#39;device&#39;: DeviceProperties(type=&#39;npu&#39;, index=0, multi_processor_count=48, cc=&#39;Ascend910B2&#39;, major=None, regs_per_multiprocessor=None, max_threads_per_multi_processor=None, max_threads_per_block=1024, warp_size=None), &#39;constants&#39;: {&#39;r0_numel&#39;: 256}, &#39;mix_mode&#39;: &#39;aiv&#39;, &#39;configs&#39;: [AttrsDescriptor.from_dict({&#39;arg_properties&#39;: {&#39;tt.divisibility&#39;: (0, 1, 2, 3, 4, 5, 10), &#39;tt.equal_to&#39;: ()}, &#39;cls&#39;: &#39;AttrsDescriptor&#39;})], &#39;block_hints&#39;: {&#39;XBLOCK_HINT&#39;: [-1, {&#39;divisors&#39;: [1]}], &#39;R0_BLOCK_HINT&#39;: [256, {&#39;divisors&#39;: [1]}]}, &#39;axis_hints&#39;: [{&#39;name&#39;: &#39;x0&#39;, &#39;length&#39;: -1, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}, {&#39;name&#39;: &#39;r0_1&#39;, &#39;length&#39;: 256, &#39;divisor&#39;: 1, &#39;seed&#39;: 1}]},
+</span><span style="color:#183691;">    inductor_meta={&#39;grid_type&#39;: &#39;Grid1D&#39;, &#39;autotune_hints&#39;: set(), &#39;kernel_name&#39;: &#39;triton_unk_fused_add_div_expand_mul_pow_sum_view_4&#39;, &#39;mutated_arg_names&#39;: [&#39;in_out_ptr0&#39;], &#39;optimize_mem&#39;: True, &#39;no_x_dim&#39;: False, &#39;num_load&#39;: 10, &#39;num_reduction&#39;: 1, &#39;npu_num_x_nodes&#39;: 1, &#39;npu_rsplit_partial&#39;: False, &#39;backend_hash&#39;: &#39;D0A5764714F6964B7DDC8949E7DA556771FD1CABBAA741D79495E9BB4C7A1FB0&#39;, &#39;assert_indirect_indexing&#39;: True, &#39;autotune_local_cache&#39;: True, &#39;autotune_pointwise&#39;: True, &#39;autotune_remote_cache&#39;: None, &#39;force_disable_caches&#39;: True, &#39;dynamic_scale_rblock&#39;: True, &#39;incremental_autotune&#39;: False, &#39;max_autotune&#39;: False, &#39;max_autotune_pointwise&#39;: False, &#39;min_split_scan_rblock&#39;: 256, &#39;spill_threshold&#39;: 16, &#39;store_cubin&#39;: False, &#39;deterministic&#39;: False, &#39;batch_invariant&#39;: False, &#39;force_filter_reduction_configs&#39;: False, &#39;mix_order_reduction_allow_multi_stages&#39;: True, &#39;dynamic_disable_pipelining&#39;: True, &#39;are_deterministic_algorithms_enabled&#39;: False}
+</span><span style="color:#183691;">)
+</span><span style="color:#183691;">@triton.jit
+</span><span style="color:#183691;">def triton_unk_fused_add_div_expand_mul_pow_sum_view_4(in_out_ptr0, in_ptr0, in_ptr1, in_ptr2, in_ptr3, in_ptr4, ks0, ks1, xnumel, x0numel, r0_numel, XBLOCK : tl.constexpr, R0_BLOCK : tl.constexpr):
+</span><span style="color:#183691;">    total_thread = 48
+</span><span style="color:#183691;">    group_id = tl.program_id(0)
+</span><span style="color:#183691;">    r0_numel = 256
+</span><span style="color:#183691;">    x_g_tile0 : tl.constexpr = (64) if (64) &lt; (XBLOCK) else (XBLOCK)
+</span><span style="color:#183691;">    real_block_x0 : tl.constexpr = x_g_tile0
+</span><span style="color:#183691;">    x0_blocks = (x0numel + real_block_x0 - 1) // real_block_x0
+</span><span style="color:#183691;">    group_size = x0_blocks // total_thread
+</span><span style="color:#183691;">    group_tail = x0_blocks % total_thread
+</span><span style="color:#183691;">    if group_id &lt; group_tail:
+</span><span style="color:#183691;">        group_size = group_size + 1
+</span><span style="color:#183691;">        group_base = group_id * group_size
+</span><span style="color:#183691;">    else:
+</span><span style="color:#183691;">        group_base = group_id * group_size + group_tail
+</span><span style="color:#183691;">    for i in range(group_size):
+</span><span style="color:#183691;">        rbase = tl.arange(0, R0_BLOCK)[None, :]
+</span><span style="color:#183691;">        x0offset = (group_base + i) </span><span style="color:#0086b3;">% x</span><span style="color:#183691;">0_blocks * real_block_x0
+</span><span style="color:#183691;">        x0index = x0offset + tl.arange(0, real_block_x0)[:, None]
+</span><span style="color:#183691;">        x0 = x0index
+</span><span style="color:#183691;">        x0mask = x0index &lt; x0numel
+</span><span style="color:#183691;">        xmask = x0mask
+</span><span style="color:#183691;">        r0_base = tl.arange(0, R0_BLOCK)[None, :]
+</span><span style="color:#183691;">        rbase = r0_base
+</span><span style="color:#183691;">        rnumel = r0_numel
+</span><span style="color:#183691;">        RBLOCK: tl.constexpr = R0_BLOCK
+</span><span style="color:#183691;">        _tmp8 = tl.full([real_block_x0, R0_BLOCK], 0, tl.float32)
+</span><span style="color:#183691;">        for r0_offset in tl.range(0, r0_numel, R0_BLOCK):
+</span><span style="color:#183691;">            r0_index = r0_offset + r0_base
+</span><span style="color:#183691;">            r0_mask = r0_index &lt; r0_numel
+</span><span style="color:#183691;">            roffset = r0_offset
+</span><span style="color:#183691;">            rindex = r0_index
+</span><span style="color:#183691;">            r0_1 = r0_index
+</span><span style="color:#183691;">            tmp0 = tl.load(in_out_ptr0 + (r0_1 + 256*x0), r0_mask &amp; x0mask, eviction_policy=&#39;evict_last&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp1 = tl.load(in_ptr0 + (r0_1 + 256*x0), r0_mask &amp; x0mask, eviction_policy=&#39;evict_last&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp3 = tl.load(in_ptr1 + (r0_1), r0_mask, eviction_policy=&#39;evict_last&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp5 = tl.load(in_ptr2 + (r0_1 + 256*x0), r0_mask &amp; x0mask, eviction_policy=&#39;evict_last&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp2 = tmp0 + tmp1
+</span><span style="color:#183691;">            tmp4 = tmp2 * tmp3
+</span><span style="color:#183691;">            tmp6 = tmp4 * tmp5
+</span><span style="color:#183691;">            tmp7 = tl.broadcast_to(tmp6, [real_block_x0, R0_BLOCK])
+</span><span style="color:#183691;">            tmp9 = _tmp8 + tmp7
+</span><span style="color:#183691;">            _tmp8 = tmp9
+</span><span style="color:#183691;">        tmp8 = tl.sum(_tmp8, 1)[:, None]
+</span><span style="color:#183691;">        tmp16 = tl.load(in_ptr4 + (x0), x0mask, eviction_policy=&#39;evict_last&#39;)
+</span><span style="color:#183691;">        for r0_offset in tl.range(0, r0_numel, R0_BLOCK):
+</span><span style="color:#183691;">            r0_index = r0_offset + r0_base
+</span><span style="color:#183691;">            r0_mask = r0_index &lt; r0_numel
+</span><span style="color:#183691;">            roffset = r0_offset
+</span><span style="color:#183691;">            rindex = r0_index
+</span><span style="color:#183691;">            r0_1 = r0_index
+</span><span style="color:#183691;">            tmp10 = tl.load(in_ptr3 + (r0_1 + 256*x0), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp11 = tl.load(in_out_ptr0 + (r0_1 + 256*x0), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp12 = tl.load(in_ptr0 + (r0_1 + 256*x0), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp14 = tl.load(in_ptr1 + (r0_1), r0_mask, eviction_policy=&#39;evict_last&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp26 = tl.load(in_ptr2 + (r0_1 + 256*x0), r0_mask &amp; x0mask, eviction_policy=&#39;evict_first&#39;, other=0.0)
+</span><span style="color:#183691;">            tmp13 = tmp11 + tmp12
+</span><span style="color:#183691;">            tmp15 = tmp13 * tmp14
+</span><span style="color:#183691;">            tmp17 = tmp15 * tmp16
+</span><span style="color:#183691;">            tmp18 = tmp10 + tmp17
+</span><span style="color:#183691;">            tmp19 = tl.full([1, 1], -0.5, tl.float32)
+</span><span style="color:#183691;">            tmp20 = tmp8 * tmp19
+</span><span style="color:#183691;">            tmp21 = tmp16 * tmp16
+</span><span style="color:#183691;">            tmp22 = tmp21 * tmp16
+</span><span style="color:#183691;">            tmp23 = tmp20 * tmp22
+</span><span style="color:#183691;">            tmp24 = tl.full([1, 1], 0.00390625, tl.float32)
+</span><span style="color:#183691;">            tmp25 = tmp23 * tmp24
+</span><span style="color:#183691;">            tmp27 = tl.full([1, 1], 2.0, tl.float32)
+</span><span style="color:#183691;">            tmp28 = tmp26 * tmp27
+</span><span style="color:#183691;">            tmp29 = tmp25 * tmp28
+</span><span style="color:#183691;">            tmp30 = tmp18 + tmp29
+</span><span style="color:#183691;">            tl.store(in_out_ptr0 + (r0_1 + 256*x0), tmp30, r0_mask &amp; x0mask)
+</span><span style="color:#183691;">&#39;&#39;&#39;</span><span style="color:#323232;">, device_str</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu&#39;</span><span style="color:#323232;">)
+</span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">extern_kernels_extern_kernels_mm_8</span><span style="color:#323232;">(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs):
+</span><span style="color:#323232;">    </span><span style="font-style:italic;color:#969896;"># Extra indirection is only enabled for profiler timeline provenance.
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">extern_kernels.mm(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs)
+</span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">extern_kernels_extern_kernels_mm_9</span><span style="color:#323232;">(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs):
+</span><span style="color:#323232;">    </span><span style="font-style:italic;color:#969896;"># Extra indirection is only enabled for profiler timeline provenance.
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">extern_kernels.mm(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs)
+</span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">extern_kernels_extern_kernels_mm_10</span><span style="color:#323232;">(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs):
+</span><span style="color:#323232;">    </span><span style="font-style:italic;color:#969896;"># Extra indirection is only enabled for profiler timeline provenance.
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">extern_kernels.mm(</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">args, </span><span style="font-weight:bold;color:#a71d5d;">**</span><span style="color:#323232;">kwargs)
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">async_compile.wait(</span><span style="color:#62a35c;">globals</span><span style="color:#323232;">())
+</span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">async_compile
+</span><span style="color:#323232;">
+</span><span style="font-weight:bold;color:#a71d5d;">class </span><span style="color:#0086b3;">Runner</span><span style="color:#323232;">:
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#62a35c;">__init__</span><span style="color:#323232;">(self, partitions):
+</span><span style="color:#323232;">        self.partitions </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">partitions
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">recursively_apply_fns</span><span style="color:#323232;">(self, fns):
+</span><span style="color:#323232;">        new_callables </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">[]
+</span><span style="color:#323232;">        </span><span style="font-weight:bold;color:#a71d5d;">for </span><span style="color:#323232;">fn, c </span><span style="font-weight:bold;color:#a71d5d;">in </span><span style="color:#62a35c;">zip</span><span style="color:#323232;">(fns, self.partitions):
+</span><span style="color:#323232;">            new_callables.append(fn(c))
+</span><span style="color:#323232;">        self.partitions </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">new_callables
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">call</span><span style="color:#323232;">(self, args):
+</span><span style="color:#323232;">        primals_1, primals_2, mul_27, primals_3, primals_5, primals_6, primals_8, primals_10, rsqrt, view, addmm, addmm_1, view_4, tangents_1 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">args
+</span><span style="color:#323232;">        args.clear()
+</span><span style="color:#323232;">        s77 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">primals_1
+</span><span style="color:#323232;">        s27 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">primals_2
+</span><span style="color:#323232;">        </span><span style="font-weight:bold;color:#a71d5d;">with </span><span style="color:#323232;">torch.npu.utils.device(</span><span style="color:#0086b3;">0</span><span style="color:#323232;">):
+</span><span style="color:#323232;">            torch.npu.set_device(</span><span style="color:#0086b3;">0</span><span style="color:#323232;">)
+</span><span style="color:#323232;">            tangents_1 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">copy_if_misaligned(tangents_1)
+</span><span style="color:#323232;">            buf2 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_6, sum_1], Original ATen: [aten.view, aten.sum]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] triton_unk_fused_sum_view_0:7
+</span><span style="color:#323232;">            triton_unk_fused_sum_view_0_r0_numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            triton_unk_fused_sum_view_0_r0_1numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            raw_stream0 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">get_raw_stream(</span><span style="color:#0086b3;">0</span><span style="color:#323232;">)
+</span><span style="color:#323232;">            triton_unk_fused_sum_view_0.run(tangents_1, buf2, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">, triton_unk_fused_sum_view_0_r0_numel, triton_unk_fused_sum_view_0_r0_1numel, stream</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">raw_stream0)
+</span><span style="color:#323232;">            buf0 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_6, linear_2, permute_3, mm], Original ATen: [aten.view, aten.t, aten.mm]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] extern_kernels.mm:8
+</span><span style="color:#323232;">            extern_kernels_extern_kernels_mm_5(reinterpret_tensor(tangents_1, (s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), primals_10, out</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">buf0)
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">primals_10
+</span><span style="color:#323232;">            buf3 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((s77, s27, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s27, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            buf7 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">reinterpret_tensor(addmm_1, (s77, s27, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s27, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">); </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">addmm_1  </span><span style="font-style:italic;color:#969896;"># reuse
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, silu, mul_67, linear_1, mul_68, sigmoid, mul_69, sub_32, mul_70, add_73, mul_71], Original ATen: [aten.view, aten.silu, aten.mul, aten.silu_backward]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] triton_unk_fused_mul_silu_silu_backward_view_1:9
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_silu_backward_view_1_xnumel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#0086b3;">512</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_silu_backward_view_1_x0numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#0086b3;">512</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            raw_stream0 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">get_raw_stream(</span><span style="color:#0086b3;">0</span><span style="color:#323232;">)
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_silu_backward_view_1.run(buf7, buf0, addmm, buf3, s27, s77, triton_unk_fused_mul_silu_silu_backward_view_1_xnumel, triton_unk_fused_mul_silu_silu_backward_view_1_x0numel, stream</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">raw_stream0)
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">addmm
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">buf0
+</span><span style="color:#323232;">            buf6 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, silu, mul_67, view_9, sum_2], Original ATen: [aten.view, aten.silu, aten.mul, aten.sum]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] triton_unk_fused_mul_silu_sum_view_2:10
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_sum_view_2_r0_numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_sum_view_2_r0_1numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            raw_stream0 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">get_raw_stream(</span><span style="color:#0086b3;">0</span><span style="color:#323232;">)
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_sum_view_2.run(buf3, buf6, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">, triton_unk_fused_mul_silu_sum_view_2_r0_numel, triton_unk_fused_mul_silu_sum_view_2_r0_1numel, stream</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">raw_stream0)
+</span><span style="color:#323232;">            buf10 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, linear_1, mul_68, sigmoid, mul_69, sub_32, mul_70, add_73, mul_71, view_12, sum_3], Original ATen: [aten.view, aten.mul, aten.silu_backward, aten.sum]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] triton_unk_fused_mul_silu_sum_view_2:11
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_sum_view_2_r0_numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_sum_view_2_r0_1numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            raw_stream0 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">get_raw_stream(</span><span style="color:#0086b3;">0</span><span style="color:#323232;">)
+</span><span style="color:#323232;">            triton_unk_fused_mul_silu_sum_view_2.run(buf7, buf10, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">, triton_unk_fused_mul_silu_sum_view_2_r0_numel, triton_unk_fused_mul_silu_sum_view_2_r0_1numel, stream</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">raw_stream0)
+</span><span style="color:#323232;">            buf4 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, silu, mul_67, view_9, linear_1, permute_7, mm_2], Original ATen: [aten.view, aten.silu, aten.mul, aten.t, aten.mm]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] extern_kernels.mm:12
+</span><span style="color:#323232;">            extern_kernels_extern_kernels_mm_6(reinterpret_tensor(buf3, (s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), primals_8, out</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">buf4)
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">primals_8
+</span><span style="color:#323232;">            buf8 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, linear_1, mul_68, sigmoid, mul_69, sub_32, mul_70, add_73, mul_71, view_12, permute_11, mm_4], Original ATen: [aten.view, aten.mul, aten.silu_backward, aten.t, aten.mm]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] extern_kernels.mm:13
+</span><span style="color:#323232;">            extern_kernels_extern_kernels_mm_7(reinterpret_tensor(buf7, (s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), primals_6, out</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">buf8)
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">primals_6
+</span><span style="color:#323232;">            buf11 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_11, view_14, add_74, normalized, mul_72, sum_4], Original ATen: [aten.view, aten.add, aten.mul, aten.sum]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] triton_unk_fused_add_mul_sum_view_3:14
+</span><span style="color:#323232;">            triton_unk_fused_add_mul_sum_view_3_r0_numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            triton_unk_fused_add_mul_sum_view_3_r0_1numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            raw_stream0 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">get_raw_stream(</span><span style="color:#0086b3;">0</span><span style="color:#323232;">)
+</span><span style="color:#323232;">            triton_unk_fused_add_mul_sum_view_3.run(buf4, buf8, primals_3, rsqrt, buf11, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">, triton_unk_fused_add_mul_sum_view_3_r0_numel, triton_unk_fused_add_mul_sum_view_3_r0_1numel, stream</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">raw_stream0)
+</span><span style="color:#323232;">            buf13 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">reinterpret_tensor(buf4, (s77, s27, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s27, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">); </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">buf4  </span><span style="font-style:italic;color:#969896;"># reuse
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_11, view_14, add_74, mul_73, mul_74, mul_75, sum_5, add_75, mul_76, pow_2, mul_77, expand, div_1, pow_3, mul_78, mul_79, add_76], Original ATen: [aten.view, aten.add, aten.mul, aten.sum, aten.pow, aten.expand, aten.div]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] triton_unk_fused_add_div_expand_mul_pow_sum_view_4:15
+</span><span style="color:#323232;">            triton_unk_fused_add_div_expand_mul_pow_sum_view_4_xnumel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            triton_unk_fused_add_div_expand_mul_pow_sum_view_4_x0numel </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77
+</span><span style="color:#323232;">            raw_stream0 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">get_raw_stream(</span><span style="color:#0086b3;">0</span><span style="color:#323232;">)
+</span><span style="color:#323232;">            triton_unk_fused_add_div_expand_mul_pow_sum_view_4.run(buf13, buf8, primals_5, primals_3, tangents_1, rsqrt, s27, s77, triton_unk_fused_add_div_expand_mul_pow_sum_view_4_xnumel, triton_unk_fused_add_div_expand_mul_pow_sum_view_4_x0numel, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">, stream</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">raw_stream0)
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">buf8
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">primals_3
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">primals_5
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">rsqrt
+</span><span style="color:#323232;">            buf1 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_6, permute_4, permute_6], Original ATen: [aten.view, aten.t, aten.mm]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] extern_kernels.mm:16
+</span><span style="color:#323232;">            extern_kernels_extern_kernels_mm_8(reinterpret_tensor(tangents_1, (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77), (</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), view_4, out</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">buf1)
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">tangents_1
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">view_4
+</span><span style="color:#323232;">            buf5 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, silu, mul_67, view_9, permute_8, permute_10], Original ATen: [aten.view, aten.silu, aten.mul, aten.t, aten.mm]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] extern_kernels.mm:17
+</span><span style="color:#323232;">            extern_kernels_extern_kernels_mm_9(reinterpret_tensor(buf3, (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77), (</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), view, out</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">buf5)
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">buf3
+</span><span style="color:#323232;">            buf9 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">empty_strided_npu((</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), torch.float32)
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># Topologically Sorted Source Nodes: [view_8, linear, linear_1, mul_68, sigmoid, mul_69, sub_32, mul_70, add_73, mul_71, view_12, permute_12, permute_14], Original ATen: [aten.view, aten.mul, aten.silu_backward, aten.t, aten.mm]
+</span><span style="color:#323232;">            </span><span style="font-style:italic;color:#969896;"># [Provenance debug handles] extern_kernels.mm:18
+</span><span style="color:#323232;">            extern_kernels_extern_kernels_mm_10(reinterpret_tensor(buf7, (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, s27</span><span style="font-weight:bold;color:#a71d5d;">*</span><span style="color:#323232;">s77), (</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), view, out</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">buf9)
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">buf7
+</span><span style="color:#323232;">            </span><span style="font-weight:bold;color:#a71d5d;">del </span><span style="color:#323232;">view
+</span><span style="color:#323232;">        </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">(</span><span style="color:#0086b3;">None</span><span style="color:#323232;">, </span><span style="color:#0086b3;">None</span><span style="color:#323232;">, buf13, </span><span style="color:#0086b3;">None</span><span style="color:#323232;">, reinterpret_tensor(buf11, (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, ), (</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, ), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), buf9, reinterpret_tensor(buf10, (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, ), (</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, ), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), buf5, reinterpret_tensor(buf6, (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, ), (</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, ), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), buf1, reinterpret_tensor(buf2, (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, ), (</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, ), </span><span style="color:#0086b3;">0</span><span style="color:#323232;">), )
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">runner </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">Runner(partitions</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">[])
+</span><span style="color:#323232;">call </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">runner.call
+</span><span style="color:#323232;">recursively_apply_fns </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">runner.recursively_apply_fns
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">get_args</span><span style="color:#323232;">():
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._dynamo.testing </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">rand_strided
+</span><span style="color:#323232;">    primals_1 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#0086b3;">2
+</span><span style="color:#323232;">    primals_2 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#0086b3;">32
+</span><span style="color:#323232;">    mul_27 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#0086b3;">64
+</span><span style="color:#323232;">    primals_3 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">2</span><span style="color:#323232;">, </span><span style="color:#0086b3;">32</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">8192</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    primals_5 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, ), (</span><span style="color:#0086b3;">1</span><span style="color:#323232;">, ), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    primals_6 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    primals_8 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    primals_10 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    rsqrt </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">2</span><span style="color:#323232;">, </span><span style="color:#0086b3;">32</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">32</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    view </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">64</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    addmm </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">64</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    addmm_1 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">64</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    view_4 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">64</span><span style="color:#323232;">, </span><span style="color:#0086b3;">512</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">512</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    tangents_1 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">rand_strided((</span><span style="color:#0086b3;">2</span><span style="color:#323232;">, </span><span style="color:#0086b3;">32</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">), (</span><span style="color:#0086b3;">8192</span><span style="color:#323232;">, </span><span style="color:#0086b3;">256</span><span style="color:#323232;">, </span><span style="color:#0086b3;">1</span><span style="color:#323232;">), device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu:0&#39;</span><span style="color:#323232;">, dtype</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">torch.float32)
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">[primals_1, primals_2, mul_27, primals_3, primals_5, primals_6, primals_8, primals_10, rsqrt, view, addmm, addmm_1, view_4, tangents_1]
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="font-weight:bold;color:#a71d5d;">def </span><span style="font-weight:bold;color:#323232;">benchmark_compiled_module</span><span style="color:#323232;">(args, times</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#0086b3;">10</span><span style="color:#323232;">, repeat</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#0086b3;">10</span><span style="color:#323232;">):
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._inductor.utils </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">print_performance
+</span><span style="color:#323232;">    fn </span><span style="font-weight:bold;color:#a71d5d;">= lambda</span><span style="color:#323232;">: call(</span><span style="color:#0086b3;">list</span><span style="color:#323232;">(args))
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">return </span><span style="color:#323232;">print_performance(fn, times</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">times, repeat</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">repeat, device</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#183691;">&#39;npu&#39;</span><span style="color:#323232;">)
+</span><span style="color:#323232;">
+</span><span style="color:#323232;">
+</span><span style="font-weight:bold;color:#a71d5d;">if </span><span style="color:#323232;">__name__ </span><span style="font-weight:bold;color:#a71d5d;">== </span><span style="color:#183691;">&quot;__main__&quot;</span><span style="color:#323232;">:
+</span><span style="color:#323232;">    </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#323232;">torch._inductor.wrapper_benchmark </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">compiled_module_main
+</span><span style="color:#323232;">    args </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#323232;">get_args()
+</span><span style="color:#323232;">    compiled_module_main(</span><span style="color:#183691;">&#39;None&#39;</span><span style="color:#323232;">, </span><span style="font-weight:bold;color:#a71d5d;">lambda </span><span style="color:#323232;">times, repeat: benchmark_compiled_module(args, times</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">times, repeat</span><span style="font-weight:bold;color:#a71d5d;">=</span><span style="color:#323232;">repeat))
+</span></pre>
+</pre>
+        </div>
+    </div>
+
+    <!-- Line mappings data for JavaScript -->
+    <script id="lineMappings" type="application/json">
+        {
+  "cppCodeToPost": {},
+  "postToCppCode": {},
+  "postToPre": {
+    "15": [
+      27
+    ],
+    "16": [
+      28
+    ],
+    "17": [
+      28
+    ],
+    "18": [
+      28
+    ],
+    "19": [
+      28
+    ],
+    "21": [
+      29
+    ],
+    "24": [
+      29
+    ],
+    "39": [
+      27
+    ],
+    "5": [
+      33
+    ],
+    "50": [
+      21
+    ]
+  },
+  "postToPyCode": {
+    "10": [
+      573
+    ],
+    "12": [
+      586,
+      595,
+      602
+    ],
+    "15": [
+      586,
+      595,
+      602
+    ],
+    "16": [
+      586,
+      595
+    ],
+    "17": [
+      586,
+      595
+    ],
+    "18": [
+      586,
+      595
+    ],
+    "19": [
+      586,
+      595
+    ],
+    "20": [
+      586,
+      595
+    ],
+    "21": [
+      586,
+      602
+    ],
+    "22": [
+      586,
+      602
+    ],
+    "23": [
+      595
+    ],
+    "26": [
+      613
+    ],
+    "28": [
+      647
+    ],
+    "29": [
+      595
+    ],
+    "31": [
+      619,
+      626
+    ],
+    "32": [
+      586,
+      602
+    ],
+    "33": [
+      586,
+      602
+    ],
+    "34": [
+      586,
+      602
+    ],
+    "35": [
+      586,
+      602
+    ],
+    "36": [
+      586,
+      602
+    ],
+    "37": [
+      586,
+      602
+    ],
+    "38": [
+      602
+    ],
+    "4": [
+      573
+    ],
+    "41": [
+      636
+    ],
+    "43": [
+      116,
+      301,
+      304,
+      540,
+      543,
+      546,
+      579,
+      608,
+      613,
+      636,
+      642,
+      647
+    ],
+    "44": [
+      602
+    ],
+    "46": [
+      619,
+      626
+    ],
+    "47": [
+      619,
+      626
+    ],
+    "50": [
+      619
+    ],
+    "53": [
+      619
+    ],
+    "54": [
+      626
+    ],
+    "55": [
+      619
+    ],
+    "59": [
+      626
+    ],
+    "60": [
+      626
+    ],
+    "61": [
+      626
+    ],
+    "62": [
+      626
+    ],
+    "63": [
+      626
+    ],
+    "64": [
+      626
+    ],
+    "65": [
+      626
+    ],
+    "68": [
+      626
+    ],
+    "69": [
+      626
+    ],
+    "7": [
+      608
+    ],
+    "70": [
+      626
+    ],
+    "71": [
+      626
+    ],
+    "72": [
+      626
+    ],
+    "73": [
+      626
+    ],
+    "9": [
+      642
+    ]
+  },
+  "preToPost": {
+    "21": [
+      50
+    ],
+    "27": [
+      15,
+      39
+    ],
+    "28": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "29": [
+      21,
+      24
+    ],
+    "33": [
+      5
+    ]
+  },
+  "pyCodeToPost": {
+    "116": [
+      43
+    ],
+    "301": [
+      43
+    ],
+    "304": [
+      43
+    ],
+    "540": [
+      43
+    ],
+    "543": [
+      43
+    ],
+    "546": [
+      43
+    ],
+    "573": [
+      10,
+      4
+    ],
+    "579": [
+      43
+    ],
+    "586": [
+      20,
+      12,
+      19,
+      15,
+      18,
+      17,
+      16,
+      37,
+      33,
+      22,
+      21,
+      32,
+      36,
+      35,
+      34
+    ],
+    "595": [
+      29,
+      23,
+      20,
+      12,
+      19,
+      15,
+      18,
+      17,
+      16
+    ],
+    "602": [
+      44,
+      38,
+      37,
+      33,
+      22,
+      12,
+      21,
+      32,
+      15,
+      36,
+      35,
+      34
+    ],
+    "608": [
+      7
+    ],
+    "613": [
+      43
+    ],
+    "619": [
+      55,
+      53,
+      47,
+      31,
+      46,
+      50
+    ],
+    "626": [
+      61,
+      59,
+      54,
+      47,
+      31,
+      46,
+      73,
+      62,
+      60,
+      72,
+      69,
+      68,
+      65,
+      63,
+      64,
+      71,
+      70
+    ],
+    "636": [
+      43
+    ],
+    "642": [
+      43
+    ],
+    "647": [
+      43
+    ]
+  }
+}
+    </script>
+
+    <script>
+        let preGradGraphData = null;
+let postGradGraphData = null;
+let codeData = null;
+let cppCodeData = null;
+
+let preToPost = {};
+let postToPre = {};
+let pyCodeToPost = {};
+let postToPyCode = {};
+let postToCppCode = {};
+let cppCodeToPost = {};
+
+let lineMappings = null;
+
+/**
+ * Initializes the line number mappings from the pre-processed data.
+ *
+ * This function expects the line mappings to be already converted from node mappings
+ * to line number mappings by the Rust backend. The mappings should contain:
+ * - preToPost: {sourceLineNum: [targetLineNums]}
+ * - postToPre: {sourceLineNum: [targetLineNums]}
+ * - pyCodeToPost: {sourceLineNum: [targetLineNums]}
+ * - postToPyCode: {sourceLineNum: [targetLineNums]}
+ * - cppCodeToPost: {sourceLineNum: [targetLineNums]}
+ * - postToCppCode: {sourceLineNum: [targetLineNums]}
+ *
+ * These mappings enable the UI to highlight corresponding lines
+ * across different views when a user clicks on a line.
+ */
+function initializeLineMappings() {
+    try {
+        // Get the line mappings from the embedded JSON data
+        const lineMappingsElement = document.getElementById('lineMappings');
+        if (lineMappingsElement) {
+            lineMappings = JSON.parse(lineMappingsElement.textContent);
+
+            // Update global variables with the line mappings
+            preToPost = lineMappings.preToPost || {};
+            postToPre = lineMappings.postToPre || {};
+            pyCodeToPost = lineMappings.pyCodeToPost || {};
+            postToPyCode = lineMappings.postToPyCode || {};
+            cppCodeToPost = lineMappings.cppCodeToPost || {};
+            postToCppCode = lineMappings.postToCppCode || {};
+
+            console.log('Line mappings initialized:', {
+                preToPost,
+                postToPre,
+                pyCodeToPost,
+                postToPyCode,
+                cppCodeToPost,
+                postToCppCode
+            });
+        } else {
+            console.warn('No line mappings element found');
+        }
+    } catch (error) {
+        console.error('Error initializing line mappings:', error);
+    }
+}
+
+
+// Setup editor content
+function setupEditorContent(editorId, lines) {
+    if (!lines) return;
+
+    const editor = document.getElementById(editorId);
+    if (!editor) return;
+
+    editor.innerHTML = '';  // Clear existing content
+
+    lines.forEach((line, index) => {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'line';
+
+        // Create text nodes instead of using innerHTML
+        const lineNumber = document.createElement('span');
+        lineNumber.className = 'line-number';
+        lineNumber.textContent = index + 1;
+
+        const lineContent = document.createElement('span');
+        lineContent.className = 'line-content';
+        lineContent.textContent = line;
+
+        // Check if this line has any matches
+        const lineNum = index + 1;
+        let hasMatch = false;
+        switch (editorId) {
+            case 'preGradGraph':
+                hasMatch = preToPost[lineNum] && preToPost[lineNum].length > 0;
+                break;
+            case 'postGradGraph':
+                hasMatch = (postToPre[lineNum] && postToPre[lineNum].length > 0) ||
+                          (postToPyCode[lineNum] && postToPyCode[lineNum].length > 0) ||
+                          (postToCppCode[lineNum] && postToCppCode[lineNum].length > 0);
+                break;
+            case 'generatedCode':
+                hasMatch = (pyCodeToPost[lineNum] && pyCodeToPost[lineNum].length > 0) ||
+                (cppCodeToPost[lineNum] && cppCodeToPost[lineNum].length > 0);
+                break;
+        }
+
+        if (hasMatch) {
+            lineContent.classList.add('has-match');
+        }
+
+        lineDiv.appendChild(lineNumber);
+        lineDiv.appendChild(lineContent);
+
+        // Add both click and hover handlers
+        lineDiv.addEventListener('click', () => handleLineClick(editorId, index + 1));
+        lineDiv.addEventListener('mouseenter', () => handleLineHover(editorId, index + 1));
+        lineDiv.addEventListener('mouseleave', clearHighlights);
+
+        editor.appendChild(lineDiv);
+    });
+}
+
+// Handle line hover
+function handleLineHover(editorId, lineNumber) {
+    // Clear previous highlights
+    clearHighlights();
+
+    // Add highlight to hovered line
+    const hoveredLine = document.querySelector(`#${editorId} .line:nth-child(${lineNumber})`);
+    if (hoveredLine) {
+        hoveredLine.classList.add('highlight');
+        // Remove scrolling for hovered panel
+    }
+
+    // Highlight and scroll corresponding lines
+    highlightCorrespondingLines(editorId, lineNumber);
+}
+
+// Clear all highlights
+function clearHighlights() {
+    document.querySelectorAll('.line').forEach(line => {
+        line.classList.remove('highlight');
+    });
+}
+
+// Update handleLineClick to use the same pattern
+function handleLineClick(editorId, lineNumber) {
+    clearHighlights();
+
+    // Add highlight to clicked line
+    const clickedLine = document.querySelector(`#${editorId} .line:nth-child(${lineNumber})`);
+    if (clickedLine) {
+        clickedLine.classList.add('highlight');
+        clickedLine.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest'
+        });
+    }
+
+    // Highlight corresponding lines
+    highlightCorrespondingLines(editorId, lineNumber);
+}
+
+// Initialize data from pre-embedded content
+function initializeData() {
+    try {
+        // Get content from pre tags
+        const preGradGraph = document.querySelector('#preGradGraph pre');
+        const postGradGraph = document.querySelector('#postGradGraph pre');
+        const generatedCode = document.querySelector('#generatedCode pre');
+
+        if (preGradGraph) preGradGraphData = preGradGraph.textContent.split('\n');
+        if (postGradGraph) postGradGraphData = postGradGraph.textContent.split('\n');
+        if (generatedCode) {
+            const content = generatedCode.textContent;
+            if (content.includes('AOTInductorModel::run_impl')) {
+                // This is C++ code
+                cppCodeData = content.split('\n');
+                codeData = null;
+            } else {
+                // This is Python code
+                codeData = content.split('\n');
+                cppCodeData = null;
+            }
+        }
+
+        // Initialize line mappings from pre-processed data
+        initializeLineMappings();
+
+        // Setup highlighting
+        setupEditorContent('preGradGraph', preGradGraphData);
+        setupEditorContent('postGradGraph', postGradGraphData);
+        setupEditorContent('generatedCode', codeData || cppCodeData);
+
+        // If it's C++ code, scroll to run_impl
+        if (cppCodeData) {
+            const cppEditor = document.getElementById('generatedCode');
+            if (cppEditor) {
+                const targetLine = Array.from(cppEditor.querySelectorAll('.line')).find(
+                    line => line.textContent.includes('void AOTInductorModel::run_impl(')
+                );
+                if (targetLine) {
+                    targetLine.scrollIntoView({ behavior: 'auto', block: 'center' });
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error initializing data:', error);
+        console.error(error.stack);
+    }
+}
+
+// Call initialization when the page loads
+window.addEventListener('DOMContentLoaded', initializeData);
+
+// Highlight corresponding lines
+function highlightCorrespondingLines(sourceEditorId, lineNumber) {
+    let correspondingLines = findCorrespondingLines(sourceEditorId, lineNumber);
+
+    Object.entries(correspondingLines).forEach(([editorId, lines]) => {
+        // Skip scrolling if this is the source editor
+        if (lines && editorId !== sourceEditorId) {
+            // Handle both single numbers and arrays of numbers
+            const lineNumbers = Array.isArray(lines) ? lines : [lines];
+
+            // Get the middle line number for scrolling
+            const middleIndex = Math.floor(lineNumbers.length / 2);
+            let hasScrolled = false;
+
+            lineNumbers.forEach((line, index) => {
+                const lineElement = document.querySelector(`#${editorId} .line:nth-child(${line})`);
+                if (lineElement) {
+                    lineElement.classList.add('highlight');
+
+                    // Scroll to the middle line of the highlighted range
+                    if (index === middleIndex && !hasScrolled) {
+                        lineElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                            inline: 'nearest'
+                        });
+                        hasScrolled = true;
+                    }
+                }
+            });
+        }
+    });
+}
+
+// Given a line in sourceEditorId, find the corresponding lines in the other editors that should be highlighted.
+function findCorrespondingLines(sourceEditorId, lineNumber) {
+    let result = {};
+
+    switch (sourceEditorId) {
+        case 'preGradGraph':
+            result.postGradGraph = preToPost[lineNumber] || [];
+            if (result.postGradGraph.length > 0) {
+                result.generatedCode = [];
+                for (const postLine of result.postGradGraph) {
+                    if (codeData) {
+                        if (postToPyCode[postLine]) {
+                            result.generatedCode.push(...postToPyCode[postLine]);
+                        }
+                    } else {
+                        if (postToCppCode[postLine]) {
+                            result.generatedCode.push(...postToCppCode[postLine]);
+                        }
+                    }
+                }
+            }
+            break;
+
+        case 'postGradGraph':
+            result.preGradGraph = postToPre[lineNumber] || [];
+            if (codeData) {
+                result.generatedCode = postToPyCode[lineNumber] || [];
+            } else {
+                result.generatedCode =  postToCppCode[lineNumber] || [];
+            }
+            break;
+
+        case 'generatedCode':
+            if (codeData) {
+                // Python code
+                result.postGradGraph = pyCodeToPost[lineNumber] || [];
+            } else {
+                result.postGradGraph = cppCodeToPost[lineNumber] || [];
+            }
+            if (result.postGradGraph.length > 0) {
+                result.preGradGraph = [];
+                for (const postLine of result.postGradGraph) {
+                    if (postToPre[postLine]) {
+                        result.preGradGraph.push(...postToPre[postLine]);
+                    }
+                }
+            }
+            break;
+    }
+
+    return result;
+}
+
+// Resizable Panels Start
+function setupResizablePanels() {
+    const container = document.querySelector('.editor-container');
+    const pre = document.getElementById('preGradGraph');
+    const post = document.getElementById('postGradGraph');
+    const code = document.getElementById('generatedCode');
+    const divider1 = document.getElementById('divider1');
+    const divider2 = document.getElementById('divider2');
+
+    let isDragging = false;
+    let dragDivider = null;
+
+    function onMouseMove(e) {
+        if (!isDragging || !dragDivider) return;
+
+        const containerRect = container.getBoundingClientRect();
+        const totalWidth = containerRect.width;
+
+        if (dragDivider === divider1) {
+            const newPreWidth = e.clientX - containerRect.left;
+            const newPostWidth = post.offsetWidth + (pre.offsetWidth - newPreWidth);
+            pre.style.flex = `0 0 ${newPreWidth}px`;
+            post.style.flex = `0 0 ${newPostWidth}px`;
+        } else if (dragDivider === divider2) {
+            const preWidth = pre.offsetWidth;
+            const newPostWidth = e.clientX - containerRect.left - preWidth - divider1.offsetWidth;
+            const newCodeWidth = totalWidth - e.clientX + containerRect.left - divider2.offsetWidth;
+            post.style.flex = `0 0 ${newPostWidth}px`;
+            code.style.flex = `0 0 ${newCodeWidth}px`;
+        }
+    }
+
+    function onMouseUp() {
+        isDragging = false;
+        dragDivider = null;
+        document.body.style.cursor = '';
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    [divider1, divider2].forEach(div => {
+        div.addEventListener('mousedown', e => {
+            isDragging = true;
+            dragDivider = div;
+            document.body.style.cursor = 'col-resize';
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+    });
+}
+
+window.addEventListener('DOMContentLoaded', setupResizablePanels);
+
+// Resizable Panels End
+    </script>
+</body>
+
+</html>

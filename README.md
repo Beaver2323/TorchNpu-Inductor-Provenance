@@ -29,6 +29,11 @@ current acceptance scope.
 - `triton_experimental` static provenance level 1/2: verified on NPU.
 - `triton_experimental` forward/backward runtime timeline attribution: verified.
 - `triton_experimental` rsplit partial/combine timeline attribution: verified.
+- A Llama-style RMSNorm + SwiGLU residual block: verified for two dynamic
+  shapes, forward/backward values, input gradients, all parameter gradients,
+  static mappings, and timeline source stacks.
+- ConvNeXt dynamic forward and TransformerEncoderLayer base-shape backward:
+  verified within the explicitly recorded backend boundaries.
 - NPU trace list/dict roots, gzip output, event limits, and state cleanup:
   covered by focused tests.
 - AOTInductor `kernel_information.json`: not accepted on the current baseline;
@@ -42,22 +47,32 @@ matching `torch_npu` validation wheel, Triton Ascend `release/3.2.2`, and Ascend
 
 ## Current `triton_experimental` demo
 
-1. [Guide and artifact index](docs/inductor_provenance_demo/triton_experimental/README.md)
-2. [Static three-panel provenance HTML](docs/inductor_provenance_demo/triton_experimental/provenance_tracking.html)
-3. Static JSON: [node mappings](docs/inductor_provenance_demo/triton_experimental/node_mappings.json),
-   [kernel stacks](docs/inductor_provenance_demo/triton_experimental/kernel_stack_traces.json),
-   [level 1 result](docs/inductor_provenance_demo/triton_experimental/static_result.json), and
-   [level 2 result](docs/inductor_provenance_demo/triton_experimental/static_level2_result.json)
-4. Forward/backward timeline: [result](docs/inductor_provenance_demo/triton_experimental/timeline_forward_backward_result.json)
-   and [Perfetto trace](docs/inductor_provenance_demo/triton_experimental/timeline_forward_backward_trace.json)
-5. Rsplit timeline: [result](docs/inductor_provenance_demo/triton_experimental/timeline_rsplit_result.json)
-   and [Perfetto trace](docs/inductor_provenance_demo/triton_experimental/timeline_rsplit_trace.json)
-6. Reproduction scripts: [static](docs/inductor_provenance_demo/triton_experimental/static_probe.py),
-   [forward/backward timeline](docs/inductor_provenance_demo/triton_experimental/timeline_probe.py), and
-   [rsplit timeline](docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py)
+The primary demo is now a Llama-style RMSNorm + SwiGLU residual block rather
+than the earlier three-operation smoke model.
 
-Download the HTML to open the interactive three-panel view locally. Load the
-timeline trace JSON files into Perfetto.
+1. [Guide and artifact index](docs/inductor_provenance_demo/triton_experimental/README.md)
+2. Llama module: [interactive three-panel HTML](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/provenance_tracking.html),
+   [validation result](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_result.json),
+   [node mappings](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_node_mappings.json),
+   and [kernel stacks](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_kernel_stacks.json)
+3. Llama runtime attribution:
+   [Perfetto trace](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_timeline_trace.json)
+4. Broader module evidence:
+   [validation matrix](docs/inductor_provenance_demo/triton_experimental/model_validation_result.json)
+   and [provenance A/B result](docs/inductor_provenance_demo/triton_experimental/provenance_ab_result.json)
+5. Reproduction scripts:
+   [Llama end-to-end](docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py),
+   [A/B boundaries](docs/inductor_provenance_demo/triton_experimental/provenance_ab_probe.py),
+   [minimal static](docs/inductor_provenance_demo/triton_experimental/static_probe.py),
+   [minimal forward/backward timeline](docs/inductor_provenance_demo/triton_experimental/timeline_probe.py),
+   and [rsplit timeline](docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py)
+6. Preserved smoke artifacts:
+   [three-panel HTML](docs/inductor_provenance_demo/triton_experimental/provenance_tracking.html),
+   [node mappings](docs/inductor_provenance_demo/triton_experimental/node_mappings.json),
+   and [kernel stacks](docs/inductor_provenance_demo/triton_experimental/kernel_stack_traces.json)
+
+Download either HTML file to open the interactive three-panel view locally.
+Load the Llama or focused timeline trace JSON files into Perfetto.
 
 ## Historical research
 

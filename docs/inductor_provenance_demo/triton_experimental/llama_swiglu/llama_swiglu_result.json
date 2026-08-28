@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-29",
+  "model": "Llama-style RMSNorm + SwiGLU residual block",
+  "backend": "triton_experimental",
+  "device": "Ascend910B2",
+  "torch": "2.14.0a0+git8e86e0a",
+  "torch_npu": "2.14.0a0+git83cc452",
+  "provenance_tracking_level": 1,
+  "dynamic": true,
+  "base_shape": [
+    2,
+    32,
+    256
+  ],
+  "alternate_shape": [
+    3,
+    24,
+    256
+  ],
+  "mapping_graph_count": 2,
+  "validation": {
+    "base_forward_max_abs_diff": 2.384185791015625e-07,
+    "base_input_grad_max_abs_diff": 4.76837158203125e-07,
+    "base_parameter_grad_max_abs_diff": 3.814697265625e-06,
+    "alternate_forward_max_abs_diff": 2.384185791015625e-07,
+    "alternate_input_grad_max_abs_diff": 2.384185791015625e-07,
+    "alternate_parameter_grad_max_abs_diff": 2.86102294921875e-06,
+    "profiler_forward_max_abs_diff": 2.384185791015625e-07,
+    "profiler_input_grad_max_abs_diff": 4.76837158203125e-07,
+    "profiler_parameter_grad_max_abs_diff": 3.814697265625e-06
+  },
+  "timeline": {
+    "trace_root": "list",
+    "event_count": 306,
+    "device_kernel_names": [
+      "triton_unk_fused_mean_mul_pow_rsqrt_0",
+      "triton_unk_fused_mul_silu_view_1",
+      "triton_unk_fused_add_addmm_view_2",
+      "triton_unk_fused_sum_view_0",
+      "triton_unk_fused_mul_silu_silu_backward_view_1",
+      "triton_unk_fused_mul_silu_sum_view_2",
+      "triton_unk_fused_mul_silu_sum_view_2",
+      "triton_unk_fused_add_mul_sum_view_3",
+      "riton_unk_fused_add_div_expand_mul_pow_sum_view_4"
+    ],
+    "device_kernel_stack_names": [
+      "triton_unk_fused_mean_mul_pow_rsqrt_0",
+      "triton_unk_fused_mul_silu_view_1",
+      "triton_unk_fused_add_addmm_view_2",
+      "triton_unk_fused_sum_view_0",
+      "triton_unk_fused_mul_silu_silu_backward_view_1",
+      "triton_unk_fused_mul_silu_sum_view_2",
+      "triton_unk_fused_mul_silu_sum_view_2",
+      "triton_unk_fused_add_mul_sum_view_3",
+      "riton_unk_fused_add_div_expand_mul_pow_sum_view_4"
+    ],
+    "device_kernel_stacks": [
+      {
+        "name": "triton_unk_fused_mean_mul_pow_rsqrt_0",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 27, in forward\n    variance = x.pow(2).mean(dim=-1, keepdim=True)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 29, in forward\n    return normalized * self.weight\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      },
+      {
+        "name": "triton_unk_fused_mul_silu_view_1",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      },
+      {
+        "name": "triton_unk_fused_add_addmm_view_2",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      },
+      {
+        "name": "triton_unk_fused_sum_view_0",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      },
+      {
+        "name": "triton_unk_fused_mul_silu_silu_backward_view_1",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      },
+      {
+        "name": "triton_unk_fused_mul_silu_sum_view_2",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      },
+      {
+        "name": "triton_unk_fused_mul_silu_sum_view_2",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      },
+      {
+        "name": "triton_unk_fused_add_mul_sum_view_3",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 29, in forward\n    return normalized * self.weight\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      },
+      {
+        "name": "riton_unk_fused_add_div_expand_mul_pow_sum_view_4",
+        "stack": [
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 29, in forward\n    return normalized * self.weight\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 27, in forward\n    variance = x.pow(2).mean(dim=-1, keepdim=True)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 27, in forward\n    variance = x.pow(2).mean(dim=-1, keepdim=True)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+          "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+        ]
+      }
+    ],
+    "cpu_launch_names": [
+      "triton_unk_fused_mean_mul_pow_rsqrt_0",
+      "triton_unk_fused_mul_silu_view_1",
+      "triton_unk_fused_add_addmm_view_2",
+      "triton_unk_fused_sum_view_0",
+      "triton_unk_fused_mul_silu_silu_backward_view_1",
+      "triton_unk_fused_mul_silu_sum_view_2",
+      "triton_unk_fused_mul_silu_sum_view_2",
+      "triton_unk_fused_add_mul_sum_view_3",
+      "riton_unk_fused_add_div_expand_mul_pow_sum_view_4"
+    ],
+    "required_source_lines": [
+      "variance = x.pow(2).mean(dim=-1, keepdim=True)",
+      "gated = F.silu(self.gate_proj(normalized))",
+      "return self.down_proj(gated) + residual"
+    ],
+    "required_source_lines_found": {
+      "variance = x.pow(2).mean(dim=-1, keepdim=True)": true,
+      "gated = F.silu(self.gate_proj(normalized))": true,
+      "return self.down_proj(gated) + residual": true
+    },
+    "compiled_forward_region": true,
+    "compiled_backward_region": true,
+    "torch_to_npu_flow_count": 36,
+    "ac2g_flow_count": 0,
+    "uid_event_count": 0,
+    "temporary_kernel_category_count": 0
+  },
+  "artifacts": {
+    "node_mappings": "llama_swiglu_node_mappings.json",
+    "kernel_stacks": "llama_swiglu_kernel_stacks.json",
+    "timeline_trace": "llama_swiglu_timeline_trace.json"
+  },
+  "status": "PASS"
+}

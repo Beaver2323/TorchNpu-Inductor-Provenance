@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-28",
+  "device": "Ascend910B2",
+  "visible_device": 6,
+  "backend": "triton_experimental",
+  "force_disable_caches": true,
+  "torch_compile_debug": true,
+  "artifact_root": "/home/z50063656/Tracking/triton_experimental_delivery/provenance_ab_20260828_v2",
+  "variants": {
+    "A": {
+      "configured_provenance_level": 0,
+      "effective_provenance_level": 0,
+      "timeline_provenance": false
+    },
+    "B": {
+      "configured_provenance_level": 2,
+      "effective_provenance_level": 2,
+      "timeline_provenance": true
+    }
+  },
+  "verdict": "NOT_CAUSED_BY_PROVENANCE",
+  "comparisons": [
+    {
+      "case": "ConvNeXt backward",
+      "verdict": "NOT_CAUSED_BY_PROVENANCE",
+      "variant_A": {
+        "outcome": "FAIL",
+        "mapping_files": 0,
+        "exception_type": "builtins.RuntimeError",
+        "final_error": "NPU contiguous operator only supported contiguous memory format",
+        "debug_graph": "convnext_level0/compile_debug/torchinductor/model__1_backward_2.1/output_code.py"
+      },
+      "variant_B": {
+        "outcome": "FAIL",
+        "mapping_files": 1,
+        "exception_type": "builtins.RuntimeError",
+        "final_error": "NPU contiguous operator only supported contiguous memory format",
+        "debug_graph": "convnext_level2/compile_debug/torchinductor/model__1_backward_2.1/output_code.py"
+      },
+      "shared_failure": {
+        "kernel": "triton_unk_fused_convolution_backward_native_layer_norm_backward_permute_view_6",
+        "generated_source_sha256": "4347d006bc6bffc75c1f1707ee680208933ecf49e8c3b85159144766f34cf506",
+        "syntax_error_line": 66,
+        "syntax_error": "cannot assign to expression",
+        "invalid_statement": "x2 + 64*y3 = x2 + 64*y0 + 16384*y1"
+      }
+    },
+    {
+      "case": "Transformer alternate-shape backward",
+      "verdict": "NOT_CAUSED_BY_PROVENANCE",
+      "variant_A": {
+        "outcome": "FAIL",
+        "mapping_files": 0,
+        "exception_type": "torch._inductor.exc.InductorError",
+        "debug_graph": "transformer_level0/compile_debug/torchinductor/model__2_backward_7.3/output_code.py"
+      },
+      "variant_B": {
+        "outcome": "FAIL",
+        "mapping_files": 2,
+        "exception_type": "torch._inductor.exc.InductorError",
+        "debug_graph": "transformer_level2/compile_debug/torchinductor/model__2_backward_7.3/output_code.py"
+      },
+      "shared_failure": {
+        "kernel": "triton_unk_fused__unsafe_view_add_clone_matmul_backward_select_backward_squeeze_t_transpose_unsqueeze_view_3",
+        "generated_source_region_sha256": "f994c3761019a9f80abd49b444875b939c97a05e24a18c54f72e5899cdeb5722",
+        "exception": "NoTritonConfigsError",
+        "failed_statement": "tl.store(out_ptr1 + (x8 + 768*x3 + 2304*x2), tmp15, x2mask & x3mask & x8mask)",
+        "reason": "the store mask cannot broadcast; every config fails, including the small-block fallback"
+      }
+    }
+  ],
+  "conclusion": "Both backward defects reproduce with provenance disabled and enabled while the failing generated kernel source remains identical. Provenance is not causal."
+}

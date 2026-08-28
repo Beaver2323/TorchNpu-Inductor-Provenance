@@ -1,0 +1,3431 @@
+[
+ {
+  "ph": "X",
+  "name": "TorchDynamo Cache Lookup",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250237604.850",
+  "dur": 90.86,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::empty",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250237817.980",
+  "dur": 11.96,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::to",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250237835.550",
+  "dur": 1.37,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::lift_fresh",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250237839.120",
+  "dur": 4.9,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::_local_scalar_dense",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238027.070",
+  "dur": 3.53,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::item",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238024.100",
+  "dur": 7.17,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_mean_mul_pow_rsqrt_0",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238108.120",
+  "dur": 22.84,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnAddmm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238256.490",
+  "dur": 9.59,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::addmm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238174.370",
+  "dur": 94.93,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnAddmm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238316.140",
+  "dur": 3.29,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::addmm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238294.780",
+  "dur": 26.09,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_mul_silu_view_1",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238373.020",
+  "dur": 17.84,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnMm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238446.230",
+  "dur": 7.68,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::mm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238417.530",
+  "dur": 38.15,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_add_addmm_view_2",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238493.440",
+  "dur": 7.86,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "CompiledFunction",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250237906.020",
+  "dur": 724.57,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": 107,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "Torch-Compiled Region: 0/0",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250237700.710",
+  "dur": 948.01,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_sum_view_0",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239185.760",
+  "dur": 15.77,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239292.850",
+  "dur": 9.16,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::mm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239244.190",
+  "dur": 61.0,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_mul_silu_silu_backward_view_1",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239401.130",
+  "dur": 10.82,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_mul_silu_sum_view_2",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239463.040",
+  "dur": 8.42,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_mul_silu_sum_view_2",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239501.260",
+  "dur": 14.37,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239577.840",
+  "dur": 7.16,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::mm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239542.280",
+  "dur": 45.43,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239637.160",
+  "dur": 6.68,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::mm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239612.980",
+  "dur": 32.82,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_add_mul_sum_view_3",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239700.840",
+  "dur": 9.55,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "riton_unk_fused_add_div_expand_mul_pow_sum_view_4",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239766.520",
+  "dur": 8.47,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239835.880",
+  "dur": 6.96,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::mm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239806.520",
+  "dur": 38.19,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239892.440",
+  "dur": 6.25,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::mm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239869.520",
+  "dur": 30.65,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239943.130",
+  "dur": 5.99,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::mm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239923.080",
+  "dur": 27.52,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "CompiledFunctionBackward",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250238879.240",
+  "dur": 1119.12,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": 107,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: CompiledFunctionBackward",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250238864.800",
+  "dur": 1153.95,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240060.010",
+  "dur": 5.15,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240058.700",
+  "dur": 6.74,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240051.600",
+  "dur": 15.86,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240046.850",
+  "dur": 22.8,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240081.850",
+  "dur": 1.73,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240081.330",
+  "dur": 2.48,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240080.010",
+  "dur": 4.77,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240077.700",
+  "dur": 8.32,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240096.010",
+  "dur": 1.34,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240095.570",
+  "dur": 1.99,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240093.760",
+  "dur": 4.61,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240091.700",
+  "dur": 7.77,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240116.580",
+  "dur": 1.06,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240116.000",
+  "dur": 1.91,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240114.340",
+  "dur": 4.8,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240104.900",
+  "dur": 15.43,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240131.240",
+  "dur": 0.89,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240130.790",
+  "dur": 1.56,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240129.620",
+  "dur": 3.56,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240127.580",
+  "dur": 6.78,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240146.220",
+  "dur": 1.07,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240142.380",
+  "dur": 5.1,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240141.200",
+  "dur": 7.72,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240139.430",
+  "dur": 10.82,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240159.200",
+  "dur": 0.9,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240158.760",
+  "dur": 1.55,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240157.750",
+  "dur": 3.37,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240155.810",
+  "dur": 6.39,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240170.600",
+  "dur": 0.89,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "aten::detach",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240170.090",
+  "dur": 1.6,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240168.910",
+  "dur": 3.58,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 1
+  }
+ },
+ {
+  "ph": "X",
+  "name": "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250240167.120",
+  "dur": 6.45,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_mean_mul_pow_rsqrt_0",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238143.350",
+  "dur": 44.27,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1634
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1634,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238143.350",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnAddmm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238269.690",
+  "dur": 48.49,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1635
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1635,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238269.690",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnAddmm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238321.830",
+  "dur": 15.63,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1636
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1636,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238321.830",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_mul_silu_view_1",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238394.640",
+  "dur": 14.01,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1637
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1637,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238394.640",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238457.790",
+  "dur": 23.0,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1638
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1638,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238457.790",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_add_addmm_view_2",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238505.680",
+  "dur": 12.17,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1639
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1639,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250238505.680",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_sum_view_0",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239205.260",
+  "dur": 15.43,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1640
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1640,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239205.260",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239305.090",
+  "dur": 19.04,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1641
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1641,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239305.090",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_mul_silu_silu_backward_view_1",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239414.390",
+  "dur": 14.02,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1642
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1642,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239414.390",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_mul_silu_sum_view_2",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239473.980",
+  "dur": 9.49,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1643
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1643,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239473.980",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_mul_silu_sum_view_2",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239517.580",
+  "dur": 7.67,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1644
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1644,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239517.580",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239587.030",
+  "dur": 14.82,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1645
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1645,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239587.030",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239646.540",
+  "dur": 14.27,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1646
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1646,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239646.540",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_add_mul_sum_view_3",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239712.820",
+  "dur": 11.12,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1647
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1647,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239712.820",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@riton_unk_fused_add_div_expand_mul_pow_sum_view_4",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239777.750",
+  "dur": 9.56,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1648
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1648,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239777.750",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239845.890",
+  "dur": 15.94,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1649
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1649,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239845.890",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239901.610",
+  "dur": 14.54,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1650
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1650,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239901.610",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239951.910",
+  "dur": 10.11,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 1651
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1651,
+  "pid": 3341324,
+  "tid": 3344725,
+  "ts": "1787936250239951.910",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_mean_mul_pow_rsqrt_0",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238110.620",
+  "dur": 18.32,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1634
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1634,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238110.620",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnAddmm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238257.750",
+  "dur": 7.75,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1635
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1635,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238257.750",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnAddmm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238316.910",
+  "dur": 1.88,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1636
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1636,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238316.910",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_mul_silu_view_1",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238373.760",
+  "dur": 16.08,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1637
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1637,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238373.760",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238447.510",
+  "dur": 5.85,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1638
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1638,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238447.510",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_add_addmm_view_2",
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238494.320",
+  "dur": 6.03,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1639
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1639,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238494.320",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_sum_view_0",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239187.840",
+  "dur": 12.06,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1640
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1640,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239187.840",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239293.950",
+  "dur": 7.31,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1641
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1641,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239293.950",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_mul_silu_silu_backward_view_1",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239402.500",
+  "dur": 8.05,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1642
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1642,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239402.500",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_mul_silu_sum_view_2",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239464.070",
+  "dur": 6.45,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1643
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1643,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239464.070",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_mul_silu_sum_view_2",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239502.180",
+  "dur": 12.53,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1644
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1644,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239502.180",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239578.690",
+  "dur": 5.74,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1645
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1645,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239578.690",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239638.220",
+  "dur": 5.02,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1646
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1646,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239638.220",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_add_mul_sum_view_3",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239702.050",
+  "dur": 7.07,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1647
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1647,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239702.050",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@riton_unk_fused_add_div_expand_mul_pow_sum_view_4",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239767.250",
+  "dur": 6.79,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1648
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1648,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239767.250",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239836.790",
+  "dur": 5.48,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1649
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1649,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239836.790",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239893.030",
+  "dur": 5.19,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1650
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1650,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239893.030",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@aclnnMm",
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239943.700",
+  "dur": 4.97,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 1651
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 1651,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239943.700",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "M",
+  "name": "process_name",
+  "pid": 3341324,
+  "tid": 0,
+  "args": {
+   "name": "Python"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "process_labels",
+  "pid": 3341324,
+  "tid": 0,
+  "args": {
+   "labels": "CPU"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "process_sort_index",
+  "pid": 3341324,
+  "tid": 0,
+  "args": {
+   "sort_index": 0
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_name",
+  "pid": 3341324,
+  "tid": 3341324,
+  "args": {
+   "name": "Thread 3341324"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_sort_index",
+  "pid": 3341324,
+  "tid": 3341324,
+  "args": {
+   "sort_index": 3341324
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_name",
+  "pid": 3341324,
+  "tid": 3344756,
+  "args": {
+   "name": "Thread 3344756"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_sort_index",
+  "pid": 3341324,
+  "tid": 3344756,
+  "args": {
+   "sort_index": 3344756
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_name",
+  "pid": 3341324,
+  "tid": 3344725,
+  "args": {
+   "name": "Thread 3344725"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_sort_index",
+  "pid": 3341324,
+  "tid": 3344725,
+  "args": {
+   "sort_index": 3344757
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "fwdbwd",
+  "id": 107,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250237906.020",
+  "cat": "fwdbwd"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "fwdbwd",
+  "id": 107,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250238879.240",
+  "cat": "fwdbwd"
+ },
+ {
+  "name": "triton_unk_fused_mean_mul_pow_rsqrt_0",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238185.665",
+  "dur": 8.42,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1640,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 5,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 27, in forward\n    variance = x.pow(2).mean(dim=-1, keepdim=True)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 29, in forward\n    return normalized * self.weight\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice21474836480",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "21474836480",
+  "ts": "1787936250238185.665",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnAddmm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238317.305",
+  "dur": 7.54,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1641,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 10
+  }
+ },
+ {
+  "name": "HostToDevice42949672960",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "42949672960",
+  "ts": "1787936250238317.305",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnAddmm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238337.385",
+  "dur": 4.22,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1642,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 16
+  }
+ },
+ {
+  "name": "HostToDevice68719476736",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "68719476736",
+  "ts": "1787936250238337.385",
+  "bp": "e"
+ },
+ {
+  "name": "triton_unk_fused_mul_silu_view_1",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238407.105",
+  "dur": 2.86,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1643,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 21,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice90194313216",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "90194313216",
+  "ts": "1787936250238407.105",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnMm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238481.425",
+  "dur": 5.72,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1644,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 26
+  }
+ },
+ {
+  "name": "HostToDevice111669149696",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "111669149696",
+  "ts": "1787936250238481.425",
+  "bp": "e"
+ },
+ {
+  "name": "triton_unk_fused_add_addmm_view_2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238517.465",
+  "dur": 6.5,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1645,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 31,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice133143986176",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "133143986176",
+  "ts": "1787936250238517.465",
+  "bp": "e"
+ },
+ {
+  "name": "triton_unk_fused_sum_view_0",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239219.585",
+  "dur": 7.28,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1646,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 34,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice146028888064",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "146028888064",
+  "ts": "1787936250239219.585",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnMm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239323.965",
+  "dur": 6.3,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1647,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 39
+  }
+ },
+ {
+  "name": "HostToDevice167503724544",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "167503724544",
+  "ts": "1787936250239323.965",
+  "bp": "e"
+ },
+ {
+  "name": "triton_unk_fused_mul_silu_silu_backward_view_1",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239427.145",
+  "dur": 3.88,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1648,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 45,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice193273528320",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "193273528320",
+  "ts": "1787936250239427.145",
+  "bp": "e"
+ },
+ {
+  "name": "triton_unk_fused_mul_silu_sum_view_2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239482.385",
+  "dur": 6.68,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1649,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 48,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice206158430208",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "206158430208",
+  "ts": "1787936250239482.385",
+  "bp": "e"
+ },
+ {
+  "name": "triton_unk_fused_mul_silu_sum_view_2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239525.285",
+  "dur": 2.4,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1650,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 51,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 44, in forward\n    return self.down_proj(gated) + residual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice219043332096",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "219043332096",
+  "ts": "1787936250239525.285",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnMm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239601.225",
+  "dur": 5.74,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1651,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 56
+  }
+ },
+ {
+  "name": "HostToDevice240518168576",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "240518168576",
+  "ts": "1787936250239601.225",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnMm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239660.885",
+  "dur": 5.9,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1652,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 62
+  }
+ },
+ {
+  "name": "HostToDevice266287972352",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "266287972352",
+  "ts": "1787936250239660.885",
+  "bp": "e"
+ },
+ {
+  "name": "triton_unk_fused_add_mul_sum_view_3",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239722.765",
+  "dur": 7.86,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1653,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 69,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 29, in forward\n    return normalized * self.weight\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice296352743424",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "296352743424",
+  "ts": "1787936250239722.765",
+  "bp": "e"
+ },
+ {
+  "name": "riton_unk_fused_add_div_expand_mul_pow_sum_view_4",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239786.325",
+  "dur": 9.3,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 1654,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 76,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 29, in forward\n    return normalized * self.weight\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 43, in forward\n    gated = F.silu(self.gate_proj(normalized)) * self.up_proj(normalized)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 27, in forward\n    variance = x.pow(2).mean(dim=-1, keepdim=True)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGradient addition node due to multiple use of tensor around:",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 27, in forward\n    variance = x.pow(2).mean(dim=-1, keepdim=True)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 42, in forward\n    normalized = self.norm(x)\n                 ^^^^^^^^^^^^\n  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py\", line 28, in forward\n    normalized = x * torch.rsqrt(variance + self.eps)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice326417514496",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "326417514496",
+  "ts": "1787936250239786.325",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnMm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239861.805",
+  "dur": 4.08,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1655,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 81
+  }
+ },
+ {
+  "name": "HostToDevice347892350976",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "347892350976",
+  "ts": "1787936250239861.805",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnMm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239916.365",
+  "dur": 3.62,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1656,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 87
+  }
+ },
+ {
+  "name": "HostToDevice373662154752",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "373662154752",
+  "ts": "1787936250239916.365",
+  "bp": "e"
+ },
+ {
+  "name": "aclnnMm_MatMulCommon_MatMulV2",
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239962.365",
+  "dur": 3.7,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AICORE",
+   "Physic Stream Id": 46,
+   "Task Id": 1657,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 93
+  }
+ },
+ {
+  "name": "HostToDevice399431958528",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "399431958528",
+  "ts": "1787936250239962.365",
+  "bp": "e"
+ },
+ {
+  "name": "process_name",
+  "pid": 3421516199,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "name": "Ascend Hardware"
+  }
+ },
+ {
+  "name": "process_labels",
+  "pid": 3421516199,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "labels": "NPU 7"
+  }
+ },
+ {
+  "name": "process_sort_index",
+  "pid": 3421516199,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 13
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "M",
+  "args": {
+   "name": "Stream 46"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 3421516199,
+  "tid": 46,
+  "ph": "M",
+  "args": {
+   "sort_index": 46
+  }
+ },
+ {
+  "name": "process_labels",
+  "pid": 3421516031,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "labels": "CPU"
+  }
+ },
+ {
+  "name": "process_sort_index",
+  "pid": 3421516031,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 7
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 3421516031,
+  "tid": 3341324,
+  "ph": "M",
+  "args": {
+   "name": "Thread 3341324"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 3421516031,
+  "tid": 3341324,
+  "ph": "M",
+  "args": {
+   "sort_index": 3341324
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "M",
+  "args": {
+   "name": "Thread 3344725"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "M",
+  "args": {
+   "sort_index": 3344725
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 3421516031,
+  "tid": 3344756,
+  "ph": "M",
+  "args": {
+   "name": "Thread 3344756"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 3421516031,
+  "tid": 3344756,
+  "ph": "M",
+  "args": {
+   "sort_index": 3344756
+  }
+ },
+ {
+  "name": "HostToDevice21474836480",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "21474836480",
+  "ts": "1787936250238153.970"
+ },
+ {
+  "name": "HostToDevice42949672960",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "42949672960",
+  "ts": "1787936250238293.700"
+ },
+ {
+  "name": "HostToDevice68719476736",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "68719476736",
+  "ts": "1787936250238325.540"
+ },
+ {
+  "name": "HostToDevice90194313216",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "90194313216",
+  "ts": "1787936250238398.120"
+ },
+ {
+  "name": "HostToDevice111669149696",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "111669149696",
+  "ts": "1787936250238467.840"
+ },
+ {
+  "name": "HostToDevice133143986176",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "133143986176",
+  "ts": "1787936250238508.110"
+ },
+ {
+  "name": "HostToDevice146028888064",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "146028888064",
+  "ts": "1787936250239209.440"
+ },
+ {
+  "name": "HostToDevice167503724544",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "167503724544",
+  "ts": "1787936250239311.650"
+ },
+ {
+  "name": "HostToDevice193273528320",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "193273528320",
+  "ts": "1787936250239417.880"
+ },
+ {
+  "name": "HostToDevice206158430208",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "206158430208",
+  "ts": "1787936250239475.960"
+ },
+ {
+  "name": "HostToDevice219043332096",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "219043332096",
+  "ts": "1787936250239519.270"
+ },
+ {
+  "name": "HostToDevice240518168576",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "240518168576",
+  "ts": "1787936250239591.520"
+ },
+ {
+  "name": "HostToDevice266287972352",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "266287972352",
+  "ts": "1787936250239649.970"
+ },
+ {
+  "name": "HostToDevice296352743424",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "296352743424",
+  "ts": "1787936250239716.250"
+ },
+ {
+  "name": "HostToDevice326417514496",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "326417514496",
+  "ts": "1787936250239780.400"
+ },
+ {
+  "name": "HostToDevice347892350976",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "347892350976",
+  "ts": "1787936250239850.620"
+ },
+ {
+  "name": "HostToDevice373662154752",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "373662154752",
+  "ts": "1787936250239905.970"
+ },
+ {
+  "name": "HostToDevice399431958528",
+  "pid": 3421516031,
+  "tid": 3344725,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "399431958528",
+  "ts": "1787936250239955.170"
+ },
+ {
+  "name": "AI Core Freq",
+  "pid": 3421516231,
+  "tid": 0,
+  "ts": "1787936250205465.000",
+  "ph": "C",
+  "args": {
+   "MHz": 1800
+  }
+ },
+ {
+  "name": "AI Core Freq",
+  "pid": 3421516231,
+  "tid": 0,
+  "ts": "1787936250332344.000",
+  "ph": "C",
+  "args": {
+   "MHz": 1800
+  }
+ },
+ {
+  "name": "process_name",
+  "pid": 3421516231,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "name": "AI Core Freq"
+  }
+ },
+ {
+  "name": "process_labels",
+  "pid": 3421516231,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "labels": "NPU 7"
+  }
+ },
+ {
+  "name": "process_sort_index",
+  "pid": 3421516231,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 14
+  }
+ },
+ {
+  "name": "process_name",
+  "pid": 3421516743,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "name": "Overlap Analysis"
+  }
+ },
+ {
+  "name": "process_labels",
+  "pid": 3421516743,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "labels": "NPU 7"
+  }
+ },
+ {
+  "name": "process_sort_index",
+  "pid": 3421516743,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 30
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 3421516743,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "name": "Communication"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 3421516743,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 0
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 3421516743,
+  "tid": 1,
+  "ph": "M",
+  "args": {
+   "name": "Communication(Not Overlapped)"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 3421516743,
+  "tid": 1,
+  "ph": "M",
+  "args": {
+   "sort_index": 1
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 3421516743,
+  "tid": 2,
+  "ph": "M",
+  "args": {
+   "name": "Computing"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 3421516743,
+  "tid": 2,
+  "ph": "M",
+  "args": {
+   "sort_index": 2
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 3421516743,
+  "tid": 3,
+  "ph": "M",
+  "args": {
+   "name": "Free"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 3421516743,
+  "tid": 3,
+  "ph": "M",
+  "args": {
+   "sort_index": 3
+  }
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250238185.665",
+  "dur": 8.42,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250238317.305",
+  "dur": 7.54,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250238337.385",
+  "dur": 4.22,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250238407.105",
+  "dur": 2.86,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250238481.425",
+  "dur": 5.72,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250238517.465",
+  "dur": 6.5,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239219.585",
+  "dur": 7.28,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239323.965",
+  "dur": 6.3,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239427.145",
+  "dur": 3.88,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239482.385",
+  "dur": 6.68,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239525.285",
+  "dur": 2.4,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239601.225",
+  "dur": 5.74,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239660.885",
+  "dur": 5.9,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239722.765",
+  "dur": 7.86,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239786.325",
+  "dur": 9.3,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239861.805",
+  "dur": 4.08,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239916.365",
+  "dur": 3.62,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Computing",
+  "pid": 3421516743,
+  "tid": 2,
+  "ts": "1787936250239962.365",
+  "dur": 3.7,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250238194.085",
+  "dur": 123.22,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250238324.845",
+  "dur": 12.54,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250238341.605",
+  "dur": 65.5,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250238409.965",
+  "dur": 71.46,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250238487.145",
+  "dur": 30.32,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250238523.965",
+  "dur": 695.62,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239226.865",
+  "dur": 97.1,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239330.265",
+  "dur": 96.88,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239431.025",
+  "dur": 51.36,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239489.065",
+  "dur": 36.22,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239527.685",
+  "dur": 73.54,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239606.965",
+  "dur": 53.92,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239666.785",
+  "dur": 55.98,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239730.625",
+  "dur": 55.7,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239795.625",
+  "dur": 66.18,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239865.885",
+  "dur": 50.48,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "name": "Free",
+  "pid": 3421516743,
+  "tid": 3,
+  "ts": "1787936250239919.985",
+  "dur": 42.38,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238185665,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238108.120",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238185665,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238185.665",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238317305,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238256.490",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238317305,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238317.305",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238337385,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238316.140",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238337385,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238337.385",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238407105,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238373.020",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238407105,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238407.105",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238481425,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238446.230",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238481425,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238481.425",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238517465,
+  "pid": 3341324,
+  "tid": 3341324,
+  "ts": "1787936250238493.440",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250238517465,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250238517.465",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239219585,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239185.760",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239219585,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239219.585",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239323965,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239292.850",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239323965,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239323.965",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239427145,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239401.130",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239427145,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239427.145",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239482385,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239463.040",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239482385,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239482.385",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239525285,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239501.260",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239525285,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239525.285",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239601225,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239577.840",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239601225,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239601.225",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239660885,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239637.160",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239660885,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239660.885",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239722765,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239700.840",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239722765,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239722.765",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239786325,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239766.520",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239786325,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239786.325",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239861805,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239835.880",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239861805,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239861.805",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239916365,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239892.440",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239916365,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239916.365",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239962365,
+  "pid": 3341324,
+  "tid": 3344756,
+  "ts": "1787936250239943.130",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1787936250239962365,
+  "pid": 3421516199,
+  "tid": 46,
+  "ts": "1787936250239962.365",
+  "cat": "async_npu"
+ }
+]
