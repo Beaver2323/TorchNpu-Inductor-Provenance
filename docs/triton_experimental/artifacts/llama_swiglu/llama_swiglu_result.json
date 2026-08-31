@@ -179,7 +179,6 @@
   "artifacts": {
     "forward_html": "provenance_tracking_forward.html",
     "backward_html": "provenance_tracking_backward.html",
-    "compatibility_html": "provenance_tracking.html",
     "node_mappings": "llama_swiglu_node_mappings.json",
     "kernel_stacks": "llama_swiglu_kernel_stacks.json",
     "timeline_trace": "llama_swiglu_timeline_trace.json"

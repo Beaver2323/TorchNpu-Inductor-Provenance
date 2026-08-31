@@ -1,10 +1,12 @@
-# PyTorch Feature 设计与实现分析
+# TorchInductor 来源追踪 NPU 适配新手指南
 
 > 主题：TorchInductor Provenance Tracking 的 NPU 适配新手入门
 >
 > 工作目录：`/home/z50063656/Tracking`
 >
 > 基线日期：2026-08-20
+>
+> 最后更新：2026-08-31 19:51 CST（UTC+08:00）
 
 > 当前范围说明（2026-08-27）：本仓是前期研究和文档仓，不是源码交付目标。官方目标
 > 仓为 `https://gitcode.com/Ascend/pytorch`，开发 fork 为
@@ -484,7 +486,8 @@ triton    /home/z50063656/envs/Tracking/lib/python3.11/site-packages/triton/__in
 
 ### 3. 最小 NPU 使用示例
 
-现有脚本：[npu_provenance_demo.py](../examples/npu_provenance_demo.py)。
+当前最小复现脚本见
+[`static_probe.py`](./triton_experimental/scripts/static_probe.py)。
 
 核心模型：
 
@@ -545,7 +548,7 @@ tlparse "$TRACE_FILE" \
 
 必须把具体 `.log` 文件传给 tlparse。对本功能而言，只把 trace 目录交给普通 parse 流程可能不会生成 provenance highlighter。
 
-### 5. 如何阅读四个 HTML
+### 5. 如何阅读三栏 HTML
 
 一次 trace 可能对应多个 compile id 或占位 compile 目录，因此 tlparse 会生成多个 provenance 页面。最重要的通常是带具体 compile id 的页面，例如：
 
@@ -555,9 +558,9 @@ provenance_tracking_-_0_0_0.html
 
 当前仓库可直接查看或下载：
 
-- [`triton_experimental` 演示与产物索引](./inductor_provenance_demo/triton_experimental/README.md)
-- [NPU 三栏页面](./inductor_provenance_demo/triton_experimental/provenance_tracking.html)
-- [kernel stack JSON](./inductor_provenance_demo/triton_experimental/kernel_stack_traces.json)
+- [`triton_experimental` 演示与产物索引](./triton_experimental/README.md)
+- [Llama forward 三栏页面](./triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html)
+- [最小静态 kernel stack JSON](./triton_experimental/artifacts/static_smoke/kernel_stack_traces.json)
 
 三栏含义：
 
@@ -1223,8 +1226,8 @@ FlexAttention forward template 已完成真实路径专项用例。FlexAttention
 已完成四分支 wrapper 契约、默认 BlockMask 探针、反向 FX 捕获和稀疏哨兵限界；修复后
 MLIR 不再包含十亿级 block size 或 8388608 倍数，但 `bishengir-compile` 仍长时间不
 返回。由于阻塞发生在 backward `output_code.py` 生成前，当前没有反向 provenance
-mapping 与 tlparse HTML。这一边界及复现步骤见
-[backward 编译调查](./npu_default_block_mask_backward_investigation.md)。
+mapping 与 tlparse HTML。这一边界作为需求变更前的结论，现统一记录在
+[历史研究摘要](./history_summary.md)。
 
 combo 已完成调度契约但仍缺真实执行；CATLASS、MLIR/AKG、DVM 和 multistream extern
 仍需真实路径专项用例。cache hit 已完成，AOTI 仍需要扩展覆盖。
@@ -1237,32 +1240,26 @@ forward/backward 和 rsplit partial/combine kernel 均已获得源码 stack；li
 
 如果你只有 30～60 分钟，按以下顺序阅读：
 
-1. [`triton_experimental` 当前演示](./inductor_provenance_demo/triton_experimental/README.md)：先看正式交付范围和可点击产物；
-2. [需求变更前的普通 NPU 研究](./npu_provenance_visualization_demo.md)：作为历史背景；
-3. [FlexAttention template 研究](./npu_template_provenance_visualization_demo.md)：作为历史背景；
-4. [默认 BlockMask backward 编译调查](./npu_default_block_mask_backward_investigation.md)：理解历史训练图调查；
-5. `src/pytorch/torch/_inductor/debug.py::set_kernel_post_grad_provenance_tracing()`：理解核心 registry；
-6. `src/pytorch/torch/_inductor/codegen/triton.py::TritonScheduling.codegen_comment()`：理解后端契约；
-7. `src/torch_npu/torch_npu/_inductor/codegen/scheduling.py::NPUTritonScheduling`：理解 NPU 修复；
-8. `src/torch_npu/torch_npu/_inductor/codegen/wrapper.py::NPUPythonWrapperCodeGen`：理解分支 handle 和 multistream；
-9. `src/pytorch/torch/fx/traceback.py::NodeSource` 与 `GraphTransformObserver`：理解图变换来源；
-10. tlparse `convert_node_mappings_to_line_numbers()` 与 `findCorrespondingLines()`：理解页面为何能联动。
+1. [`triton_experimental` 当前演示](./triton_experimental/README.md)：先看正式交付范围和可点击产物；
+2. [需求变更前的历史研究摘要](./history_summary.md)：了解普通 NPU、FlexAttention 和默认 BlockMask 的历史结论；
+3. [技术参考](./technical_reference.md)：理解社区调用链与 NPU 扩展点；
+4. `src/pytorch/torch/_inductor/debug.py::set_kernel_post_grad_provenance_tracing()`：理解核心 registry；
+5. `src/pytorch/torch/_inductor/codegen/triton.py::TritonScheduling.codegen_comment()`：理解后端契约；
+6. `src/torch_npu/torch_npu/_inductor/codegen/scheduling.py::NPUTritonScheduling`：理解 NPU 修复；
+7. `src/torch_npu/torch_npu/_inductor/codegen/wrapper.py::NPUPythonWrapperCodeGen`：理解分支 handle 和 multistream；
+8. `src/pytorch/torch/fx/traceback.py::NodeSource` 与 `GraphTransformObserver`：理解图变换来源；
+9. tlparse `convert_node_mappings_to_line_numbers()` 与 `findCorrespondingLines()`：理解页面为何能联动。
 
 ### 5. 项目资料导航
 
-- [`triton_experimental` 当前演示与状态](./inductor_provenance_demo/triton_experimental/README.md)
-- [完整源码研究文档](./inductor_provenance_npu_research.md)
-- [NPU 最终可视化演示](./npu_provenance_visualization_demo.md)
-- [NPU FlexAttention template 可视化演示](./npu_template_provenance_visualization_demo.md)
-- [NPU 默认 BlockMask provenance 演示](./npu_default_block_mask_provenance_demo.md)
-- [NPU 默认 BlockMask backward 编译调查](./npu_default_block_mask_backward_investigation.md)
-- [NPU provenance cache miss/hit 演示](./npu_provenance_cache_hit_demo.md)
-- [修改前 NPU provenance 基线](./npu_provenance_baseline_demo.md)
-- [CPU provenance 可视化演示](./cpu_provenance_visualization_demo.md)
-- [NPU Inductor 环境基线](./npu_inductor_baseline_demo.md)
-- [NPU demo 脚本](../examples/npu_provenance_demo.py)
-- [当前静态映射 JSON](./inductor_provenance_demo/triton_experimental/node_mappings.json)
-- [当前 NPU 三栏页面](./inductor_provenance_demo/triton_experimental/provenance_tracking.html)
+- [文档总索引](./README.md)
+- [`triton_experimental` 当前演示与状态](./triton_experimental/README.md)
+- [技术参考](./technical_reference.md)
+- [历史研究摘要](./history_summary.md)
+- [复现脚本索引](./triton_experimental/scripts/README.md)
+- [验收产物索引](./triton_experimental/artifacts/README.md)
+- [当前最小静态映射 JSON](./triton_experimental/artifacts/static_smoke/node_mappings.json)
+- [当前 Llama forward 三栏页面](./triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html)
 
 ### 6. 开始继续开发前的最短检查表
 

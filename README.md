@@ -1,121 +1,89 @@
-# TorchNpu Inductor Provenance
+# TorchNPU Inductor 来源追踪
 
-Research notes, runnable probes, and NPU adaptation work for TorchInductor
-provenance tracking on Ascend NPU.
+> 最后更新：2026-08-31 19:51 CST（UTC+08:00）
 
-## Repository role
+本仓库存放 TorchInductor Provenance Tracking（来源追踪）在昇腾 NPU 上的调研文档、
+复现脚本和验收产物。当前正式范围只覆盖
+`torch_npu/_inductor/triton_experimental`；其他 NPU 后端和 FlexAttention 内容仅作为
+需求变更前的历史研究，不属于本轮验收。
 
-This GitHub repository was used for early research and documentation. It is not
-the source-code delivery target for the current implementation.
+## 仓库定位
 
-- Official target: `https://gitcode.com/Ascend/pytorch`
-- Development fork: `https://gitcode.com/gcw_3ffySSwy/pytorch`
-- Historical architect staging/reference repository:
-  `https://gitcode.com/rmch/npu_inductor_2.13.0` (not a delivery target or fork)
-- Workflow reference: `https://gitcode.com/AllenGuanC/inductor-meta-worktree`
+本仓是文档与证据仓，不是源码交付仓。
 
-The active delivery scope is only
-`torch_npu/_inductor/triton_experimental`. The source implementation is pushed
-to the GitCode development fork on branch
-`codex/triton-experimental-provenance-delivery` at commit `bb356bffb`, based on
-official commit `83cc45248`; the official repository remains the PR target.
-This repository continues to retain useful background material and runnable
-examples; older multi-backend sections are historical research rather than the
-current acceptance scope.
+- 官方源码目标仓：`https://gitcode.com/Ascend/pytorch`
+- 开发 fork：`https://gitcode.com/gcw_3ffySSwy/pytorch`
+- 源码交付分支：`codex/triton-experimental-provenance-delivery`
+- 源码交付提交：`bb356bffb`，基于官方提交 `83cc45248`
+- 工作流参考：`https://gitcode.com/AllenGuanC/inductor-meta-worktree`
 
-## Current status
+## 当前结论
 
-- CPU Inductor provenance and `tlparse` visualization: verified.
-- `triton_experimental` static provenance level 1/2: verified on NPU.
-- `triton_experimental` forward/backward runtime timeline attribution: verified.
-- `triton_experimental` rsplit partial/combine timeline attribution: verified.
-- A Llama-style RMSNorm + SwiGLU residual block: verified for two dynamic
-  shapes, forward/backward values, input gradients, all parameter gradients,
-  forward three-panel static mappings, backward post-grad-to-kernel mappings,
-  and timeline source stacks. As in community PyTorch, not every backward
-  pre-grad node has a complete transitive link to generated code.
-- ConvNeXt dynamic forward and TransformerEncoderLayer base-shape backward:
-  verified within the explicitly recorded backend boundaries.
-- NPU trace list/dict roots, gzip output, event limits, and state cleanup:
-  covered by focused tests.
-- AOTInductor `kernel_information.json`: not accepted on the current baseline;
-  it is blocked by NPU AOTI device/support and shared lazy/ABI prerequisites.
-- FlexAttention and other backend findings remain historical evidence and are
-  not part of the current delivery.
+| 能力 | 状态 | 说明 |
+| --- | --- | --- |
+| CPU Inductor 静态来源追踪 | 已验证 | 可生成 `tlparse` 三栏页面 |
+| NPU `triton_experimental` 静态 level 1/2 | 已验证 | kernel 与 post-grad 节点双向映射有效 |
+| NPU forward/backward 运行时来源追踪 | 已验证 | profiler 设备 kernel 可回填源码栈 |
+| rsplit partial/combine | 已验证 | 一次调度产生的两个 kernel 均有独立来源 |
+| Llama 风格 RMSNorm + SwiGLU | 已验证 | 两组动态形状、前反向数值、输入/参数梯度、静态映射和 timeline 均通过 |
+| backward pre-grad→生成代码全覆盖 | 社区边界 | 社区 PyTorch 的 backward 节点可能缺少 `from_node`，不承诺每个节点都形成完整三段链 |
+| AOTInductor `kernel_information.json` | 未验收 | 当前 910B2 和共享 NPU AOTI/lazy/ABI 基线不满足验收前提 |
 
-The final validation used PyTorch `release/2.14`, an isolated install of the
-matching `torch_npu` validation wheel, Triton Ascend `release/3.2.2`, and Ascend
-910B2 devices.
+验证环境为 PyTorch `release/2.14`、匹配的 `torch_npu` wheel、Triton Ascend
+`release/3.2.2`、CANN 9.0.1 和 Ascend 910B2。
 
-## Current `triton_experimental` demo
+## 从哪里开始
 
-The primary demo is now a Llama-style RMSNorm + SwiGLU residual block rather
-than the earlier three-operation smoke model.
+1. [文档总索引](docs/README.md)：先了解保留内容和阅读顺序。
+2. [新手入门](docs/beginner_guide.md)：理解 pre-grad、post-grad、Inductor IR、kernel
+   以及静态/运行时来源追踪。
+3. [`triton_experimental` 交付说明](docs/triton_experimental/README.md)：查看实现范围、
+   复现命令和验收结论。
+4. [技术参考](docs/technical_reference.md)：按源码调用链深入阅读。
+5. [历史研究摘要](docs/history_summary.md)：了解已退出当前范围的早期结论。
 
-1. [Guide and artifact index](docs/inductor_provenance_demo/triton_experimental/README.md)
-2. Llama module: [forward three-panel HTML](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/provenance_tracking_forward.html),
-   [backward three-panel HTML](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/provenance_tracking_backward.html),
-   [validation result](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_result.json),
-   [node mappings](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_node_mappings.json),
-   and [kernel stacks](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_kernel_stacks.json)
-3. Llama runtime attribution:
-   [Perfetto trace](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_timeline_trace.json)
-4. Broader module evidence:
-   [validation matrix](docs/inductor_provenance_demo/triton_experimental/model_validation_result.json)
-   and [provenance A/B result](docs/inductor_provenance_demo/triton_experimental/provenance_ab_result.json)
-5. Reproduction scripts:
-   [Llama end-to-end](docs/inductor_provenance_demo/triton_experimental/llama_swiglu_demo.py),
-   [A/B boundaries](docs/inductor_provenance_demo/triton_experimental/provenance_ab_probe.py),
-   [minimal static](docs/inductor_provenance_demo/triton_experimental/static_probe.py),
-   [minimal forward/backward timeline](docs/inductor_provenance_demo/triton_experimental/timeline_probe.py),
-   and [rsplit timeline](docs/inductor_provenance_demo/triton_experimental/rsplit_timeline_probe.py)
-6. Preserved smoke artifacts:
-   [three-panel HTML](docs/inductor_provenance_demo/triton_experimental/provenance_tracking.html),
-   [node mappings](docs/inductor_provenance_demo/triton_experimental/node_mappings.json),
-   and [kernel stacks](docs/inductor_provenance_demo/triton_experimental/kernel_stack_traces.json)
+## 核心演示
 
-The compatibility link
-[`provenance_tracking.html`](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/provenance_tracking.html)
-opens the forward view. Download an HTML file to open the interactive
-three-panel view locally.
-Load the Llama or focused timeline trace JSON files into Perfetto.
+- [Llama forward 三栏页面](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html)
+- [Llama backward 三栏页面](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_backward.html)
+- [Llama 验证结果](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_result.json)
+- [Llama 静态节点映射](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_node_mappings.json)
+- [Llama Perfetto trace](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_timeline_trace.json)
+- [代表性模型验证矩阵](docs/triton_experimental/artifacts/validation/model_validation_result.json)
+- [全部产物索引](docs/triton_experimental/artifacts/README.md)
 
-## Historical research
+HTML 需要下载到本地浏览器打开。timeline trace JSON 可载入 Perfetto。forward 与
+backward 必须分别阅读：两个页面的 FX `GraphModule` 都显示 `def forward`，这是 FX 的
+统一图入口命名，不表示 backward 页面执行的是模型前向。
 
-- [Beginner guide](docs/inductor_provenance_npu_beginner_guide.md)
-- [Full research notes](docs/inductor_provenance_npu_research.md)
-- [CPU visualization research](docs/cpu_provenance_visualization_demo.md)
-- [Earlier NPU visualization research](docs/npu_provenance_visualization_demo.md)
-- [FlexAttention template research](docs/npu_template_provenance_visualization_demo.md)
-- [Default BlockMask research](docs/npu_default_block_mask_provenance_demo.md)
-- [Default BlockMask backward investigation](docs/npu_default_block_mask_backward_investigation.md)
-
-## Repository layout
+## 文件树
 
 ```text
-docs/       Research notes, guides, curated HTML/JSON evidence, and NPU probes
-examples/   Earlier minimal CPU/NPU provenance probes
+.
+├── README.md
+└── docs
+    ├── README.md
+    ├── beginner_guide.md
+    ├── technical_reference.md
+    ├── history_summary.md
+    └── triton_experimental
+        ├── README.md
+        ├── scripts
+        │   ├── README.md
+        │   └── *.py
+        └── artifacts
+            ├── README.md
+            ├── llama_swiglu
+            ├── static_smoke
+            ├── timeline
+            └── validation
 ```
 
-Run NPU examples from a directory outside a `torch_npu` source tree to avoid
-source-tree import contamination. Select an idle device with `npu-smi info`
-before setting `ASCEND_RT_VISIBLE_DEVICES`.
+文件树按“学习文档、当前交付、复现脚本、验收产物”收束。完全重复的 Llama forward
+兼容 HTML 已删除；需求变更前的分散演示文档合并到历史摘要，原始细节仍可从 Git 历史
+提交 `5ace897` 恢复。
 
-Some documents retain absolute paths and links to generated artifacts from the
-original experiment host. Those paths are evidence and reproduction references;
-the curated `triton_experimental` HTML, static mappings, timeline traces/results,
-and reproduction scripts are included. Wheels, build logs, caches, and temporary
-profiler directories remain excluded.
+## 文档语言与原始产物
 
-## Scope
-
-The current delivery concerns both static compiler provenance and runtime
-timeline attribution for `triton_experimental`:
-
-```text
-pre-grad FX nodes <-> post-grad FX nodes <-> generated kernels
-```
-
-Runtime attribution uses an NPU adapter for CANN/Ascend trace schemas while
-reusing the community Inductor trace processor. Default Triton, CATLASS, MLIR,
-DVM, AKG, torchair, and AOTInductor acceptance remain outside this delivery.
+说明性 Markdown 文档统一使用中文。源码标识、配置项、kernel 名、JSON schema 和
+`tlparse` 自动生成 HTML 保留社区原始英文格式，以保证证据可复现并与社区工具对齐。

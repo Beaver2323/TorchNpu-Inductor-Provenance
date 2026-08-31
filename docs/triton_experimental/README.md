@@ -1,4 +1,6 @@
-# triton_experimental Inductor provenance 新手指南
+# `triton_experimental` Inductor 来源追踪交付指南
+
+> 最后更新：2026-08-31 19:51 CST（UTC+08:00）
 
 本文说明 `torch_npu/_inductor/triton_experimental` 后端的 Inductor
 provenance（来源追踪）是什么、如何实现、如何运行，以及当前已经验证到什么程度。
@@ -279,7 +281,7 @@ python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/t
 ```
 
 代表性模块的结构化验证范围见
-[model_validation_result.json](./model_validation_result.json)。其中 Llama 的数值、梯度、
+[model_validation_result.json](./artifacts/validation/model_validation_result.json)。其中 Llama 的数值、梯度、
 timeline、forward 三栏映射和 backward post-grad→kernel 映射通过；backward
 pre-grad→生成代码的覆盖遵循社区 PyTorch 的现有边界。ConvNeXt 和 Transformer 的后端
 边界未混入 PASS 计数。
@@ -294,8 +296,8 @@ export TORCH_DEVICE_BACKEND_AUTOLOAD=0
 export ASCEND_RT_VISIBLE_DEVICES=7
 
 export TORCH_TRACE=/home/z50063656/Tracking/triton_experimental_delivery/my_torch_trace
-export DEMO_ROOT=/path/to/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental
-python "$DEMO_ROOT/static_probe.py" \
+export DEMO_ROOT=/path/to/TorchNpu-Inductor-Provenance/docs/triton_experimental
+python "$DEMO_ROOT/scripts/static_probe.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_static_run \
   --expect-mapped
 
@@ -309,7 +311,7 @@ backward、输入/参数梯度、静态映射和运行时 timeline：
 
 ```bash
 export TORCH_TRACE=/home/z50063656/Tracking/triton_experimental_delivery/my_llama_trace
-python "$DEMO_ROOT/llama_swiglu_demo.py" \
+python "$DEMO_ROOT/scripts/llama_swiglu_demo.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_llama_run
 
 tlparse -i "$TORCH_TRACE"/*.log \
@@ -330,15 +332,15 @@ tlparse -i "$TORCH_TRACE"/*.log \
 
 主演示拆成两个独立页面：
 
-- [Llama forward 三栏 HTML](./llama_swiglu/provenance_tracking_forward.html)，页面中的
+- [Llama forward 三栏 HTML](./artifacts/llama_swiglu/provenance_tracking_forward.html)，页面中的
   AOT ID 是 `0_forward`；
-- [Llama backward 三栏 HTML](./llama_swiglu/provenance_tracking_backward.html)，页面中的
+- [Llama backward 三栏 HTML](./artifacts/llama_swiglu/provenance_tracking_backward.html)，页面中的
   AOT ID 是 `0_backward`。
 
-[兼容入口](./llama_swiglu/provenance_tracking.html)指向内容完全相同的 forward 页面，
-因此此前关注的左栏第 33 行可以继续用原 URL 查看。每个页面只表示一个编译单元，
-不再把一个 HTML 描述为同时包含 forward 和 backward。原来的
-[三操作 smoke 页面](./provenance_tracking.html)继续保留，便于第一次阅读时快速定位。
+每个页面只表示一个编译单元，不再把一个 HTML 描述为同时包含 forward 和 backward。
+此前的 `provenance_tracking.html` 与 forward 页面字节完全相同，文件树收束时已经删除，
+避免同一证据维护两个文件名。原来的
+[三操作 smoke 页面](./artifacts/static_smoke/provenance_tracking.html)继续保留，便于第一次阅读时快速定位。
 
 三栏含义：
 
@@ -382,7 +384,7 @@ backward 页面包含 `silu_backward`、reduction 和 RMSNorm gradient 映射。
 映射，但社区 backward graph 当前没有足够的 `from_node` 元数据把该 `mm` 再关联回这个
 pre-grad `linear_2`。这属于社区 PyTorch 的现有静态 provenance 覆盖边界，不是
 `triton_experimental` 后端丢失 kernel handle。完整原始关系见
-[llama_swiglu_node_mappings.json](./llama_swiglu/llama_swiglu_node_mappings.json)。
+[llama_swiglu_node_mappings.json](./artifacts/llama_swiglu/llama_swiglu_node_mappings.json)。
 
 这与社区源码的实现一致：`torch/_inductor/debug.py` 中
 `create_mapping_pre_post_grad_nodes()` 只递归消费 `from_node`；
@@ -414,36 +416,36 @@ tlparse 会生成多个 HTML，因为它们职责不同：`index.html` 是导航
 先把本仓演示目录设置为 `DEMO_ROOT`：
 
 ```bash
-export DEMO_ROOT=/path/to/TorchNpu-Inductor-Provenance/docs/inductor_provenance_demo/triton_experimental
+export DEMO_ROOT=/path/to/TorchNpu-Inductor-Provenance/docs/triton_experimental
 ```
 
 普通 forward/backward：
 
 ```bash
-python "$DEMO_ROOT/timeline_probe.py" \
+python "$DEMO_ROOT/scripts/timeline_probe.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_timeline_forward_backward
 ```
 
 Llama 动态形状前反向主演示：
 
 ```bash
-python "$DEMO_ROOT/llama_swiglu_demo.py" \
+python "$DEMO_ROOT/scripts/llama_swiglu_demo.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_llama_run
 ```
 
 rsplit 双 kernel：
 
 ```bash
-python "$DEMO_ROOT/rsplit_timeline_probe.py" \
+python "$DEMO_ROOT/scripts/rsplit_timeline_probe.py" \
   --output-dir /home/z50063656/Tracking/triton_experimental_delivery/my_timeline_rsplit
 ```
 
 得到的 `*.pt.trace.json` 可载入 Perfetto。选中以 `triton_` 或 `k_` 开头的 device
 kernel，在事件参数中查看 `stack`。仓库内提供三份可复现 trace：
 
-- [Llama forward/backward trace](./llama_swiglu/llama_swiglu_timeline_trace.json)
-- [普通 forward/backward trace](./timeline_forward_backward_trace.json)
-- [rsplit partial/combine trace](./timeline_rsplit_trace.json)
+- [Llama forward/backward trace](./artifacts/llama_swiglu/llama_swiglu_timeline_trace.json)
+- [普通 forward/backward trace](./artifacts/timeline/forward_backward_trace.json)
+- [rsplit partial/combine trace](./artifacts/timeline/rsplit_trace.json)
 
 ## 12. 本轮验收证据
 
@@ -483,8 +485,8 @@ provenance；两组在相同位置生成相同失败 kernel。
   `tl.store` mask 无法广播而耗尽所有 Triton config。
 
 因此两个边界均为 `NOT_CAUSED_BY_PROVENANCE`。完整证据见
-[provenance_ab_result.json](./provenance_ab_result.json)，复现入口为
-[provenance_ab_probe.py](./provenance_ab_probe.py)。
+[provenance_ab_result.json](./artifacts/validation/provenance_ab_result.json)，复现入口为
+[provenance_ab_probe.py](./scripts/provenance_ab_probe.py)。
 
 ### 12.2 为什么本轮不能把 AOTInductor 标为完成
 
@@ -520,29 +522,12 @@ Atlas A5；本机 `npu-smi` 显示为 Ascend910B2。继续修改共享 AOTI runt
 
 ## 13. 产物索引
 
-- [Llama forward 三栏 HTML](./llama_swiglu/provenance_tracking_forward.html)：`0_forward` 独立页面。
-- [Llama backward 三栏 HTML](./llama_swiglu/provenance_tracking_backward.html)：`0_backward` 独立页面。
-- [Llama 三栏兼容入口](./llama_swiglu/provenance_tracking.html)：内容与 forward 页面相同。
-- [Llama 验证结果](./llama_swiglu/llama_swiglu_result.json)：两组形状、数值/梯度和 timeline 摘要。
-- [Llama node mappings](./llama_swiglu/llama_swiglu_node_mappings.json)：forward/backward 静态映射。
-- [Llama kernel stacks](./llama_swiglu/llama_swiglu_kernel_stacks.json)：运行时 kernel 源码栈。
-- [Llama timeline trace](./llama_swiglu/llama_swiglu_timeline_trace.json)：可载入 Perfetto。
-- [llama_swiglu_demo.py](./llama_swiglu_demo.py)：主演示独立复现脚本。
-- [model_validation_result.json](./model_validation_result.json)：三种代表性模型/模块验证矩阵。
-- [provenance_ab_result.json](./provenance_ab_result.json)：level 0/2 因果对照。
-- [provenance_ab_probe.py](./provenance_ab_probe.py)：边界 A/B 独立探针。
-- [static_result.json](./static_result.json)：wheel 静态 level 1 运行摘要。
-- [static_level2_result.json](./static_level2_result.json)：basic level 2 的真实 NPU 静态运行摘要。
-- [node_mappings.json](./node_mappings.json)：kernel 与 post/pre-grad 节点关系。
-- [kernel_stack_traces.json](./kernel_stack_traces.json)：kernel 与 Python 源码栈关系。
-- [provenance_tracking.html](./provenance_tracking.html)：下载后可离线打开的 tlparse 三栏页面。
-- [timeline_forward_backward_result.json](./timeline_forward_backward_result.json)：普通前后向摘要。
-- [timeline_forward_backward_trace.json](./timeline_forward_backward_trace.json)：普通前后向 Perfetto trace。
-- [timeline_rsplit_result.json](./timeline_rsplit_result.json)：rsplit 摘要。
-- [timeline_rsplit_trace.json](./timeline_rsplit_trace.json)：rsplit Perfetto trace。
-- [static_probe.py](./static_probe.py)：静态 provenance 独立复现实验。
-- [timeline_probe.py](./timeline_probe.py)：普通 forward/backward timeline 独立复现实验。
-- [rsplit_timeline_probe.py](./rsplit_timeline_probe.py)：rsplit timeline 独立复现实验。
+- [验收产物总索引](./artifacts/README.md)：按 Llama、静态 smoke、timeline 和验证矩阵分组。
+- [复现脚本总索引](./scripts/README.md)：五个当前范围内的独立探针。
+- [Llama forward 三栏 HTML](./artifacts/llama_swiglu/provenance_tracking_forward.html)：`0_forward` 独立页面。
+- [Llama backward 三栏 HTML](./artifacts/llama_swiglu/provenance_tracking_backward.html)：`0_backward` 独立页面。
+- [Llama 验证结果](./artifacts/llama_swiglu/llama_swiglu_result.json)：两组形状、数值/梯度和 timeline 摘要。
+- [代表性模型验证矩阵](./artifacts/validation/model_validation_result.json)：三种模型/模块的通过项和后端边界。
 
 ## 14. 尚未完成与风险
 

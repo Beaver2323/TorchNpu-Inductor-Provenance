@@ -1,6 +1,9 @@
-# PyTorch Feature 设计与实现分析
+# TorchInductor 来源追踪 NPU 适配技术参考
 
-> 第一次接触本项目时，建议先阅读 [NPU 适配新手入门与源码导读](./inductor_provenance_npu_beginner_guide.md)，再使用本文作为深入源码和设计细节的参考。
+> 最后更新：2026-08-31 19:51 CST（UTC+08:00）
+>
+> 第一次接触本项目时，建议先阅读 [NPU 适配新手入门与源码导读](./beginner_guide.md)，
+> 再使用本文作为深入源码和设计细节的参考。
 
 > 当前交付范围（2026-08-27）：本文保留需求变更前的多后端研究作为历史背景；正式
 > 实现只覆盖 `torch_npu/_inductor/triton_experimental`。官方目标仓为
@@ -451,7 +454,10 @@ torch_npu `TraceViewParser` 输出的是事件 list，并使用：
 
 ### 8. 当前实机验证进度
 
-最小脚本见 [npu_provenance_demo.py](../examples/npu_provenance_demo.py)，模型为可融合的 `add -> relu -> mul`。测试严格从 `/home/z50063656/tmp` 启动，并把 trace、debug 和 cache 隔离到临时目录。
+最小脚本见
+[`static_probe.py`](./triton_experimental/scripts/static_probe.py)，模型为可融合的
+`add -> relu -> mul`。测试严格从 `/home/z50063656/tmp` 启动，并把 trace、debug 和
+cache 隔离到临时目录。
 
 | 阶段 | 结果 | 证据/含义 |
 | --- | --- | --- |
@@ -489,7 +495,10 @@ torch_npu `TraceViewParser` 输出的是事件 list，并使用：
 }
 ```
 
-环境基线演示见 [npu_inductor_baseline_demo.md](./npu_inductor_baseline_demo.md)，CPU 三栏可视化实测见 [cpu_provenance_visualization_demo.md](./cpu_provenance_visualization_demo.md)，修改后的普通 NPU 完整演示见 [npu_provenance_visualization_demo.md](./npu_provenance_visualization_demo.md)，template 专项见 [npu_template_provenance_visualization_demo.md](./npu_template_provenance_visualization_demo.md)。未适配 NPU provenance 运行目录为 `/home/z50063656/tmp/tracking-provenance-baseline.bpyBfR`，普通路径产物位于 `npu_provenance_verified_20260820/`，template 产物位于 `npu_template_provenance_verified_20260820/`。
+环境基线、CPU 三栏、修改前后普通 NPU、cache 和 template 专项的结论已收束到
+[历史研究摘要](./history_summary.md)。未适配 NPU provenance 运行目录为
+`/home/z50063656/tmp/tracking-provenance-baseline.bpyBfR`；当前正式产物统一位于
+[`triton_experimental/artifacts`](./triton_experimental/artifacts/README.md)。
 
 ## 扩展点分析
 
