@@ -17,7 +17,7 @@
   "models": [
     {
       "name": "Llama-style RMSNorm + SwiGLU residual block",
-      "status": "PASS",
+      "status": "PASS_WITH_COMMUNITY_BOUNDARY",
       "base_shape": [2, 32, 256],
       "alternate_shape": [3, 24, 256],
       "validated": [
@@ -25,11 +25,18 @@
         "backward input gradients",
         "all parameter gradients",
         "dynamic-shape reuse",
-        "static provenance mappings",
+        "forward three-panel static provenance mappings",
+        "backward post-grad-to-kernel static provenance mappings",
         "forward and backward timeline stacks"
       ],
       "mapping_files": 2,
-      "generated_device_kernel_minimum": 6
+      "generated_device_kernel_minimum": 6,
+      "not_validated_as_full_coverage": [
+        "every backward pre-grad node transitively maps to generated code"
+      ],
+      "community_boundary": [
+        "backward nodes can lack from_node metadata needed for a complete pre-grad-to-code chain"
+      ]
     },
     {
       "name": "ConvNeXt block",

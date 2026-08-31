@@ -19,6 +19,17 @@
     256
   ],
   "mapping_graph_count": 2,
+  "static_provenance_scope": {
+    "forward_three_panel_mapping": "PASS",
+    "backward_post_grad_to_kernel_mapping": "PASS",
+    "backward_pre_grad_to_generated_code": "PARTIAL_COMMUNITY_BOUNDARY",
+    "known_boundary": {
+      "pre_grad_node": "linear_2",
+      "post_grad_node": "permute_2",
+      "generated_code_handle": "extern_kernels.mm:8",
+      "reason": "community backward from_node metadata does not connect the downstream mm node back to this pre-grad node"
+    }
+  },
   "validation": {
     "base_forward_max_abs_diff": 2.384185791015625e-07,
     "base_input_grad_max_abs_diff": 4.76837158203125e-07,
@@ -166,9 +177,12 @@
     "temporary_kernel_category_count": 0
   },
   "artifacts": {
+    "forward_html": "provenance_tracking_forward.html",
+    "backward_html": "provenance_tracking_backward.html",
+    "compatibility_html": "provenance_tracking.html",
     "node_mappings": "llama_swiglu_node_mappings.json",
     "kernel_stacks": "llama_swiglu_kernel_stacks.json",
     "timeline_trace": "llama_swiglu_timeline_trace.json"
   },
-  "status": "PASS"
+  "status": "PASS_WITH_COMMUNITY_PROVENANCE_BOUNDARY"
 }

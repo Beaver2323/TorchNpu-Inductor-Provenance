@@ -31,7 +31,9 @@ current acceptance scope.
 - `triton_experimental` rsplit partial/combine timeline attribution: verified.
 - A Llama-style RMSNorm + SwiGLU residual block: verified for two dynamic
   shapes, forward/backward values, input gradients, all parameter gradients,
-  static mappings, and timeline source stacks.
+  forward three-panel static mappings, backward post-grad-to-kernel mappings,
+  and timeline source stacks. As in community PyTorch, not every backward
+  pre-grad node has a complete transitive link to generated code.
 - ConvNeXt dynamic forward and TransformerEncoderLayer base-shape backward:
   verified within the explicitly recorded backend boundaries.
 - NPU trace list/dict roots, gzip output, event limits, and state cleanup:
@@ -51,7 +53,8 @@ The primary demo is now a Llama-style RMSNorm + SwiGLU residual block rather
 than the earlier three-operation smoke model.
 
 1. [Guide and artifact index](docs/inductor_provenance_demo/triton_experimental/README.md)
-2. Llama module: [interactive three-panel HTML](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/provenance_tracking.html),
+2. Llama module: [forward three-panel HTML](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/provenance_tracking_forward.html),
+   [backward three-panel HTML](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/provenance_tracking_backward.html),
    [validation result](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_result.json),
    [node mappings](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_node_mappings.json),
    and [kernel stacks](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/llama_swiglu_kernel_stacks.json)
@@ -71,7 +74,10 @@ than the earlier three-operation smoke model.
    [node mappings](docs/inductor_provenance_demo/triton_experimental/node_mappings.json),
    and [kernel stacks](docs/inductor_provenance_demo/triton_experimental/kernel_stack_traces.json)
 
-Download either HTML file to open the interactive three-panel view locally.
+The compatibility link
+[`provenance_tracking.html`](docs/inductor_provenance_demo/triton_experimental/llama_swiglu/provenance_tracking.html)
+opens the forward view. Download an HTML file to open the interactive
+three-panel view locally.
 Load the Llama or focused timeline trace JSON files into Perfetto.
 
 ## Historical research

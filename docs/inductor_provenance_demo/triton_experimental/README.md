@@ -180,8 +180,10 @@ backward 值得单独验证，是因为它由 AOTAutograd 延迟编译，使用
 不要求一定使用 FlexAttention backward。任何能稳定进入
 `triton_experimental`、产生真实 backward Triton kernel，并覆盖相同关联链路的模型
 都可验证基础 contract。本交付保留小型 `sin + relu + mul` 作为快速 smoke test，并把
-完整通过的 Llama 风格 RMSNorm + SwiGLU 残差块作为远端主演示。FlexAttention backward
-只能作为更复杂的模板/融合专项，不能替代基础链路验证。
+在社区 provenance 能力边界内通过的 Llama 风格 RMSNorm + SwiGLU 残差块作为远端主演示。
+这里的“通过”包括数值/梯度、timeline 以及 forward 三栏映射；backward 验证
+post-grad 到 kernel 的映射，但不承诺每个 pre-grad 节点都有到生成代码的完整传递链。
+FlexAttention backward 只能作为更复杂的模板/融合专项，不能替代基础链路验证。
 
 rsplit reduction 一次 scheduler 计划会发射两个运行时 kernel：partial 先写 workspace，
 combine 再归并。如果只在整个 schedule 末尾登记一次，两个 launch 中至少一个没有独立
@@ -277,8 +279,10 @@ python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/t
 ```
 
 代表性模块的结构化验证范围见
-[model_validation_result.json](./model_validation_result.json)。其中 Llama 案例完整通过；
-ConvNeXt 和 Transformer 的后端边界未混入 PASS 计数。
+[model_validation_result.json](./model_validation_result.json)。其中 Llama 的数值、梯度、
+timeline、forward 三栏映射和 backward post-grad→kernel 映射通过；backward
+pre-grad→生成代码的覆盖遵循社区 PyTorch 的现有边界。ConvNeXt 和 Transformer 的后端
+边界未混入 PASS 计数。
 
 ## 9. 生成静态 tlparse 页面
 
@@ -324,9 +328,16 @@ tlparse -i "$TORCH_TRACE"/*.log \
 
 ## 10. 如何阅读三栏 HTML
 
-主演示页面是
-[Llama 三栏 provenance HTML](./llama_swiglu/provenance_tracking.html)，包含同一编译
-ID 下的 forward/backward 图与生成代码。原来的
+主演示拆成两个独立页面：
+
+- [Llama forward 三栏 HTML](./llama_swiglu/provenance_tracking_forward.html)，页面中的
+  AOT ID 是 `0_forward`；
+- [Llama backward 三栏 HTML](./llama_swiglu/provenance_tracking_backward.html)，页面中的
+  AOT ID 是 `0_backward`。
+
+[兼容入口](./llama_swiglu/provenance_tracking.html)指向内容完全相同的 forward 页面，
+因此此前关注的左栏第 33 行可以继续用原 URL 查看。每个页面只表示一个编译单元，
+不再把一个 HTML 描述为同时包含 forward 和 backward。原来的
 [三操作 smoke 页面](./provenance_tracking.html)继续保留，便于第一次阅读时快速定位。
 
 三栏含义：
@@ -342,10 +353,14 @@ ID 下的 forward/backward 图与生成代码。原来的
 1. 在右栏找到带 `[Provenance debug handles]` 的 kernel 调用。
 2. 点击或悬停该调用行，页面会把对应的 post-grad 节点标黄。
 3. 再观察左栏的关联高亮，回溯到原始操作。
-4. 加粗表示当前 provenance 功能覆盖并可交互的节点或 kernel；普通文本不代表错误。
+4. 加粗表示该行至少存在一条可交互的相邻映射；它不保证
+   pre-grad→post-grad→生成代码三段一定全部连通。普通文本也不代表错误。
 5. kernel 名末尾的 `:1` 是一次调用的 debug handle，不是 Triton launch 参数。
 
-Llama 主演示中，右栏可看到多个 Triton 与 extern kernel handle。例如：
+forward 页面中，左栏第 33 行的 `linear_2` 会映射到中栏第 34～38 行，其中第 36～38
+行继续映射到右栏第 222、350、355 行。因此这个页面可完整演示三栏联动。
+
+Llama forward 页面中，右栏可看到多个 Triton 与 extern kernel handle。例如：
 
 ```text
 triton_unk_fused_mean_mul_pow_rsqrt_0:1
@@ -361,9 +376,22 @@ triton_unk_fused_add_addmm_view_2:6
   <-> 用户模型: down projection + residual
 ```
 
-同一页面还包含 backward 的 `silu_backward`、reduction 和 RMSNorm gradient 映射。
-完整原始关系见
+backward 页面包含 `silu_backward`、reduction 和 RMSNorm gradient 映射。该页左栏第 33
+行 `linear_2` 只直接映射到中栏 `permute_2`，而 `permute_2` 没有独立生成 kernel，因而
+右栏不会随之高亮。真正调用 `extern_kernels.mm:8` 的中栏 `mm` 节点有 post-grad→代码
+映射，但社区 backward graph 当前没有足够的 `from_node` 元数据把该 `mm` 再关联回这个
+pre-grad `linear_2`。这属于社区 PyTorch 的现有静态 provenance 覆盖边界，不是
+`triton_experimental` 后端丢失 kernel handle。完整原始关系见
 [llama_swiglu_node_mappings.json](./llama_swiglu/llama_swiglu_node_mappings.json)。
+
+这与社区源码的实现一致：`torch/_inductor/debug.py` 中
+`create_mapping_pre_post_grad_nodes()` 只递归消费 `from_node`；
+`torch/_inductor/utils.py` 在 backward 分支也明确记录 backward node 当前可能没有
+`from_node`。本交付没有额外合成社区不存在的跨图关系。
+
+两个页面里的 FX `GraphModule` 都显示 `def forward` 是正常现象。FX 对任意已捕获的计算图
+统一生成 `forward` 入口；在 backward 页面里，这个函数的输入是保存的张量和 tangent，
+输出是各输入/参数的梯度，所以它仍然代表反向图，而不是又执行一次模型前向。
 
 JIT 模式的第三栏是 Python wrapper，因此 tlparse 内部有效行号映射是
 `pyCodeToPost/postToPyCode`。原始 JSON 为兼容历史格式仍使用
@@ -372,9 +400,14 @@ JIT 模式的第三栏是 Python wrapper，因此 tlparse 内部有效行号映�
 
 tlparse 会生成多个 HTML，因为它们职责不同：`index.html` 是导航页，
 `failures_and_restarts.html` 汇总重编译/失败，`compilation_metrics_*.html` 展示指标，
-`provenance_tracking_<compile-id>.html` 才是某次编译图的三栏页面。一个程序存在多个
-compile id、forward/backward 或重编译时，会有多个 provenance 页面。文件名中的
+`provenance_tracking_<compile-id>.html` 才是某次编译图的三栏页面。文件名中的
 `-_0_0_0` 是 tlparse 编译标识，不表示生成了四份相同结果。
+
+本次 Llama trace 的 forward/backward 记录使用同一个可见 compile id；把整份 trace 一次
+交给当前社区 `tlparse` 时，同名 highlighter 最终展示后出现的 backward 记录。为了让两种
+图都可审阅，本仓使用同一份原始 trace 分别生成 forward-only highlighter，并把完整 trace
+生成的 backward highlighter 原样保留。这只是拆分展示，页面格式和映射语义没有超出社区
+`tlparse`。
 
 ## 11. 生成运行时时间线
 
@@ -427,7 +460,7 @@ kernel，在事件参数中查看 `stack`。仓库内提供三份可复现 trace
 | forward/backward timeline | PASS | 两个 device kernel 均有 stack |
 | rsplit timeline | PASS | partial/combine 两个 device kernel 均有 stack |
 | 代表性模型/模块套件 | PASS | NPU 6 串行回归 3/3，无 skip，238.232 秒 |
-| Llama 远端主演示 | PASS | 两组动态形状、9 个 timeline kernel 事件、tlparse 250 条 |
+| Llama 远端主演示 | PASS（社区边界内） | 两组动态形状、9 个 timeline kernel 事件；forward-only tlparse 202 条、完整 trace 250 条；forward 三栏映射完整，backward post-grad→kernel 通过，部分 pre-grad→backward 代码链不完整 |
 | AOTInductor 可行性门禁 | BLOCKED | 当前硬件/基线不满足 NPU AOTI 验证前提，详见 12.2 节 |
 
 静态 probe 中 `fxgraph_cache_hit=0`、`fxgraph_cache_bypass=1` 的原始 trace 原因是
@@ -487,7 +520,9 @@ Atlas A5；本机 `npu-smi` 显示为 Ascend910B2。继续修改共享 AOTI runt
 
 ## 13. 产物索引
 
-- [Llama 三栏 HTML](./llama_swiglu/provenance_tracking.html)：当前远端主演示。
+- [Llama forward 三栏 HTML](./llama_swiglu/provenance_tracking_forward.html)：`0_forward` 独立页面。
+- [Llama backward 三栏 HTML](./llama_swiglu/provenance_tracking_backward.html)：`0_backward` 独立页面。
+- [Llama 三栏兼容入口](./llama_swiglu/provenance_tracking.html)：内容与 forward 页面相同。
 - [Llama 验证结果](./llama_swiglu/llama_swiglu_result.json)：两组形状、数值/梯度和 timeline 摘要。
 - [Llama node mappings](./llama_swiglu/llama_swiglu_node_mappings.json)：forward/backward 静态映射。
 - [Llama kernel stacks](./llama_swiglu/llama_swiglu_kernel_stacks.json)：运行时 kernel 源码栈。
