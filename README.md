@@ -1,6 +1,6 @@
 # TorchNPU Inductor 来源追踪
 
-> 最后更新：2026-09-02 01:10 CST（UTC+08:00）
+> 最后更新：2026-09-02 01:23 CST（UTC+08:00）
 
 本仓库存放 TorchInductor Provenance Tracking（来源追踪）在昇腾 NPU 上的调研文档、
 复现脚本和验收产物。当前正式范围只覆盖
@@ -35,88 +35,166 @@ timeline trace/result 与复现脚本作为配套证据。本仓不是源码交�
 验证环境为 PyTorch `release/2.14`、匹配的 `torch_npu` wheel、Triton Ascend
 `release/3.2.2`、CANN 9.0.1 和 Ascend 910B2。
 
-## 快速使用
+## 用户使用方法
 
-下面先给出可直接复制的最短路径。详细原理、wheel 安装和全部探针参数见
-[`triton_experimental` 交付说明](docs/triton_experimental/README.md)。
+使用 provenance 不需要本仓的演示脚本。用户只需要一个已安装 PyTorch、
+torch_npu 和 Triton Ascend 的 NPU 环境，然后在自己原有的 `torch.compile`
+程序上开启追踪。前提是已安装的 PyTorch/torch_npu wheel 包含本功能；
+本文档仓本身不会把功能动态注入普通 wheel。
 
-### 1. 不跑程序，直接看现成演示
+### 1. 检查环境是否包含该功能
 
-克隆本仓后，用浏览器打开下列页面：
-
-- [Llama forward 三栏页面](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html)
-- [Llama backward 三栏页面](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_backward.html)
-- [三操作最小页面](docs/triton_experimental/artifacts/static_smoke/provenance_tracking.html)
-
-如果浏览器不允许直接读取本地 HTML，可以启动一个只读静态服务：
+在自己的 PyTorch + torch_npu 环境中执行：
 
 ```bash
-cd /home/z50063656/tmp
-python -m http.server 8000 \
-  --directory /home/z50063656/TorchNpu-Inductor-Provenance
+python -c '
+from torch._inductor import config
+from torch_npu.profiler import inductor_trace_handler
+print("provenance level:", config.trace.provenance_tracking_level)
+print("NPU timeline handler: OK")
+'
 ```
 
-然后访问
-`http://127.0.0.1:8000/docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html`。
+如果 `provenance_tracking_level` 或 `inductor_trace_handler` 不存在，表示当前 wheel
+未包含对应的 PyTorch 社区能力或 torch_npu 适配，需先升级到包含交付提交的
+wheel，而不是下载本文档仓的脚本。
 
-### 2. 在当前 Tracking 环境实测静态 provenance
+### 2. 用自己的 `torch.compile` 程序生成静态来源记录
 
-所有测试从 `/home/z50063656/tmp` 启动，不要在 `torch_npu` 源码树内导入
-`torch`。下列命令复用本项目已验证的独立 wheel target，不会修改现有
-conda 环境：
+用户现有程序只需保证使用 `inductor` 和 `triton_experimental`：
 
-```bash
-cd /home/z50063656/tmp
-source /home/z50063656/Tracking/activate_tracking.sh
-
-export PYTHONPATH=/home/z50063656/Tracking/triton_experimental_delivery/wheel_target_20260827_v10:$PYTHONPATH
-export TORCH_DEVICE_BACKEND_AUTOLOAD=0
-export ASCEND_RT_VISIBLE_DEVICES=7
-export DEMO_ROOT=/home/z50063656/TorchNpu-Inductor-Provenance/docs/triton_experimental
-
-export TORCH_TRACE=/home/z50063656/Tracking/triton_experimental_delivery/readme_static_trace_001
-python "$DEMO_ROOT/scripts/static_probe.py" \
-  --output-dir /home/z50063656/Tracking/triton_experimental_delivery/readme_static_run_001 \
-  --level 1 \
-  --expect-mapped
+```python
+compiled_model = torch.compile(
+    model,
+    backend="inductor",
+    options={"npu_backend": "triton_experimental"},
+)
 ```
 
-成功时，脚本会输出 `result.json`，其中 `kernel_to_post` 应将一个
-`triton_*:debug_handle` 映射到 `add/relu/mul`，`max_abs_diff` 应为 0。
-脚本要求 `--output-dir` 与 `TORCH_TRACE` 目录事先不存在；重跑时请换一个新后缀，
-例如把 `_001` 改成 `_002`。
+如果手头没有程序，下面是一个完整的 `your_program.py`。它是普通用户程序，
+不导入本仓任何内容：
 
-### 3. 将本次记录生成 tlparse 三栏 HTML
+```python
+import torch
+import torch_npu  # 注册 NPU 设备和 Inductor 后端
 
-确认 `tlparse --version` 可用；本项目实测版本为 `0.4.8`。如尚未安装，可执行
-`cargo install --locked --version 0.4.8 tlparse`。在上一步同一个 shell 中继续：
+
+class Model(torch.nn.Module):
+    def forward(self, x):
+        return torch.relu(torch.sin(x)) * x
+
+
+model = Model().npu().train()
+x = torch.randn(64, 128, device="npu", requires_grad=True)
+compiled_model = torch.compile(
+    model,
+    backend="inductor",
+    options={"npu_backend": "triton_experimental"},
+    fullgraph=True,
+)
+compiled_model(x).sum().backward()
+torch.npu.synchronize()
+```
+
+在启动 Python 之前设置两个社区 PyTorch 环境变量：
 
 ```bash
-tlparse -i "$TORCH_TRACE"/*.log \
-  -o /home/z50063656/Tracking/triton_experimental_delivery/readme_tlparse_001 \
+export TORCH_TRACE=/tmp/my_inductor_trace
+export INDUCTOR_PROVENANCE=1
+python your_program.py
+```
+
+- `TORCH_TRACE` 指定 PyTorch 结构化编译日志目录。每次测试建议使用新的空目录。
+- `INDUCTOR_PROVENANCE=1` 开启完整来源追踪；可改为 `2` 使用较轻量的 basic
+  模式。`0` 表示关闭。
+- 环境变量必须在 `import torch` 前生效，因为 Inductor 在导入时读取它们。
+- forward 和 backward 都只需正常调用；backward 在首次 `.backward()` 时由
+  AOTAutograd 编译并记录。
+
+### 3. 用 tlparse 生成三栏 HTML
+
+`tlparse` 是独立的可视化工具，不是本仓脚本。首次使用时安装：
+
+```bash
+cargo install tlparse
+```
+
+本项目实测过 `tlparse 0.4.8`。用上一步生成的某一个具体 `.log`
+文件生成页面：
+
+```bash
+tlparse /tmp/my_inductor_trace/<log_file_name>.log \
+  --inductor-provenance \
+  -o /tmp/my_tlparse_output \
   --no-browser
 ```
 
-打开输出目录中的 `index.html`，再进入
-`provenance_tracking_<compile-id>.html`。三栏从左到右分别是 pre-grad FX、post-grad
-FX 和生成的 Triton/Python wrapper 代码。
+不要把日志目录作为 `tlparse parse` 子命令参数。若目录中有多个
+`.log`，应分别解析；单进程普通运行通常只产生一个。打开输出目录的
+`index.html`，进入 **Provenance Tracking** 链接即可看到：
 
-### 4. 实测 forward/backward 运行时 timeline
-
-保持第 2 步的环境变量，执行：
-
-```bash
-python "$DEMO_ROOT/scripts/timeline_probe.py" \
-  --output-dir /home/z50063656/Tracking/triton_experimental_delivery/readme_timeline_run_001
+```text
+pre-grad FX  ↔  post-grad FX  ↔  Inductor 生成代码
 ```
 
-成功后会生成 `*.pt.trace.json` 和 `result.json`。将 trace JSON 载入
-`https://ui.perfetto.dev/`，选中 NPU device kernel 事件，在事件的 `args.stack`
-中查看回填的 Python 源码栈。
+黄色高亮表示当前选中节点/kernel 的来源关系。同一输出目录中的
+`inductor_provenance_tracking_node_mappings*.json` 是对应的机器可读映射。
 
-注意：ComboKernel 当前会在后端代码生成阶段因缺少 `x0/x0mask` 定义而失败，
-不应当作 provenance 成功演示；请使用上述 `static_probe.py`、
-`timeline_probe.py` 或 `llama_swiglu_demo.py`。
+### 4. 在 NPU profiler timeline 中查看运行时源码栈
+
+静态 HTML 只需环境变量。如果还需要把 Python 源码栈回填到 NPU profiler
+device kernel 事件，需把原有 profiling 代码的 `on_trace_ready` 换成
+torch_npu 提供的 handler：
+
+```python
+import torch
+import torch_npu
+from torch._inductor import config
+from torch_npu.profiler import inductor_trace_handler
+
+
+with config.patch(
+    {
+        "trace.provenance_tracking_level": 1,
+        "trace.provenance_tracking_to_timeline": True,
+        "triton.unique_kernel_names": True,
+    }
+):
+    compiled_model = torch.compile(
+        model,
+        backend="inductor",
+        options={"npu_backend": "triton_experimental"},
+    )
+
+    # 先在 profiler 外完成 forward/backward 首次编译。
+    warmup_x = make_input()
+    compiled_model(warmup_x).sum().backward()
+    torch.npu.synchronize()
+
+    handler = inductor_trace_handler(
+        "/tmp/my_npu_timeline", worker_name="rank0"
+    )
+    profile_x = make_input()
+    with torch_npu.profiler.profile(on_trace_ready=handler):
+        compiled_model(profile_x).sum().backward()
+        torch.npu.synchronize()
+```
+
+这里的 `model` 和 `make_input()` 都是用户自己的对象，不来自本仓。输出的
+`/tmp/my_npu_timeline/*.pt.trace.json` 仍是标准 Ascend Chrome trace，可在 Perfetto
+中打开。选中 NPU device kernel 事件后，在 `args.stack` 中查看回填的
+Python 源码栈。
+
+### 5. 已知边界
+
+- 当前交付只验收 `triton_experimental` 后端。
+- ComboKernel 会因 NPU 后端缺少 `x0/x0mask` 定义而编译失败，该问题与
+  provenance 开关无关。
+- backward 页面的 FX `GraphModule` 仍显示 `def forward`，这是 FX 的统一入口
+  命名，不表示它是模型前向图。
+- 验收脚本、专用 wheel target 和 Tracking 绝对路径只用于本项目开发回归，
+  不是用户接口。需要复现交付验收时，再阅读
+  [`triton_experimental` 交付说明](docs/triton_experimental/README.md)。
 
 ## 从哪里开始
 
