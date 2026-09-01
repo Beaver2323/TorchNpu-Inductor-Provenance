@@ -1,6 +1,6 @@
 # TorchNPU Inductor 来源追踪
 
-> 最后更新：2026-08-31 19:51 CST（UTC+08:00）
+> 最后更新：2026-09-01 17:40 CST（UTC+08:00）
 
 本仓库存放 TorchInductor Provenance Tracking（来源追踪）在昇腾 NPU 上的调研文档、
 复现脚本和验收产物。当前正式范围只覆盖
@@ -9,7 +9,9 @@
 
 ## 仓库定位
 
-本仓是文档与证据仓，不是源码交付仓。
+本仓采用文档交付：以 PyTorch 官网公开用法和社区源码实现为基线，用中文主交付文档
+说明设计、调用链、NPU 扩展点、已验证范围和未验收边界；演示 HTML、静态 mapping、
+timeline trace/result 与复现脚本作为配套证据。本仓不是源码交付仓。
 
 - 官方源码目标仓：`https://gitcode.com/Ascend/pytorch`
 - 开发 fork：`https://gitcode.com/gcw_3ffySSwy/pytorch`
@@ -34,13 +36,15 @@
 
 ## 从哪里开始
 
-1. [文档总索引](docs/README.md)：先了解保留内容和阅读顺序。
-2. [新手入门](docs/beginner_guide.md)：理解 pre-grad、post-grad、Inductor IR、kernel
+1. [主交付文档](docs/provenance_delivery.md)：对照官网契约和社区源码理解设计、调用链、
+   NPU 适配点与验收边界。
+2. [文档总索引](docs/README.md)：了解全部交付内容和推荐阅读顺序。
+3. [新手入门](docs/beginner_guide.md)：理解 pre-grad、post-grad、Inductor IR、kernel
    以及静态/运行时来源追踪。
-3. [`triton_experimental` 交付说明](docs/triton_experimental/README.md)：查看实现范围、
+4. [`triton_experimental` 交付说明](docs/triton_experimental/README.md)：查看实现范围、
    复现命令和验收结论。
-4. [技术参考](docs/technical_reference.md)：按源码调用链深入阅读。
-5. [历史研究摘要](docs/history_summary.md)：了解已退出当前范围的早期结论。
+5. [技术参考](docs/technical_reference.md)：查看需求变更前后的完整技术研究。
+6. [历史研究摘要](docs/history_summary.md)：了解已退出当前范围的早期结论。
 
 ## 核心演示
 
@@ -63,6 +67,7 @@ backward 必须分别阅读：两个页面的 FX `GraphModule` 都显示 `def fo
 ├── README.md
 └── docs
     ├── README.md
+    ├── provenance_delivery.md
     ├── beginner_guide.md
     ├── technical_reference.md
     ├── history_summary.md

@@ -1,10 +1,11 @@
 # `triton_experimental` Inductor 来源追踪交付指南
 
-> 最后更新：2026-08-31 19:51 CST（UTC+08:00）
+> 最后更新：2026-09-01 17:40 CST（UTC+08:00）
 
 本文说明 `torch_npu/_inductor/triton_experimental` 后端的 Inductor
 provenance（来源追踪）是什么、如何实现、如何运行，以及当前已经验证到什么程度。
 本文中的结论和产物均来自 Tracking 项目，不使用 `Pass` 项目的环境或结果。
+设计目标、社区源码调用链和扩展建议统一见[主交付文档](../provenance_delivery.md)。
 
 ### 仓库与交付关系
 
@@ -83,14 +84,17 @@ PyTorch 社区的 provenance 主体位于：
 - `torch/_inductor/profiler.py`：把编译期 kernel 信息关联到 CUDA/Kineto timeline。
 - tlparse：把结构化 `TORCH_TRACE` 日志转换为三栏高亮页面。
 
-社区文档说明静态高亮当前覆盖 Triton kernel、C++ kernel 和 combo kernel，并支持
-TorchInductor JIT 与 AOTInductor 产物。社区的完整能力还包括 extern kernel、
-`kernel_information.json`、cache 一致性和 profiler timeline 等测试。
+PyTorch 2.13 官网明确说明三栏静态高亮当前覆盖 Triton kernel、C++ kernel 和 combo
+kernel，并给出 TorchInductor JIT 与 AOTInductor 页面。PyTorch 2.14 社区源码还包含
+cache、`kernel_information.json` 和 profiler timeline 的实现；这些社区能力不会自动
+成为 NPU 已验收能力。
 
 本次 NPU 交付复用社区的图来源追踪、debug handle、artifact 和 timeline 处理算法；
 只在 `triton_experimental` 的 kernel 发射点补齐登记，并在 torch_npu profiler 一侧
 适配 Ascend trace 格式。当前真实验收覆盖 JIT Triton、forward/backward 和 rsplit，
-不能据此宣称 AOTInductor、extern 或其他 NPU 后端已经完成验收。
+不能据此宣称 AOTInductor、NPU C++、社区 combo kernel、extern 或其他 NPU 后端已经
+完成验收。rsplit 是同一调度计划的 partial/combine 多次 launch，不等同于社区 combo
+kernel。
 
 ## 4. 配置级别
 
