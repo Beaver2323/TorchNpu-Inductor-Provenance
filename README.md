@@ -1,6 +1,6 @@
 # TorchNPU Inductor 来源追踪
 
-> 最后更新：2026-09-02 01:23 CST（UTC+08:00）
+> 最后更新：2026-09-02 02:26 CST（UTC+08:00）
 
 本仓库存放 TorchInductor Provenance Tracking（来源追踪）在昇腾 NPU 上的调研文档、
 复现脚本和验收产物。当前正式范围只覆盖
@@ -59,7 +59,55 @@ print("NPU timeline handler: OK")
 未包含对应的 PyTorch 社区能力或 torch_npu 适配，需先升级到包含交付提交的
 wheel，而不是下载本文档仓的脚本。
 
-### 2. 用自己的 `torch.compile` 程序生成静态来源记录
+### 2. 环境变量接口
+
+下列环境变量都应在 `import torch` 前设置，因为 Inductor 在导入配置
+模块时读取它们。
+
+| 环境变量 | 默认值 | 对应配置/作用 |
+| --- | --- | --- |
+| `INDUCTOR_PROVENANCE=0/1/2` | `0` | `trace.provenance_tracking_level`；`1` 为 normal，`2` 为 basic |
+| `TORCH_TRACE=/path/to/dir` | 未设置 | 把 PyTorch 结构化编译日志写入指定目录，供 `tlparse` 解析 |
+| `TORCH_COMPILE_DEBUG_EXTEND=1` | `0` | `trace.provenance_tracking_to_timeline=True`；把来源栈回填到 profiler timeline |
+| `TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1` | `1` | `triton.unique_kernel_names=True`；让 profiler kernel 名可与编译期映射稳定关联 |
+| `TORCH_COMPILE_DEBUG_MAX_EVENTS=<N>` | `500000` | timeline 后处理允许的最大事件数；`0` 表示不限制 |
+| `TORCH_COMPILE_DEBUG=1` | `0` | 开启综合 Inductor debug；未显式设置 `INDUCTOR_PROVENANCE` 时，会把有效 level 提升到 1 |
+
+`TORCH_COMPILE_DEBUG=1` 会同时开启更多编译调试产物，因此日常使用建议按需设置
+前三个专用变量，不把它当作 timeline 开关。
+
+只生成静态 tlparse 页面：
+
+```bash
+export TORCH_TRACE=/tmp/my_inductor_trace
+export INDUCTOR_PROVENANCE=1
+python your_program.py
+```
+
+只生成带源码栈的 NPU profiler timeline：
+
+```bash
+export TORCH_COMPILE_DEBUG_EXTEND=1
+export TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1
+python your_profile_program.py
+```
+
+静态页面和运行时 timeline 同时开启：
+
+```bash
+export TORCH_TRACE=/tmp/my_inductor_trace
+export INDUCTOR_PROVENANCE=1
+export TORCH_COMPILE_DEBUG_EXTEND=1
+export TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1
+python your_profile_program.py
+```
+
+`TORCH_COMPILE_DEBUG_EXTEND=1` 会使
+`config.effective_provenance_tracking_level()` 至少为 1，所以只做 timeline 时不必
+另外设置 `INDUCTOR_PROVENANCE=1`。但环境变量只是开启回填能力；NPU trace
+仍需要下文的 `inductor_trace_handler` 导出和后处理。
+
+### 3. 用自己的 `torch.compile` 程序生成静态来源记录
 
 用户现有程序只需保证使用 `inductor` 和 `triton_experimental`：
 
@@ -107,11 +155,10 @@ python your_program.py
 - `TORCH_TRACE` 指定 PyTorch 结构化编译日志目录。每次测试建议使用新的空目录。
 - `INDUCTOR_PROVENANCE=1` 开启完整来源追踪；可改为 `2` 使用较轻量的 basic
   模式。`0` 表示关闭。
-- 环境变量必须在 `import torch` 前生效，因为 Inductor 在导入时读取它们。
 - forward 和 backward 都只需正常调用；backward 在首次 `.backward()` 时由
   AOTAutograd 编译并记录。
 
-### 3. 用 tlparse 生成三栏 HTML
+### 4. 用 tlparse 生成三栏 HTML
 
 `tlparse` 是独立的可视化工具，不是本仓脚本。首次使用时安装：
 
@@ -140,18 +187,56 @@ pre-grad FX  ↔  post-grad FX  ↔  Inductor 生成代码
 黄色高亮表示当前选中节点/kernel 的来源关系。同一输出目录中的
 `inductor_provenance_tracking_node_mappings*.json` 是对应的机器可读映射。
 
-### 4. 在 NPU profiler timeline 中查看运行时源码栈
+### 5. 在 NPU profiler timeline 中查看运行时源码栈
 
 静态 HTML 只需环境变量。如果还需要把 Python 源码栈回填到 NPU profiler
 device kernel 事件，需把原有 profiling 代码的 `on_trace_ready` 换成
 torch_npu 提供的 handler：
 
+```bash
+export TORCH_COMPILE_DEBUG_EXTEND=1
+export TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1
+python your_profile_program.py
+```
+
+`your_profile_program.py` 中的核心接入代码如下：
+
 ```python
 import torch
 import torch_npu
-from torch._inductor import config
 from torch_npu.profiler import inductor_trace_handler
 
+
+compiled_model = torch.compile(
+    model,
+    backend="inductor",
+    options={"npu_backend": "triton_experimental"},
+)
+
+# 先在 profiler 外完成 forward/backward 首次编译。
+warmup_x = make_input()
+compiled_model(warmup_x).sum().backward()
+torch.npu.synchronize()
+
+handler = inductor_trace_handler(
+    "/tmp/my_npu_timeline", worker_name="rank0"
+)
+profile_x = make_input()
+with torch_npu.profiler.profile(on_trace_ready=handler):
+    compiled_model(profile_x).sum().backward()
+    torch.npu.synchronize()
+```
+
+这里的 `model` 和 `make_input()` 都是用户自己的对象，不来自本仓。输出的
+`/tmp/my_npu_timeline/*.pt.trace.json` 仍是标准 Ascend Chrome trace，可在 Perfetto
+中打开。选中 NPU device kernel 事件后，在 `args.stack` 中查看回填的
+Python 源码栈。
+
+如果不便在启动命令中设置环境变量，可使用等价的 Python 配置，但必须
+让 `config.patch(...)` 同时覆盖编译、warmup 和 profiler 代码段：
+
+```python
+from torch._inductor import config
 
 with config.patch(
     {
@@ -160,32 +245,11 @@ with config.patch(
         "triton.unique_kernel_names": True,
     }
 ):
-    compiled_model = torch.compile(
-        model,
-        backend="inductor",
-        options={"npu_backend": "triton_experimental"},
-    )
-
-    # 先在 profiler 外完成 forward/backward 首次编译。
-    warmup_x = make_input()
-    compiled_model(warmup_x).sum().backward()
-    torch.npu.synchronize()
-
-    handler = inductor_trace_handler(
-        "/tmp/my_npu_timeline", worker_name="rank0"
-    )
-    profile_x = make_input()
-    with torch_npu.profiler.profile(on_trace_ready=handler):
-        compiled_model(profile_x).sum().backward()
-        torch.npu.synchronize()
+    # 在这里执行上述编译、warmup 和 profiling 代码。
+    ...
 ```
 
-这里的 `model` 和 `make_input()` 都是用户自己的对象，不来自本仓。输出的
-`/tmp/my_npu_timeline/*.pt.trace.json` 仍是标准 Ascend Chrome trace，可在 Perfetto
-中打开。选中 NPU device kernel 事件后，在 `args.stack` 中查看回填的
-Python 源码栈。
-
-### 5. 已知边界
+### 6. 已知边界
 
 - 当前交付只验收 `triton_experimental` 后端。
 - ComboKernel 会因 NPU 后端缺少 `x0/x0mask` 定义而编译失败，该问题与
