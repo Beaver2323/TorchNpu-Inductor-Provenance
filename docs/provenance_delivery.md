@@ -5,7 +5,7 @@
 >
 > 交付方式：中文文档主交付，源码与实测产物作为可追溯证据
 >
-> 最后更新：2026-09-01 17:40 CST（UTC+08:00）
+> 最后更新：2026-09-02 00:03 CST（UTC+08:00）
 
 本文以 [PyTorch 2.13 Provenance Tracking 官方文档](https://docs.pytorch.org/docs/2.13/user_guide/torch_compiler/torch.compiler_inductor_provenance.html)
 定义公开使用契约，以 PyTorch `release/2.14` 提交
@@ -37,13 +37,13 @@ combo kernel。它还提供 kernel 对应源码栈和 debug handle。公开用�
 | --- | --- | --- | --- |
 | 输入图、post-grad 图、生成代码三栏联动 | `torch.compiler_inductor_provenance.md` | PASS，forward 完整；backward 遵循社区 `from_node` 边界 | [Llama HTML](./triton_experimental/artifacts/llama_swiglu/) |
 | `INDUCTOR_PROVENANCE=1` 打开追踪 | `torch/_inductor/config.py::trace.provenance_tracking_level` | PASS，直接复用社区配置 | [`static_probe.py`](./triton_experimental/scripts/static_probe.py) |
-| 直接对日志运行 `tlparse --inductor-provenance` | 官网使用步骤 | PASS，未新增 NPU 专用 tlparse 分支 | `artifacts/static_smoke/provenance_tracking.html` |
+| 直接对日志运行 `tlparse --inductor-provenance` | 官网使用步骤 | PASS，未新增 NPU 专用 tlparse 分支 | [最小三栏页面](./triton_experimental/artifacts/static_smoke/provenance_tracking.html) |
 | 不生成高亮时仍可读取 mapping JSON | 官网 artifact 说明 | PASS | [`node_mappings.json`](./triton_experimental/artifacts/static_smoke/node_mappings.json) |
 | Triton kernel mapping | `torch/_inductor/codegen/triton.py::TritonScheduling.codegen_comment` | PASS | [Llama](./triton_experimental/artifacts/llama_swiglu/llama_swiglu_node_mappings.json) 与[最小静态 mapping](./triton_experimental/artifacts/static_smoke/node_mappings.json) |
 | C++ kernel mapping | 官网当前覆盖范围 | 不适用；不是本轮 NPU 后端 | 不计入 NPU PASS |
-| combo kernel mapping | 官网当前覆盖范围 | 未验收；rsplit 双 launch 不能等同于社区 combo kernel | 不计入 NPU PASS |
+| combo kernel mapping | 官网当前覆盖范围 | UNSUPPORTED；level 0/1 均因生成代码缺少 `x0/x0mask` 定义而编译失败 | [level 0](./triton_experimental/artifacts/validation/combo_level0_result.json) / [level 1](./triton_experimental/artifacts/validation/combo_level1_result.json) |
 | kernel 源码栈与 debug handle | `torch/_inductor/debug.py::set_kernel_post_grad_provenance_tracing` | PASS | [`llama_swiglu_kernel_stacks.json`](./triton_experimental/artifacts/llama_swiglu/llama_swiglu_kernel_stacks.json) |
-| AOTInductor 三栏与 `kernel_information.json` | `torch/_inductor/codecache.py` | BLOCKED，当前 NPU AOTI 设备/ABI 前提不满足 | [交付指南 12.2 节](./triton_experimental/README.md#122-为什么本轮不能把-aotinductor-标为完成) |
+| AOTInductor 三栏与 `kernel_information.json` | `torch/_inductor/codecache.py` | BLOCKED，当前 NPU AOTI 设备/ABI 前提不满足 | [交付指南 12.3 节](./triton_experimental/README.md#123-为什么本轮不能把-aotinductor-标为完成) |
 | profiler timeline 回填 | PyTorch 2.14 `torch/_inductor/profiler.py` | PASS，通过 Ascend trace adapter 复用社区处理器 | [timeline trace/result](./triton_experimental/artifacts/timeline/) |
 
 因此，“与社区对齐”表示复用相同配置、mapping schema、debug handle、结构化 artifact 和
@@ -56,13 +56,12 @@ combo kernel。它还提供 kernel 对应源码栈和 debug handle。公开用�
 | 官网公开契约 | PyTorch 2.13 Provenance Tracking 专页 |
 | 社区源码 | PyTorch `release/2.14`，`8e86e0a23e3679c2bf3406cf0837fcb6297a5d9b` |
 | NPU 官方基线 | torch_npu `83cc452480c3546fd5cccf853bfe3a360ce9dbfc` |
-| 已公开实现提交 | 开发 fork `bb356bffbf671f62092b41447d688ddf75d1c8cf` |
+| 已公开实现提交 | 开发 fork `6ca3af211469b1eea801bf5bbb97c012cfa1b08f` |
 | 验证运行时 | PyTorch 2.14 alpha、torch_npu 2.14 alpha、Triton Ascend 3.2.2、CANN 9.0.1 |
 | 设备 | Ascend 910B2 |
 
-本地源码工作树还存在未推送的模块验证提交 `26d48b9aca9add6d51a7b9bdef3891f40c26bd13`。
-它不是开发 fork 的公开基线；文档中的公开源码提交仍以 `bb356bffb` 为准，扩展验证则由
-本仓脚本和 JSON/HTML/trace 独立交付。
+扩展模块验证提交已经推送到开发 fork；本仓脚本和 JSON/HTML/trace 与该公开源码提交
+共同组成可追溯证据。
 
 ## 整体设计架构
 
@@ -319,7 +318,8 @@ sequenceDiagram
 
 ### 容易踩坑的地方
 
-1. 官网的 Triton/C++/combo 是 PyTorch 总体范围，不是 NPU 单后端验收清单。
+1. 官网的 Triton/C++/combo 是 PyTorch 总体范围，不是 NPU 单后端验收清单；当前
+   `triton_experimental` ComboKernel 已实测为后端不支持，而不是 provenance PASS。
 2. `def forward` 是 FX `GraphModule` 的统一入口；backward 图也会显示该名称。
 3. 加粗只说明存在相邻映射，不保证 pre→post→code 三段全部连通。
 4. 同一可见 compile id 下的 forward/backward artifact 可能使后出现页面覆盖前者，应分开生成。
@@ -335,9 +335,10 @@ sequenceDiagram
 三栏语义与 PyTorch 官网一致。
 
 当前已完成 `triton_experimental` JIT Triton 的静态 mapping、kernel stack、forward/
-backward timeline 和 rsplit 双 launch；AOTInductor、NPU C++、社区 combo kernel 和其他
-NPU 后端不在已通过范围。backward 的部分 pre-grad→代码链缺失与社区 `from_node` 现状
-一致，不在 NPU 侧合成关系。
+backward timeline 和 rsplit 双 launch。ComboKernel 的 level 0/1 A/B 都进入单 kernel
+生成，但因缺失索引变量定义而在 Triton 编译阶段失败，因此确认是既有后端边界，尚未
+进入 provenance mapping 验收；AOTInductor、NPU C++ 和其他 NPU 后端也不在已通过范围。
+backward 的部分 pre-grad→代码链缺失与社区 `from_node` 现状一致，不在 NPU 侧合成关系。
 
 建议按以下顺序继续阅读：
 

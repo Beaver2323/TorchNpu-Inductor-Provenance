@@ -1,6 +1,6 @@
 # TorchNPU Inductor 来源追踪
 
-> 最后更新：2026-09-01 17:40 CST（UTC+08:00）
+> 最后更新：2026-09-02 00:03 CST（UTC+08:00）
 
 本仓库存放 TorchInductor Provenance Tracking（来源追踪）在昇腾 NPU 上的调研文档、
 复现脚本和验收产物。当前正式范围只覆盖
@@ -16,7 +16,7 @@ timeline trace/result 与复现脚本作为配套证据。本仓不是源码交�
 - 官方源码目标仓：`https://gitcode.com/Ascend/pytorch`
 - 开发 fork：`https://gitcode.com/gcw_3ffySSwy/pytorch`
 - 源码交付分支：`codex/triton-experimental-provenance-delivery`
-- 源码交付提交：`bb356bffb`，基于官方提交 `83cc45248`
+- 源码交付提交：`6ca3af211`，基于官方提交 `83cc45248`
 - 工作流参考：`https://gitcode.com/AllenGuanC/inductor-meta-worktree`
 
 ## 当前结论
@@ -27,6 +27,7 @@ timeline trace/result 与复现脚本作为配套证据。本仓不是源码交�
 | NPU `triton_experimental` 静态 level 1/2 | 已验证 | kernel 与 post-grad 节点双向映射有效 |
 | NPU forward/backward 运行时来源追踪 | 已验证 | profiler 设备 kernel 可回填源码栈 |
 | rsplit partial/combine | 已验证 | 一次调度产生的两个 kernel 均有独立来源 |
+| NPU ComboKernel | 后端不支持 | level 0/1 均生成缺失 `x0/x0mask` 定义的 kernel，与 provenance 无关 |
 | Llama 风格 RMSNorm + SwiGLU | 已验证 | 两组动态形状、前反向数值、输入/参数梯度、静态映射和 timeline 均通过 |
 | backward pre-grad→生成代码全覆盖 | 社区边界 | 社区 PyTorch 的 backward 节点可能缺少 `from_node`，不承诺每个节点都形成完整三段链 |
 | AOTInductor `kernel_information.json` | 未验收 | 当前 910B2 和共享 NPU AOTI/lazy/ABI 基线不满足验收前提 |
@@ -54,6 +55,7 @@ timeline trace/result 与复现脚本作为配套证据。本仓不是源码交�
 - [Llama 静态节点映射](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_node_mappings.json)
 - [Llama Perfetto trace](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_timeline_trace.json)
 - [代表性模型验证矩阵](docs/triton_experimental/artifacts/validation/model_validation_result.json)
+- [ComboKernel level 0/1 A/B 结果](docs/triton_experimental/artifacts/validation/combo_level1_result.json)
 - [全部产物索引](docs/triton_experimental/artifacts/README.md)
 
 HTML 需要下载到本地浏览器打开。timeline trace JSON 可载入 Perfetto。forward 与

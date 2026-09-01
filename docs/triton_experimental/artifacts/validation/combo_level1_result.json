@@ -1,0 +1,27 @@
+{
+  "status": "UNSUPPORTED",
+  "torch": "2.14.0a0+git8e86e0a",
+  "torch_npu": "2.14.0a0+git83cc452",
+  "torch_npu_module": "/home/z50063656/Tracking/triton_experimental_delivery/wheel_target_20260827_v10/torch_npu/__init__.py",
+  "device": "Ascend910B2",
+  "backend": "triton_experimental",
+  "combo_kernels": true,
+  "provenance_level": 1,
+  "combo_markers": {
+    "foreach_decorator": false,
+    "sequential_grid": true,
+    "round_robin_grid": false,
+    "pid_dispatch": true
+  },
+  "max_abs_diff": null,
+  "generated_kernel_count": 1,
+  "kernel_to_post": {},
+  "mapping_path": null,
+  "output_code_path": "/home/z50063656/Tracking/triton_experimental_delivery/combo_probe_20260901_level1/compile_debug/torchinductor/model__0_inference_0.0/output_code.py",
+  "stack_path": null,
+  "compile_error_type": "InductorError",
+  "compile_error_marker": "NameError: x0 is not defined",
+  "inductor_counters": {
+    "async_compile_cache_miss": 1
+  }
+}

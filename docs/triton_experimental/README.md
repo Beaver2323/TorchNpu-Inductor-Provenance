@@ -1,6 +1,6 @@
 # `triton_experimental` Inductor 来源追踪交付指南
 
-> 最后更新：2026-09-01 17:40 CST（UTC+08:00）
+> 最后更新：2026-09-02 00:03 CST（UTC+08:00）
 
 本文说明 `torch_npu/_inductor/triton_experimental` 后端的 Inductor
 provenance（来源追踪）是什么、如何实现、如何运行，以及当前已经验证到什么程度。
@@ -14,7 +14,7 @@ provenance（来源追踪）是什么、如何实现、如何运行，以及当�
 - 当前 worktree 的 `origin` 指向官方仓，`fork` 指向开发 fork；交付时应把分支 push
   到 `fork`，再向 `origin` 发起 PR。
 - 源码已推送到开发 fork 的 `codex/triton-experimental-provenance-delivery` 分支，
-  当前提交为 `bb356bffb`，官方基线为 `83cc45248`。
+  当前提交为 `6ca3af211`，官方基线为 `83cc45248`。
 - [架构师个人预合入/历史参考仓](https://gitcode.com/rmch/npu_inductor_2.13.0)
   是历史参考，
   不是目标仓或 fork。
@@ -45,6 +45,8 @@ provenance（来源追踪）是什么、如何实现、如何运行，以及当�
 - NPU 原始 trace 的事件根、名称、分类和 flow 没有被适配器的临时格式污染。
 - tlparse 使用 `--inductor-provenance` 成功解析最小案例的 137 条、Llama 案例的 250 条
   结构化日志记录。
+- ComboKernel level 0/1 都进入 `SequentialComboKernelGrid` 单 kernel 生成，但生成代码
+  缺少 `x0/x0mask` 定义，Triton 编译失败；A/B 证明这不是 provenance 引入。
 
 本任务范围只包括 `triton_experimental`。默认 NPU Inductor、MLIR、DVM、AKG、
 CATLASS 和 torchair 不属于本交付范围。
@@ -91,10 +93,10 @@ cache、`kernel_information.json` 和 profiler timeline 的实现；这些社区
 
 本次 NPU 交付复用社区的图来源追踪、debug handle、artifact 和 timeline 处理算法；
 只在 `triton_experimental` 的 kernel 发射点补齐登记，并在 torch_npu profiler 一侧
-适配 Ascend trace 格式。当前真实验收覆盖 JIT Triton、forward/backward 和 rsplit，
-不能据此宣称 AOTInductor、NPU C++、社区 combo kernel、extern 或其他 NPU 后端已经
-完成验收。rsplit 是同一调度计划的 partial/combine 多次 launch，不等同于社区 combo
-kernel。
+适配 Ascend trace 格式。当前真实验收覆盖普通 JIT Triton、forward/backward 和 rsplit。
+ComboKernel 已完成门禁但结论是当前实验后端不支持；不能据此宣称 AOTInductor、NPU
+C++、社区 combo kernel、extern 或其他 NPU 后端已经完成验收。rsplit 是同一调度计划的
+partial/combine 多次 launch，不等同于社区 combo kernel。
 
 ## 4. 配置级别
 
@@ -467,7 +469,8 @@ kernel，在事件参数中查看 `stack`。仓库内提供三份可复现 trace
 | rsplit timeline | PASS | partial/combine 两个 device kernel 均有 stack |
 | 代表性模型/模块套件 | PASS | NPU 6 串行回归 3/3，无 skip，238.232 秒 |
 | Llama 远端主演示 | PASS（社区边界内） | 两组动态形状、9 个 timeline kernel 事件；forward-only tlparse 202 条、完整 trace 250 条；forward 三栏映射完整，backward post-grad→kernel 通过，部分 pre-grad→backward 代码链不完整 |
-| AOTInductor 可行性门禁 | BLOCKED | 当前硬件/基线不满足 NPU AOTI 验证前提，详见 12.2 节 |
+| ComboKernel A/B 门禁 | UNSUPPORTED | level 0/1 均进入单个 `SequentialComboKernelGrid`，并在 Triton 编译时报 `NameError('x0 is not defined')` |
+| AOTInductor 可行性门禁 | BLOCKED | 当前硬件/基线不满足 NPU AOTI 验证前提，详见 12.3 节 |
 
 静态 probe 中 `fxgraph_cache_hit=0`、`fxgraph_cache_bypass=1` 的原始 trace 原因是
 `Unsupported post grad custom pass`：`triton_experimental/fx_passes.py` 把普通
@@ -492,7 +495,24 @@ provenance；两组在相同位置生成相同失败 kernel。
 [provenance_ab_result.json](./artifacts/validation/provenance_ab_result.json)，复现入口为
 [provenance_ab_probe.py](./scripts/provenance_ab_probe.py)。
 
-### 12.2 为什么本轮不能把 AOTInductor 标为完成
+### 12.2 ComboKernel 为什么不能标为 provenance PASS
+
+2026-09-01 在 Ascend910B2、物理 NPU 7 上对社区 provenance 用例等价模型
+`relu(a), sigmoid(b), tanh(c)` 做 level 0/1 A/B。两组都生成一个
+`triton_poi_fused_0`，metadata 明确包含 `SequentialComboKernelGrid`、三个 subkernel 和
+一次 wrapper `.run(...)`；level 1 的 wrapper 还写入了
+`[Provenance debug handles] triton_poi_fused_0:1`。
+
+但是两个级别生成的 combo 函数都在分支中直接引用未定义的 `x0/x0mask`（后续分支同样
+引用 `x1/x1mask`、`x2/x2mask`），Triton 编译首先报
+`NameError('x0 is not defined')`。编译在 provenance mapping 最终 dump 前终止，所以没有
+产生 mapping JSON，也无法验证“一 kernel→relu/sigmoid/tanh”的高亮关系。level 0 与
+level 1 同错证明问题属于 ComboKernel 与 NPU codegen 的既有组合边界，不是 provenance
+开关引入。证据见 [level 0](./artifacts/validation/combo_level0_result.json)、
+[level 1](./artifacts/validation/combo_level1_result.json)和
+[生成代码](./artifacts/validation/combo_level1_output_code.py)。
+
+### 12.3 为什么本轮不能把 AOTInductor 标为完成
 
 社区 AOTInductor 的 provenance 会在 `.pt2` 包内生成
 `model/data/aotinductor/model/kernel_information.json`。它与 JIT 静态 JSON 使用相同的
@@ -527,11 +547,12 @@ Atlas A5；本机 `npu-smi` 显示为 Ascend910B2。继续修改共享 AOTI runt
 ## 13. 产物索引
 
 - [验收产物总索引](./artifacts/README.md)：按 Llama、静态 smoke、timeline 和验证矩阵分组。
-- [复现脚本总索引](./scripts/README.md)：五个当前范围内的独立探针。
+- [复现脚本总索引](./scripts/README.md)：六个当前范围内的独立探针。
 - [Llama forward 三栏 HTML](./artifacts/llama_swiglu/provenance_tracking_forward.html)：`0_forward` 独立页面。
 - [Llama backward 三栏 HTML](./artifacts/llama_swiglu/provenance_tracking_backward.html)：`0_backward` 独立页面。
 - [Llama 验证结果](./artifacts/llama_swiglu/llama_swiglu_result.json)：两组形状、数值/梯度和 timeline 摘要。
 - [代表性模型验证矩阵](./artifacts/validation/model_validation_result.json)：三种模型/模块的通过项和后端边界。
+- [ComboKernel 探针](./scripts/combo_provenance_probe.py)与[level 0/1 结果](./artifacts/validation/combo_level1_result.json)：真实 NPU 后端边界。
 
 ## 14. 尚未完成与风险
 
@@ -539,7 +560,7 @@ Atlas A5；本机 `npu-smi` 显示为 Ascend910B2。继续修改共享 AOTI runt
   避免与其他进程修改环境发生冲突。
 - `triton_experimental` 的 AOTInductor `kernel_information.json` 尚未验收；本轮已完成
   可行性门禁，确认当前 910B2 + PyTorch/torch_npu 2.14 基线同时受设备支持范围和共享
-  AOTI lazy/ABI 问题阻塞。不能用已通过的 JIT JSON 代替，恢复条件见 12.2 节。
+  AOTI lazy/ABI 问题阻塞。不能用已通过的 JIT JSON 代替，恢复条件见 12.3 节。
 - level 2 静态映射、gzip、事件上限/状态清理和 list/dict trace root 均已完成专项
   回归；level 2 runtime timeline 尚未单独重复采集，因为 timeline 开关会把有效级别
   至少提升到 1，运行时关联算法与显式 level 1 相同。
@@ -547,8 +568,10 @@ Atlas A5；本机 `npu-smi` 显示为 Ascend910B2。继续修改共享 AOTI runt
   启用 torchair，而不是把本验证 wheel 当成正式发行包。
 - ConvNeXt backward 和 Transformer 第二动态形状 backward 的边界均已用 level 0/2
   A/B 排除 provenance 因果；它们没有被包装成通过案例。
+- ComboKernel level 0/1 已完成真实门禁并确认后端生成代码缺少索引定义；修复
+  ComboKernel codegen 不属于本 provenance 交付，当前明确记为 UNSUPPORTED。
 - 本地验证 wheel 的版本标签来自基线 commit `83cc452`；功能源码随后以提交
-  `bb356bffb` 推送到开发 fork。判断验证 wheel 内容时仍应结合本页记录的 wheel SHA
+  `6ca3af211` 推送到开发 fork。判断验证 wheel 内容时仍应结合本页记录的 wheel SHA
   和文件哈希，不能只看版本字符串。
 - 本页、演示 HTML、静态映射、timeline trace/result 和复现脚本已同步到前期研究与
   文档仓；正式源码交付仍以 GitCode 分支及后续面向官方仓的 PR 为准。
