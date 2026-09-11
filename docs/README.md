@@ -1,6 +1,6 @@
 # 文档索引
 
-> 最后更新：2026-09-02 00:03 CST（UTC+08:00）
+> 最后更新：2026-09-11（CST，UTC+08:00）
 
 ## 推荐阅读顺序
 
@@ -9,8 +9,10 @@
 2. [新手入门](./beginner_guide.md)：背景概念、环境、用法和源码导读。
 3. [`triton_experimental` 交付说明](./triton_experimental/README.md)：当前正式范围、
    实现、验证与演示。
-4. [技术参考](./technical_reference.md)：需求变更前后的详细技术研究。
-5. [历史研究摘要](./history_summary.md)：CPU、早期普通 NPU、cache、FlexAttention 和
+4. [PR diff 逐段讲解](./pr_diff_walkthrough.md)：固定 BASE/HEAD 的改动解释、代码框、
+   框架调用链与模型源码栈，以及测试覆盖和 rebase 说明。
+5. [技术参考](./technical_reference.md)：需求变更前后的详细技术研究。
+6. [历史研究摘要](./history_summary.md)：CPU、早期普通 NPU、cache、FlexAttention 和
    默认 BlockMask 的历史结论。
 
 ## 当前交付资料
@@ -18,6 +20,8 @@
 | 类型 | 入口 | 用途 |
 | --- | --- | --- |
 | 主交付 | [`provenance_delivery.md`](./provenance_delivery.md) | 对照官网和社区源码说明设计与 NPU 对齐结论 |
+| diff 导读 | [`pr_diff_walkthrough.md`](./pr_diff_walkthrough.md) | 结合实际源码解释每项功能修改和调用栈 |
+| 实现补丁 | [固定版本 unified diff](./diffs/triton_experimental_provenance_f030beadb_4845c9289.patch) | 3 份实现文件的完整差异，供离线审阅 |
 | 总体说明 | [`triton_experimental/README.md`](./triton_experimental/README.md) | 范围、实现和验收 |
 | 复现脚本 | [`triton_experimental/scripts/`](./triton_experimental/scripts/README.md) | 静态、timeline、rsplit、combo、Llama 与 A/B 探针 |
 | 验收产物 | [`triton_experimental/artifacts/`](./triton_experimental/artifacts/README.md) | HTML、mapping、trace 与结构化结果 |

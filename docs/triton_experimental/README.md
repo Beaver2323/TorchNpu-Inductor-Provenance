@@ -1,11 +1,12 @@
 # `triton_experimental` Inductor 来源追踪交付指南
 
-> 最后更新：2026-09-02 00:03 CST（UTC+08:00）
+> 最后更新：2026-09-11（CST，UTC+08:00）
 
 本文说明 `torch_npu/_inductor/triton_experimental` 后端的 Inductor
 provenance（来源追踪）是什么、如何实现、如何运行，以及当前已经验证到什么程度。
 本文中的结论和产物均来自 Tracking 项目，不使用 `Pass` 项目的环境或结果。
 设计目标、社区源码调用链和扩展建议统一见[主交付文档](../provenance_delivery.md)。
+逐项代码差异、调用栈和原始补丁见[PR diff 逐段讲解](../pr_diff_walkthrough.md)。
 
 ### 仓库与交付关系
 
@@ -14,7 +15,10 @@ provenance（来源追踪）是什么、如何实现、如何运行，以及当�
 - 当前 worktree 的 `origin` 指向官方仓，`fork` 指向开发 fork；交付时应把分支 push
   到 `fork`，再向 `origin` 发起 PR。
 - 源码已推送到开发 fork 的 `codex/triton-experimental-provenance-delivery` 分支，
-  当前提交为 `6ca3af211`，官方基线为 `83cc45248`。
+  当前提交为 `4845c9289`，官方基线为 `f030beadb`，对应
+  [PR !46073](https://gitcode.com/Ascend/pytorch/merge_requests/46073)。
+  2026-09-11 rebase 后静态检查通过；本页原有 wheel、HTML 和 trace 是原版本实测证据，
+  尚未据新 HEAD 重跑 NPU 端到端验证。
 - [架构师个人预合入/历史参考仓](https://gitcode.com/rmch/npu_inductor_2.13.0)
   是历史参考，
   不是目标仓或 fork。
@@ -266,17 +270,16 @@ export TORCH_DEVICE_BACKEND_AUTOLOAD=0
 export ASCEND_RT_VISIBLE_DEVICES=7
 ```
 
-静态映射用例：
+专项静态测试（含 level 1/2 参数化用例）：
 
 ```bash
-python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/test/_inductor/test_triton_experimental_enable.py \
-  TestTritonExperimentalProvenance.test_kernel_maps_to_post_grad_nodes -v
+python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/test/_inductor/test_triton_experimental_provenance.py -v
 ```
 
 无需 NPU 的 rsplit 调用顺序单测：
 
 ```bash
-python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/test/_inductor/test_triton_experimental_enable.py \
+python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/test/_inductor/test_triton_experimental_provenance.py \
   TestTritonExperimentalProvenance.test_rsplit_maps_each_runtime_kernel -v
 ```
 

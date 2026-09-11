@@ -5,13 +5,16 @@
 >
 > 交付方式：中文文档主交付，源码与实测产物作为可追溯证据
 >
-> 最后更新：2026-09-02 00:03 CST（UTC+08:00）
+> 最后更新：2026-09-11（CST，UTC+08:00）
 
 本文以 [PyTorch 2.13 Provenance Tracking 官方文档](https://docs.pytorch.org/docs/2.13/user_guide/torch_compiler/torch.compiler_inductor_provenance.html)
 定义公开使用契约，以 PyTorch `release/2.14` 提交
 `8e86e0a23e3679c2bf3406cf0837fcb6297a5d9b` 的社区源码核实内部实现，再说明
 `torch_npu/_inductor/triton_experimental` 的适配点和验收证据。源码中没有明确证据的
 能力不记为支持。
+
+需要逐项审阅代码时，阅读[PR diff 逐段讲解](./pr_diff_walkthrough.md)。其中固定
+`f030beadb → 4845c9289`，提供修改前后代码、完整回调路径、模型源码栈示例与测试对应表。
 
 ## 模块设计目标与背景
 
@@ -55,13 +58,14 @@ combo kernel。它还提供 kernel 对应源码栈和 debug handle。公开用�
 | --- | --- |
 | 官网公开契约 | PyTorch 2.13 Provenance Tracking 专页 |
 | 社区源码 | PyTorch `release/2.14`，`8e86e0a23e3679c2bf3406cf0837fcb6297a5d9b` |
-| NPU 官方基线 | torch_npu `83cc452480c3546fd5cccf853bfe3a360ce9dbfc` |
-| 已公开实现提交 | 开发 fork `6ca3af211469b1eea801bf5bbb97c012cfa1b08f` |
+| 当前 PR 的 NPU 官方基线 | torch_npu `f030beadb051d882c0dd697f54f8aeac8c5a5f7d` |
+| 当前 PR HEAD | 开发 fork `4845c9289d84a8c4b78a147ac502579310235995`，[PR !46073](https://gitcode.com/Ascend/pytorch/merge_requests/46073) |
+| 历史验证基线 / 实现提交 | `83cc452480c3546fd5cccf853bfe3a360ce9dbfc` / `6ca3af211469b1eea801bf5bbb97c012cfa1b08f`，与历史产物一起保留 |
 | 验证运行时 | PyTorch 2.14 alpha、torch_npu 2.14 alpha、Triton Ascend 3.2.2、CANN 9.0.1 |
 | 设备 | Ascend 910B2 |
 
-扩展模块验证提交已经推送到开发 fork；本仓脚本和 JSON/HTML/trace 与该公开源码提交
-共同组成可追溯证据。
+源码已于 2026-09-11 rebase 并更新到 PR。本仓脚本和 JSON/HTML/trace 保留原验证版本，
+共同组成历史实测证据；本次 rebase 完成静态检查，未获得新 HEAD 的 NPU 端到端复测结果。
 
 ## 整体设计架构
 

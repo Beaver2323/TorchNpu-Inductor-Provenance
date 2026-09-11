@@ -1,6 +1,6 @@
 # TorchNPU Inductor 来源追踪
 
-> 最后更新：2026-09-02 02:26 CST（UTC+08:00）
+> 最后更新：2026-09-11（CST，UTC+08:00）
 
 本仓库存放 TorchInductor Provenance Tracking（来源追踪）在昇腾 NPU 上的调研文档、
 复现脚本和验收产物。当前正式范围只覆盖
@@ -16,8 +16,14 @@ timeline trace/result 与复现脚本作为配套证据。本仓不是源码交�
 - 官方源码目标仓：`https://gitcode.com/Ascend/pytorch`
 - 开发 fork：`https://gitcode.com/gcw_3ffySSwy/pytorch`
 - 源码交付分支：`codex/triton-experimental-provenance-delivery`
-- 源码交付提交：`6ca3af211`，基于官方提交 `83cc45248`
+- 源码 PR：[Ascend/pytorch !46073](https://gitcode.com/Ascend/pytorch/merge_requests/46073)
+- 源码交付提交：`4845c9289`，2026-09-11 rebase 到官方提交 `f030beadb`
 - 工作流参考：`https://gitcode.com/AllenGuanC/inductor-meta-worktree`
+
+新增[PR diff 逐段讲解](docs/pr_diff_walkthrough.md)：修改前后代码框、静态与运行时
+调用链、真实 mapping / 模型源码栈、测试对应关系和可下载的实现补丁。
+历史演示产物保留原来的运行版本；本次 rebase 的静态检查通过，尚无更新后 HEAD 的
+NPU 端到端复测结果。
 
 ## 当前结论
 
@@ -269,8 +275,10 @@ with config.patch(
    以及静态/运行时来源追踪。
 4. [`triton_experimental` 交付说明](docs/triton_experimental/README.md)：查看实现范围、
    复现命令和验收结论。
-5. [技术参考](docs/technical_reference.md)：查看需求变更前后的完整技术研究。
-6. [历史研究摘要](docs/history_summary.md)：了解已退出当前范围的早期结论。
+5. [PR diff 逐段讲解](docs/pr_diff_walkthrough.md)：对照代码框和调用栈理解每项改动，
+   下载核心实现 diff。
+6. [技术参考](docs/technical_reference.md)：查看需求变更前后的完整技术研究。
+7. [历史研究摘要](docs/history_summary.md)：了解已退出当前范围的早期结论。
 
 ## 核心演示
 
@@ -295,6 +303,9 @@ backward 必须分别阅读：两个页面的 FX `GraphModule` 都显示 `def fo
 └── docs
     ├── README.md
     ├── provenance_delivery.md
+    ├── pr_diff_walkthrough.md
+    ├── diffs
+    │   └── triton_experimental_provenance_f030beadb_4845c9289.patch
     ├── beginner_guide.md
     ├── technical_reference.md
     ├── history_summary.md

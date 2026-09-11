@@ -1,0 +1,462 @@
+diff --git a/torch_npu/_inductor/triton_experimental/codegen/triton.py b/torch_npu/_inductor/triton_experimental/codegen/triton.py
+index 1a6a23d08..8d603a453 100644
+--- a/torch_npu/_inductor/triton_experimental/codegen/triton.py
++++ b/torch_npu/_inductor/triton_experimental/codegen/triton.py
+@@ -5513,10 +5513,12 @@ class NPUTritonScheduling(TritonScheduling):
+             for node in kernel_features.scheduler_nodes():
+                 node.mark_run()
+ 
+-        self.codegen_comment(node_schedule)
+         if rsplit_kernel is not None and combine_info is not None:
+-            self._npu_call_rsplit_kernels(rsplit_kernel, combine_info)
++            self._npu_call_rsplit_kernels(
++                rsplit_kernel, combine_info, node_schedule
++            )
+         else:
++            self.codegen_comment(node_schedule, final_kernel.kernel_name)
+             final_kernel.call_kernel(final_kernel.kernel_name)
+ 
+         if config.nan_asserts:
+@@ -5705,7 +5707,7 @@ def {combine_name}(in_ptr0, out_ptr0, xnumel, r0_numel, XBLOCK : tl.constexpr, R
+             "triton_meta": triton_meta,
+         }
+ 
+-    def _npu_call_rsplit_kernels(self, partial, combine_info):
++    def _npu_call_rsplit_kernels(self, partial, combine_info, node_schedule):
+         """Emit the two-stage launch into the wrapper:
+             alloc workspace
+             partial(... , ws)        # writes per-core partials
+@@ -5726,6 +5728,7 @@ def {combine_name}(in_ptr0, out_ptr0, xnumel, r0_numel, XBLOCK : tl.constexpr, R
+         for wsarg in partial.args.workspace_args:
+             wrapper.generate_workspace_allocation(wsarg)
+ 
++        self.codegen_comment(node_schedule, partial.kernel_name)
+         wrapper.generate_kernel_call(
+             partial.kernel_name,
+             p_call_args,
+@@ -5754,6 +5757,7 @@ def {combine_name}(in_ptr0, out_ptr0, xnumel, r0_numel, XBLOCK : tl.constexpr, R
+             int,
+             int,
+         ]
++        self.codegen_comment(node_schedule, combine_info["kernel_name"])
+         wrapper.generate_kernel_call(
+             combine_info["kernel_name"],
+             c_call_args,
+diff --git a/torch_npu/profiler/__init__.py b/torch_npu/profiler/__init__.py
+index 12396b49b..87a64c34b 100644
+--- a/torch_npu/profiler/__init__.py
++++ b/torch_npu/profiler/__init__.py
+@@ -3,14 +3,38 @@ from torch_npu._C._profiler import ProfilerActivity
+ from .profiler import (
+     profile,
+     _KinetoProfile,
+-    tensorboard_trace_handler)
++    tensorboard_trace_handler,
++)
+ from .profiler_interface import supported_activities
+ from .scheduler import Schedule as schedule
+ from .scheduler import ProfilerAction
+-from .experimental_config import _ExperimentalConfig, supported_profiler_level, supported_ai_core_metrics, \
+-    supported_export_type, ProfilerLevel, AiCMetrics, ExportType, HostSystem
++from .experimental_config import (
++    _ExperimentalConfig,
++    supported_profiler_level,
++    supported_ai_core_metrics,
++    supported_export_type,
++    ProfilerLevel,
++    AiCMetrics,
++    ExportType,
++    HostSystem,
++)
+ from ._non_intrusive_profile import _NonIntrusiveProfile
++from ._inductor_profiler import inductor_trace_handler
+ 
+-__all__ = ["profile", "ProfilerActivity", "supported_activities", "tensorboard_trace_handler", "schedule",
+-           "ProfilerAction", "_ExperimentalConfig", "supported_profiler_level", "supported_ai_core_metrics",
+-           "supported_export_type", "ProfilerLevel", "AiCMetrics", "ExportType", "HostSystem"]
++__all__ = [
++    "profile",
++    "ProfilerActivity",
++    "supported_activities",
++    "tensorboard_trace_handler",
++    "schedule",
++    "ProfilerAction",
++    "_ExperimentalConfig",
++    "supported_profiler_level",
++    "supported_ai_core_metrics",
++    "supported_export_type",
++    "ProfilerLevel",
++    "AiCMetrics",
++    "ExportType",
++    "HostSystem",
++    "inductor_trace_handler",
++]
+diff --git a/torch_npu/profiler/_inductor_profiler.py b/torch_npu/profiler/_inductor_profiler.py
+new file mode 100644
+index 000000000..f344ed0be
+--- /dev/null
++++ b/torch_npu/profiler/_inductor_profiler.py
+@@ -0,0 +1,363 @@
++import copy
++import gzip
++import json
++import logging
++import os
++import socket
++import tempfile
++import time
++from collections import defaultdict
++from typing import Any
++
++import torch._inductor.config as inductor_config
++
++
++__all__ = ["inductor_trace_handler"]
++
++log = logging.getLogger(__name__)
++
++_FLOW_NAMES = {"fwdbwd", "torch_to_npu"}
++_ORIGINAL_KERNEL_NAME_ARG = "_npu_inductor_original_kernel_name"
++# Ascend profiler keeps the trailing 49 characters of long kernel names.
++_PROFILER_KERNEL_NAME_MAX_LENGTH = 49
++
++
++def _event_coordinate(event: dict[str, Any]) -> tuple[str, str, str]:
++    return str(event.get("pid")), str(event.get("tid")), str(event.get("ts"))
++
++
++def _trace_events(trace: object) -> tuple[list[dict[str, Any]], bool]:
++    if isinstance(trace, list):
++        return [event for event in trace if isinstance(event, dict)], True
++    if isinstance(trace, dict) and isinstance(trace.get("traceEvents"), list):
++        return [
++            event for event in trace["traceEvents"] if isinstance(event, dict)
++        ], False
++    raise TypeError(
++        f"Unsupported NPU profiler trace root: {type(trace).__name__}"
++    )
++
++
++def _has_kernel_info(
++    compile_info: dict[str, dict[str, Any]], kernel_name: str
++) -> bool:
++    kernel_prefix = kernel_name + ":"
++    return any(
++        kernel_name in graph_info
++        or any(name.startswith(kernel_prefix) for name in graph_info)
++        for graph_info in compile_info.values()
++    )
++
++
++def _experimental_kernel_name(
++    compile_info: dict[str, dict[str, Any]],
++    profile_name: str,
++    truncated_kernel_names: dict[str, str | None] | None = None,
++) -> str:
++    if profile_name.startswith("k_"):
++        logical_name = "triton_unk_" + profile_name.removeprefix("k_")
++        if _has_kernel_info(compile_info, logical_name):
++            return logical_name
++
++    if _has_kernel_info(compile_info, profile_name):
++        return profile_name
++
++    if len(profile_name) != _PROFILER_KERNEL_NAME_MAX_LENGTH:
++        return profile_name
++
++    if truncated_kernel_names is None:
++        truncated_kernel_names = _truncated_kernel_name_map(compile_info)
++    return truncated_kernel_names.get(profile_name) or profile_name
++
++
++def _truncated_kernel_name_map(
++    compile_info: dict[str, dict[str, Any]],
++) -> dict[str, str | None]:
++    truncated_kernel_names: dict[str, str | None] = {}
++    for graph_info in compile_info.values():
++        for name in graph_info:
++            kernel_name, separator, handle = name.rpartition(":")
++            if not separator or not handle.isdecimal():
++                kernel_name = name
++            if not kernel_name.startswith("triton_"):
++                continue
++            if len(kernel_name) <= _PROFILER_KERNEL_NAME_MAX_LENGTH:
++                continue
++            profile_name = kernel_name[-_PROFILER_KERNEL_NAME_MAX_LENGTH:]
++            previous_name = truncated_kernel_names.get(profile_name)
++            if previous_name is None and profile_name not in truncated_kernel_names:
++                truncated_kernel_names[profile_name] = kernel_name
++            elif previous_name != kernel_name:
++                truncated_kernel_names[profile_name] = None
++    return truncated_kernel_names
++
++
++def _normalize_kernel_event_name(
++    event: dict[str, Any],
++    compile_info: dict[str, dict[str, Any]],
++    truncated_kernel_names: dict[str, str | None],
++) -> None:
++    profile_name = str(event.get("name", ""))
++    logical_name = _experimental_kernel_name(
++        compile_info, profile_name, truncated_kernel_names
++    )
++    if logical_name == profile_name:
++        return
++    args = event.get("args")
++    if not isinstance(args, dict):
++        args = {}
++        event["args"] = args
++    args[_ORIGINAL_KERNEL_NAME_ARG] = profile_name
++    event["name"] = logical_name
++
++
++def _normalize_trace_for_inductor(
++    trace: object, compile_info: dict[str, dict[str, Any]]
++) -> tuple[dict[str, Any], bool]:
++    """Translate Ascend flow events to the schema used by Inductor.
++
++    Ascend writes flow endpoints at the end of the trace and calls the
++    host-to-device flow ``torch_to_npu``.  Inductor expects each endpoint to
++    immediately follow its related event and calls that flow ``ac2g``.
++    Normalization is performed on a copy of the trace so these temporary
++    changes never leak into the exported NPU trace.
++    """
++    events, list_root = _trace_events(trace)
++    endpoint_flows = [
++        event
++        for event in events
++        if event.get("name") in _FLOW_NAMES and event.get("ph") in ("s", "f")
++    ]
++    endpoint_flow_ids = {id(event) for event in endpoint_flows}
++    real_events = [
++        event for event in events if id(event) not in endpoint_flow_ids
++    ]
++
++    events_by_coordinate: dict[tuple[str, str, str], list[dict[str, Any]]] = (
++        defaultdict(list)
++    )
++    for event in real_events:
++        if event.get("ph") == "X":
++            events_by_coordinate[_event_coordinate(event)].append(event)
++
++    flow_pairs: dict[tuple[str, str], dict[str, dict[str, Any]]] = (
++        defaultdict(dict)
++    )
++    for flow in endpoint_flows:
++        flow_pairs[(str(flow.get("name")), str(flow.get("id")))][
++            str(flow["ph"])
++        ] = flow
++
++    truncated_kernel_names = _truncated_kernel_name_map(compile_info)
++    flows_after_event: dict[int, list[dict[str, Any]]] = defaultdict(list)
++    unmatched_flows: list[dict[str, Any]] = []
++    for (name, _), pair in flow_pairs.items():
++        start_flow = pair.get("s")
++        finish_flow = pair.get("f")
++        if start_flow is None or finish_flow is None:
++            unmatched_flows.extend(pair.values())
++            continue
++
++        start_events = events_by_coordinate.get(
++            _event_coordinate(start_flow), []
++        )
++        finish_events = events_by_coordinate.get(
++            _event_coordinate(finish_flow), []
++        )
++        if not start_events or not finish_events:
++            unmatched_flows.extend((start_flow, finish_flow))
++            continue
++
++        normalized_start = dict(start_flow)
++        normalized_finish = dict(finish_flow)
++        if name == "torch_to_npu":
++            normalized_start.update({"name": "ac2g", "cat": "ac2g"})
++            normalized_finish.update({"name": "ac2g", "cat": "ac2g"})
++            start_event = start_events[0]
++            finish_event = finish_events[0]
++            finish_event["cat"] = "kernel"
++            _normalize_kernel_event_name(
++                start_event, compile_info, truncated_kernel_names
++            )
++            _normalize_kernel_event_name(
++                finish_event, compile_info, truncated_kernel_names
++            )
++
++        flows_after_event[id(start_events[0])].append(normalized_start)
++        flows_after_event[id(finish_events[0])].append(normalized_finish)
++
++    normalized_events = []
++    for event in real_events:
++        normalized_events.append(event)
++        normalized_events.extend(flows_after_event.get(id(event), ()))
++    normalized_events.extend(unmatched_flows)
++
++    if list_root:
++        normalized_trace: dict[str, Any] = {"traceEvents": normalized_events}
++    else:
++        normalized_trace = dict(trace)
++        normalized_trace["traceEvents"] = normalized_events
++    return normalized_trace, list_root
++
++
++def _coerce_event_times(
++    trace: dict[str, Any],
++) -> list[tuple[dict[str, Any], str, str]]:
++    original_values = []
++    for event in trace["traceEvents"]:
++        for field in ("ts", "dur"):
++            value = event.get(field)
++            if not isinstance(value, str):
++                continue
++            try:
++                event[field] = float(value)
++            except ValueError:
++                continue
++            original_values.append((event, field, value))
++    return original_values
++
++
++def _restore_event_times(
++    original_values: list[tuple[dict[str, Any], str, str]],
++) -> None:
++    for event, field, value in original_values:
++        event[field] = value
++
++
++def _restore_device_kernel_names(trace: dict[str, Any]) -> None:
++    for event in trace["traceEvents"]:
++        args = event.get("args")
++        if not isinstance(args, dict) or _ORIGINAL_KERNEL_NAME_ARG not in args:
++            continue
++        event["name"] = args.pop(_ORIGINAL_KERNEL_NAME_ARG)
++
++
++def _copy_stacks_to_origin(
++    processed_trace: dict[str, Any], origin_trace: object
++) -> None:
++    origin_events, _ = _trace_events(origin_trace)
++    origin_by_identity: dict[
++        tuple[str, str, str, str, str], list[dict[str, Any]]
++    ] = defaultdict(list)
++    for event in origin_events:
++        identity = (
++            str(event.get("name")),
++            str(event.get("ph")),
++            *_event_coordinate(event),
++        )
++        origin_by_identity[identity].append(event)
++
++    for event in processed_trace["traceEvents"]:
++        stack = (event.get("args") or {}).get("stack")
++        if not stack:
++            continue
++        identity = (
++            str(event.get("name")),
++            str(event.get("ph")),
++            *_event_coordinate(event),
++        )
++        for origin_event in origin_by_identity.get(identity, ()):
++            args = origin_event.get("args")
++            if not isinstance(args, dict):
++                args = {}
++                origin_event["args"] = args
++            args["stack"] = stack
++
++
++def _add_inductor_provenance(path: str) -> None:
++    from torch._inductor.debug import get_kernel_information_jsons
++    from torch._inductor.profiler import _InductorTraceProcessor
++
++    try:
++        with open(path) as trace_file:
++            raw_trace = json.load(trace_file)
++
++        raw_events, _ = _trace_events(raw_trace)
++        num_events = len(raw_events)
++        max_events = inductor_config.trace.provenance_tracking_max_events
++        if max_events > 0 and num_events > max_events:
++            log.warning(
++                "Skipping NPU provenance tracking: trace has %d events "
++                "(exceeds limit of %d).",
++                num_events,
++                max_events,
++            )
++            return
++
++        compile_info = get_kernel_information_jsons()
++        trace, _ = _normalize_trace_for_inductor(
++            copy.deepcopy(raw_trace), compile_info
++        )
++        if not inductor_config.triton.unique_kernel_names:
++            log.warning(
++                "NPU profiling trace does not contain Triton kernel stack "
++                "traces "
++                "because TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=0."
++            )
++        if inductor_config.cpp_wrapper:
++            log.warning(
++                "NPU profiling trace does not contain compiled kernel stack "
++                "traces "
++                "because cpp_wrapper is enabled."
++            )
++            return
++
++        original_times = _coerce_event_times(trace)
++        try:
++            processed_trace = _InductorTraceProcessor().add_to_chrome_trace(
++                trace
++            )
++        finally:
++            _restore_event_times(original_times)
++        _restore_device_kernel_names(processed_trace)
++        _copy_stacks_to_origin(processed_trace, raw_trace)
++        with open(path, "w") as trace_file:
++            json.dump(raw_trace, trace_file, indent=1)
++    except MemoryError:
++        log.exception(
++            "MemoryError while adding Inductor provenance to NPU trace"
++        )
++        raise
++    except Exception:
++        log.exception("Failed to add Inductor provenance to NPU trace")
++    finally:
++        get_kernel_information_jsons().clear()
++
++
++def inductor_trace_handler(
++    dir_name: str,
++    worker_name: str | None = None,
++    use_gzip: bool = False,
++):
++    """Export an Ascend trace and add Inductor kernel provenance stacks."""
++
++    def handler_fn(prof) -> None:
++        nonlocal worker_name
++        os.makedirs(dir_name, exist_ok=True)
++        if not worker_name:
++            worker_name = f"{socket.gethostname()}_{os.getpid()}"
++        file_name = f"{worker_name}.{time.time_ns()}.pt.trace.json"
++        if use_gzip:
++            file_name += ".gz"
++        output_path = os.path.join(dir_name, file_name)
++        provenance_enabled = (
++            inductor_config.trace.provenance_tracking_to_timeline
++        )
++
++        if use_gzip:
++            with tempfile.NamedTemporaryFile(
++                "w+b", suffix=".json"
++            ) as trace_file:
++                prof.export_chrome_trace(trace_file.name)
++                if provenance_enabled:
++                    _add_inductor_provenance(trace_file.name)
++                with open(trace_file.name, "rb") as source, gzip.open(
++                    output_path, "wb"
++                ) as target:
++                    target.writelines(source)
++        else:
++            prof.export_chrome_trace(output_path)
++            if provenance_enabled:
++                _add_inductor_provenance(output_path)
++
++    return handler_fn
