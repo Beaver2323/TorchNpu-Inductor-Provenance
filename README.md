@@ -1,56 +1,37 @@
 # TorchNPU Inductor 来源追踪
 
-> 最后更新：2026-09-11（CST，UTC+08:00）
+> 最后更新：2026-09-14（CST，UTC+08:00）
 
-本仓库存放 TorchInductor Provenance Tracking（来源追踪）在昇腾 NPU 上的调研文档、
-复现脚本和验收产物。当前正式范围只覆盖
-`torch_npu/_inductor/triton_experimental`；其他 NPU 后端和 FlexAttention 内容仅作为
-需求变更前的历史研究，不属于本轮验收。
+Provenance Tracking（来源追踪）帮助你查看模型中的操作在编译后对应哪些图节点和 kernel。
+本文参照 [PyTorch 2.13 官方 provenance 文档][official]，介绍
+`torch.compile` 使用 `triton_experimental` NPU 后端时的操作方法与社区功能对齐情况。
 
-## 仓库定位
+`tlparse` 将来源关系显示为三栏：
 
-本仓采用文档交付：以 PyTorch 官网公开用法和社区源码实现为基线，用中文主交付文档
-说明设计、调用链、NPU 扩展点、已验证范围和未验收边界；演示 HTML、静态 mapping、
-timeline trace/result 与复现脚本作为配套证据。本仓不是源码交付仓。
+```text
+输入 GraphModule / pre-grad 图  ↔  post-grad 图  ↔  Inductor 生成代码
+```
 
-- 官方源码目标仓：`https://gitcode.com/Ascend/pytorch`
-- 开发 fork：`https://gitcode.com/gcw_3ffySSwy/pytorch`
-- 源码交付分支：`codex/triton-experimental-provenance-delivery`
-- 源码 PR：[Ascend/pytorch !46073](https://gitcode.com/Ascend/pytorch/merge_requests/46073)
-- 源码交付提交：`4845c9289`，2026-09-11 rebase 到官方提交 `f030beadb`
-- 工作流参考：`https://gitcode.com/AllenGuanC/inductor-meta-worktree`
+页面中的**粗体行**表示工具覆盖的节点或 kernel；黄色高亮显示当前选择的来源关系。
+一个 kernel 可以对应多个图节点，例如 `add → relu → mul` 融合后只生成一次 kernel 调用。
+先看效果可下载 [Llama 前向演示 HTML](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html)
+并在浏览器打开。
 
-新增[PR diff 逐段讲解](docs/pr_diff_walkthrough.md)：修改前后代码框、静态与运行时
-调用链、真实 mapping / 模型源码栈、测试对应关系和可下载的实现补丁。
-历史演示产物保留原来的运行版本；本次 rebase 的静态检查通过，尚无更新后 HEAD 的
-NPU 端到端复测结果。
-
-## 当前结论
-
-| 能力 | 状态 | 说明 |
-| --- | --- | --- |
-| CPU Inductor 静态来源追踪 | 已验证 | 可生成 `tlparse` 三栏页面 |
-| NPU `triton_experimental` 静态 level 1/2 | 已验证 | kernel 与 post-grad 节点双向映射有效 |
-| NPU forward/backward 运行时来源追踪 | 已验证 | profiler 设备 kernel 可回填源码栈 |
-| rsplit partial/combine | 已验证 | 一次调度产生的两个 kernel 均有独立来源 |
-| NPU ComboKernel | 后端不支持 | level 0/1 均生成缺失 `x0/x0mask` 定义的 kernel，与 provenance 无关 |
-| Llama 风格 RMSNorm + SwiGLU | 已验证 | 两组动态形状、前反向数值、输入/参数梯度、静态映射和 timeline 均通过 |
-| backward pre-grad→生成代码全覆盖 | 社区边界 | 社区 PyTorch 的 backward 节点可能缺少 `from_node`，不承诺每个节点都形成完整三段链 |
-| AOTInductor `kernel_information.json` | 未验收 | 当前 910B2 和共享 NPU AOTI/lazy/ABI 基线不满足验收前提 |
-
-验证环境为 PyTorch `release/2.14`、匹配的 `torch_npu` wheel、Triton Ascend
-`release/3.2.2`、CANN 9.0.1 和 Ascend 910B2。
+本仓提供中文文档与演示证据；使用功能不依赖本仓脚本。适配源码见
+[Ascend/pytorch PR !46073](https://gitcode.com/Ascend/pytorch/merge_requests/46073)，
+本文对应提交 `4845c9289`。
 
 ## 用户使用方法
 
-使用 provenance 不需要本仓的演示脚本。用户只需要一个已安装 PyTorch、
-torch_npu 和 Triton Ascend 的 NPU 环境，然后在自己原有的 `torch.compile`
-程序上开启追踪。前提是已安装的 PyTorch/torch_npu wheel 包含本功能；
-本文档仓本身不会把功能动态注入普通 wheel。
+### 1. 准备包含该功能的环境
 
-### 1. 检查环境是否包含该功能
+需要 PyTorch、torch_npu 和 Triton Ascend；已安装的 PyTorch 必须包含社区 provenance
+能力，torch_npu 必须包含本 PR 的适配。仅安装普通 wheel 或下载本文档仓，不会自动获得
+尚未包含在 wheel 中的功能。
 
-在自己的 PyTorch + torch_npu 环境中执行：
+项目的历史验证环境是 PyTorch `release/2.14`、匹配的 torch_npu wheel、
+Triton Ascend `release/3.2.2`、CANN 9.0.1 和 Ascend 910B2。
+环境检查示例：
 
 ```bash
 python -c '
@@ -61,61 +42,22 @@ print("NPU timeline handler: OK")
 '
 ```
 
-如果 `provenance_tracking_level` 或 `inductor_trace_handler` 不存在，表示当前 wheel
-未包含对应的 PyTorch 社区能力或 torch_npu 适配，需先升级到包含交付提交的
-wheel，而不是下载本文档仓的脚本。
+该检查确认配置和 timeline 入口存在；实际编译后的 mapping / trace 才能确认链路可用。
 
-### 2. 环境变量接口
+### 2. 安装 tlparse
 
-下列环境变量都应在 `import torch` 前设置，因为 Inductor 在导入配置
-模块时读取它们。
-
-| 环境变量 | 默认值 | 对应配置/作用 |
-| --- | --- | --- |
-| `INDUCTOR_PROVENANCE=0/1/2` | `0` | `trace.provenance_tracking_level`；`1` 为 normal，`2` 为 basic |
-| `TORCH_TRACE=/path/to/dir` | 未设置 | 把 PyTorch 结构化编译日志写入指定目录，供 `tlparse` 解析 |
-| `TORCH_COMPILE_DEBUG_EXTEND=1` | `0` | `trace.provenance_tracking_to_timeline=True`；把来源栈回填到 profiler timeline |
-| `TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1` | `1` | `triton.unique_kernel_names=True`；让 profiler kernel 名可与编译期映射稳定关联 |
-| `TORCH_COMPILE_DEBUG_MAX_EVENTS=<N>` | `500000` | timeline 后处理允许的最大事件数；`0` 表示不限制 |
-| `TORCH_COMPILE_DEBUG=1` | `0` | 开启综合 Inductor debug；未显式设置 `INDUCTOR_PROVENANCE` 时，会把有效 level 提升到 1 |
-
-`TORCH_COMPILE_DEBUG=1` 会同时开启更多编译调试产物，因此日常使用建议按需设置
-前三个专用变量，不把它当作 timeline 开关。
-
-只生成静态 tlparse 页面：
+按照官网流程，先安装 [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)，
+再执行：
 
 ```bash
-export TORCH_TRACE=/tmp/my_inductor_trace
-export INDUCTOR_PROVENANCE=1
-python your_program.py
+cargo install tlparse
 ```
 
-只生成带源码栈的 NPU profiler timeline：
+本项目历史实测使用 `tlparse 0.4.8`。
 
-```bash
-export TORCH_COMPILE_DEBUG_EXTEND=1
-export TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1
-python your_profile_program.py
-```
+### 3. 为自己的程序启用来源追踪
 
-静态页面和运行时 timeline 同时开启：
-
-```bash
-export TORCH_TRACE=/tmp/my_inductor_trace
-export INDUCTOR_PROVENANCE=1
-export TORCH_COMPILE_DEBUG_EXTEND=1
-export TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1
-python your_profile_program.py
-```
-
-`TORCH_COMPILE_DEBUG_EXTEND=1` 会使
-`config.effective_provenance_tracking_level()` 至少为 1，所以只做 timeline 时不必
-另外设置 `INDUCTOR_PROVENANCE=1`。但环境变量只是开启回填能力；NPU trace
-仍需要下文的 `inductor_trace_handler` 导出和后处理。
-
-### 3. 用自己的 `torch.compile` 程序生成静态来源记录
-
-用户现有程序只需保证使用 `inductor` 和 `triton_experimental`：
+在现有程序中选择 NPU Inductor 后端：
 
 ```python
 compiled_model = torch.compile(
@@ -125,12 +67,11 @@ compiled_model = torch.compile(
 )
 ```
 
-如果手头没有程序，下面是一个完整的 `your_program.py`。它是普通用户程序，
-不导入本仓任何内容：
+如果没有现成程序，可保存以下完整示例为 `your_program.py`：
 
 ```python
 import torch
-import torch_npu  # 注册 NPU 设备和 Inductor 后端
+import torch_npu
 
 
 class Model(torch.nn.Module):
@@ -150,183 +91,181 @@ compiled_model(x).sum().backward()
 torch.npu.synchronize()
 ```
 
-在启动 Python 之前设置两个社区 PyTorch 环境变量：
+在启动 Python 前设置社区环境变量，生成结构化编译日志：
 
 ```bash
-export TORCH_TRACE=/tmp/my_inductor_trace
-export INDUCTOR_PROVENANCE=1
-python your_program.py
+TORCH_TRACE=/tmp/my_inductor_trace INDUCTOR_PROVENANCE=1 python your_program.py
 ```
 
-- `TORCH_TRACE` 指定 PyTorch 结构化编译日志目录。每次测试建议使用新的空目录。
-- `INDUCTOR_PROVENANCE=1` 开启完整来源追踪；可改为 `2` 使用较轻量的 basic
-  模式。`0` 表示关闭。
-- forward 和 backward 都只需正常调用；backward 在首次 `.backward()` 时由
-  AOTAutograd 编译并记录。
+`TORCH_TRACE` 指定日志目录，建议每次实验使用新的目录。`INDUCTOR_PROVENANCE=1`
+开启 normal 来源追踪。首次前向和首次 `.backward()` 可能分别触发编译，反向图也可产生
+来源记录；无需为反向再单独调用一次 `torch.compile`。
 
-### 4. 用 tlparse 生成三栏 HTML
+### 4. 生成并阅读三栏高亮页面
 
-`tlparse` 是独立的可视化工具，不是本仓脚本。首次使用时安装：
+选择日志目录中一个具体的 `.log` 文件，替换下面的 `your_log.log`：
 
 ```bash
-cargo install tlparse
-```
-
-本项目实测过 `tlparse 0.4.8`。用上一步生成的某一个具体 `.log`
-文件生成页面：
-
-```bash
-tlparse /tmp/my_inductor_trace/<log_file_name>.log \
+tlparse /tmp/my_inductor_trace/your_log.log \
   --inductor-provenance \
   -o /tmp/my_tlparse_output \
   --no-browser
 ```
 
-不要把日志目录作为 `tlparse parse` 子命令参数。若目录中有多个
-`.log`，应分别解析；单进程普通运行通常只产生一个。打开输出目录的
-`index.html`，进入 **Provenance Tracking** 链接即可看到：
+打开输出目录的 `index.html`，点击 **Provenance Tracking** 链接。
+点击粗体节点或 kernel，观察另外两栏中对应的黄色高亮。
+
+- 将具体日志文件交给 `tlparse`；官网提示 `tlparse parse <目录>` 可能无法生成高亮页面。
+- 多个日志文件分别解析。一个日志里也可能包含多个编译图，因此可以出现多个 HTML 页面。
+- 不加 `--inductor-provenance` 时，仍可在索引中读取 mapping JSON；该参数用于生成高亮页面。
+- 反向图的 FX 入口也可能叫 `def forward`，这是 GraphModule 的统一命名，不代表它是模型前向。
+
+三栏页面使用的主要编译产物与官网一致：
+
+| 产物 | 用途 |
+| --- | --- |
+| `before_pre_grad_graph.txt` | 输入 / pre-grad 图 |
+| `after_post_grad_graph.txt` | post-grad 图 |
+| `inductor_output_code.txt` | JIT Inductor 生成代码 |
+| `inductor_aot_wrapper_code.txt` | 社区 AOTInductor wrapper；本轮 NPU AOTI 未验收 |
+| `inductor_provenance_tracking_node_mappings.json` | 图节点与 kernel 的双向关系 |
+
+文件名可能带有 tlparse 添加的编号；JIT 和 AOT 产物不必同时出现。
+
+## 查看每个 kernel 对应的源码
+
+启用 `INDUCTOR_PROVENANCE=1` 后，在 tlparse 索引中找到
+`inductor_provenance_tracking_kernel_stack_traces.json`，点击旁边的 **readable_html**，
+即可查看 kernel 对应的模型源码栈。这与官网的 kernel 源码查看方式一致。
+
+例如下面的 key（来自本仓[静态演示](docs/triton_experimental/artifacts/static_smoke/kernel_stack_traces.json)）：
 
 ```text
-pre-grad FX  ↔  post-grad FX  ↔  Inductor 生成代码
+triton_unk_fused_add_mul_relu_0:1
 ```
 
-黄色高亮表示当前选中节点/kernel 的来源关系。同一输出目录中的
-`inductor_provenance_tracking_node_mappings*.json` 是对应的机器可读映射。
+`:1` 是 debug handle，用来区分生成代码中的 kernel 调用位置；它不是耗时或执行次数。
+生成代码的注释中也能找到相同 handle，从而与 mapping、源码栈对应。
+一个融合 kernel 可以对应多条源码栈。
 
-### 5. 在 NPU profiler timeline 中查看运行时源码栈
+## NPU 扩展：在 profiler timeline 中查看源码栈
 
-静态 HTML 只需环境变量。如果还需要把 Python 源码栈回填到 NPU profiler
-device kernel 事件，需把原有 profiling 代码的 `on_trace_ready` 换成
-torch_npu 提供的 handler：
+三栏 HTML 描述编译期来源关系。timeline 则在实际执行的设备 kernel 事件上回填来源栈，
+便于结合耗时定位模型代码。该能力基于本项目配套的 PyTorch 2.14 处理器与 torch_npu
+adapter，属于官网 2.13 静态页面用法之外的补充。
 
-```bash
-export TORCH_COMPILE_DEBUG_EXTEND=1
-export TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1
-python your_profile_program.py
-```
-
-`your_profile_program.py` 中的核心接入代码如下：
+要运行完整示例，保留上面 `your_program.py` 的 import 和 `Model` 定义，
+将 `model = ...` 及之后的代码替换为下列内容，保存为 `your_profile_program.py`：
 
 ```python
-import torch
-import torch_npu
 from torch_npu.profiler import inductor_trace_handler
 
 
+model = Model().npu().train()
 compiled_model = torch.compile(
     model,
     backend="inductor",
     options={"npu_backend": "triton_experimental"},
+    fullgraph=True,
 )
 
-# 先在 profiler 外完成 forward/backward 首次编译。
+
+def make_input():
+    return torch.randn(64, 128, device="npu", requires_grad=True)
+
+
+# 在 profiler 外完成首次前向和反向编译。
 warmup_x = make_input()
 compiled_model(warmup_x).sum().backward()
 torch.npu.synchronize()
+model.zero_grad(set_to_none=True)
 
-handler = inductor_trace_handler(
-    "/tmp/my_npu_timeline", worker_name="rank0"
-)
+handler = inductor_trace_handler("/tmp/my_npu_timeline", worker_name="rank0")
 profile_x = make_input()
 with torch_npu.profiler.profile(on_trace_ready=handler):
     compiled_model(profile_x).sum().backward()
     torch.npu.synchronize()
 ```
 
-这里的 `model` 和 `make_input()` 都是用户自己的对象，不来自本仓。输出的
-`/tmp/my_npu_timeline/*.pt.trace.json` 仍是标准 Ascend Chrome trace，可在 Perfetto
-中打开。选中 NPU device kernel 事件后，在 `args.stack` 中查看回填的
-Python 源码栈。
+在编译和采样前开启 timeline 配置：
 
-如果不便在启动命令中设置环境变量，可使用等价的 Python 配置，但必须
-让 `config.patch(...)` 同时覆盖编译、warmup 和 profiler 代码段：
+```bash
+TORCH_COMPILE_DEBUG_EXTEND=1 TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1 \
+  python your_profile_program.py
+```
+
+将 `/tmp/my_npu_timeline/*.pt.trace.json` 中的具体文件载入 [Perfetto](https://ui.perfetto.dev/)，
+选择 NPU device kernel 事件，查看 `args.stack`。这是编译期模型源码栈的回填，
+不是在设备执行现场采集 Python 栈。
+如需同时生成静态 HTML 所需日志，在上述启动命令中再设置 `TORCH_TRACE` 和
+`INDUCTOR_PROVENANCE=1`，然后按前面的步骤运行 tlparse。
+
+## 环境变量与 Python 配置
+
+以下配置已按本项目配套的 [PyTorch 源码][config-source]核对，均应在 `import torch`
+之前设置。它们不保证在所有旧版 PyTorch wheel 中存在。
+
+| 环境变量 | 默认值 | 对应作用 |
+| --- | --- | --- |
+| `INDUCTOR_PROVENANCE=0/1/2` | `0` | `trace.provenance_tracking_level`：关闭 / normal / basic |
+| `TORCH_TRACE=/path/to/logs` | 未设置 | 结构化编译日志目录，供 tlparse 使用 |
+| `TORCH_COMPILE_DEBUG_EXTEND=1` | `0` | `trace.provenance_tracking_to_timeline=True` |
+| `TORCHINDUCTOR_UNIQUE_KERNEL_NAMES=1` | `1` | `triton.unique_kernel_names=True`，辅助关联编译信息与 profiler 事件 |
+| `TORCH_COMPILE_DEBUG_MAX_EVENTS=<N>` | `500000` | timeline 后处理的最大事件数；`0` 表示不限制 |
+| `TORCH_COMPILE_DEBUG=1` | `0` | 综合编译调试；未设置 `INDUCTOR_PROVENANCE` 时，level 回退为 1 |
+
+timeline 开启时，有效 provenance level 至少为 1，因此仅做 timeline 可以不单独设置
+`INDUCTOR_PROVENANCE`。环境变量启用回填能力，实际 NPU trace 导出仍需
+`inductor_trace_handler`。它也支持 `use_gzip=True` 输出压缩 trace。
+
+也可以用 Python 设置配置，作用域须覆盖编译、预热、采样和导出回调：
 
 ```python
 from torch._inductor import config
 
-with config.patch(
-    {
-        "trace.provenance_tracking_level": 1,
-        "trace.provenance_tracking_to_timeline": True,
-        "triton.unique_kernel_names": True,
-    }
-):
-    # 在这里执行上述编译、warmup 和 profiling 代码。
+with config.patch({
+    "trace.provenance_tracking_level": 1,
+    "trace.provenance_tracking_to_timeline": True,
+    "triton.unique_kernel_names": True,
+}):
+    # 在这里执行上面的模型编译、预热与 profiler 代码。
     ...
 ```
 
-### 6. 已知边界
+## 与社区功能的对齐矩阵
 
-- 当前交付只验收 `triton_experimental` 后端。
-- ComboKernel 会因 NPU 后端缺少 `x0/x0mask` 定义而编译失败，该问题与
-  provenance 开关无关。
-- backward 页面的 FX `GraphModule` 仍显示 `def forward`，这是 FX 的统一入口
-  命名，不表示它是模型前向图。
-- 验收脚本、专用 wheel target 和 Tracking 绝对路径只用于本项目开发回归，
-  不是用户接口。需要复现交付验收时，再阅读
-  [`triton_experimental` 交付说明](docs/triton_experimental/README.md)。
+“已验证”指本仓原始实测基线，主要产物生成于 2026-08-27 至 2026-09-01。
+源码提交 `4845c9289` 在 2026-09-11 rebase 后完成静态检查，尚无该 HEAD 的完整 NPU
+端到端复测结果。以下不把历史产物当作最新 PR CI 的通过证明。
 
-## 从哪里开始
+| 功能 | 社区依据 / 能力 | NPU `triton_experimental` 状态 | 证据或限制 |
+| --- | --- | --- | --- |
+| 三栏节点与代码高亮 | 官网输入图、post-grad 图、生成代码三栏 | 已对齐、已验证 | [Llama 前向 HTML](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html) |
+| `INDUCTOR_PROVENANCE=1` + `TORCH_TRACE` | 官网标准启用方式 | 已对齐、已验证 | [静态结果](docs/triton_experimental/artifacts/static_smoke/static_level1_result.json) |
+| `tlparse --inductor-provenance` 与 mapping JSON | 官网可视化及机器可读产物 | 已对齐、已验证；复用社区工具和 schema | [mapping JSON](docs/triton_experimental/artifacts/static_smoke/node_mappings.json) |
+| Triton kernel 来源 | 官网覆盖 Triton kernel | 已对齐、已验证 | [最小三栏页面](docs/triton_experimental/artifacts/static_smoke/provenance_tracking.html) |
+| kernel 源码栈与 debug handle | 官网 `readable_html`、`kernel:handle` | 已对齐、已验证 | [kernel stacks](docs/triton_experimental/artifacts/static_smoke/kernel_stack_traces.json) |
+| level 1 / 2 | 配套 PyTorch 2.14 的 normal / basic 配置 | 已对齐、已验证 | [level 2 结果](docs/triton_experimental/artifacts/static_smoke/static_level2_result.json) |
+| backward 来源关系 | 配套社区实现；不保证每个节点都有完整 `from_node` | post-grad→kernel 已验证；左栏缺失遵循社区边界 | [Llama 反向 HTML](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_backward.html) |
+| profiler timeline 源码栈 | 配套 PyTorch 2.14 处理器；非官网 2.13 该页的操作流程 | 已适配、已验证前向和反向 | [trace/result](docs/triton_experimental/artifacts/timeline/) |
+| rsplit partial / combine | NPU 后端两次 launch，共享社区来源登记机制 | 两个 kernel 均已验证；不等于 ComboKernel | [rsplit 结果](docs/triton_experimental/artifacts/timeline/rsplit_result.json) |
+| ComboKernel | 官网明确覆盖社区 combo kernel | 未对齐；历史测试被 NPU codegen 错误阻断 | [level 0](docs/triton_experimental/artifacts/validation/combo_level0_result.json) / [level 1](docs/triton_experimental/artifacts/validation/combo_level1_result.json) 均缺少 `x0/x0mask` 定义 |
+| C++ kernel 来源 | 官网覆盖社区 C++ kernel | 不适用本轮 NPU Triton 后端 | 社区 C++ 支持不能计作 NPU 已验证 |
+| AOTInductor provenance | 官网展示 AOT 三栏；社区实现另有 `kernel_information.json` | 未验收 | NPU AOTI 设备、lazy 初始化与 ABI 前提见[交付指南](docs/triton_experimental/README.md#123-为什么本轮不能把-aotinductor-标为完成) |
 
-1. [主交付文档](docs/provenance_delivery.md)：对照官网契约和社区源码理解设计、调用链、
-   NPU 适配点与验收边界。
-2. [文档总索引](docs/README.md)：了解全部交付内容和推荐阅读顺序。
-3. [新手入门](docs/beginner_guide.md)：理解 pre-grad、post-grad、Inductor IR、kernel
-   以及静态/运行时来源追踪。
-4. [`triton_experimental` 交付说明](docs/triton_experimental/README.md)：查看实现范围、
-   复现命令和验收结论。
-5. [PR diff 逐段讲解](docs/pr_diff_walkthrough.md)：对照代码框和调用栈理解每项改动，
-   下载核心实现 diff。
-6. [技术参考](docs/technical_reference.md)：查看需求变更前后的完整技术研究。
-7. [历史研究摘要](docs/history_summary.md)：了解已退出当前范围的早期结论。
+本轮范围仅包括 `triton_experimental`。Llama 风格 RMSNorm + SwiGLU 已在历史基线完成
+两组动态形状的前反向、输入/参数梯度和 provenance 验证，详见
+[模型结果](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_result.json)。
+其他后端与 FlexAttention 的早期研究见历史资料，不纳入本矩阵的当前验收范围。
 
-## 核心演示
+## 进一步阅读
 
-- [Llama forward 三栏页面](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html)
-- [Llama backward 三栏页面](docs/triton_experimental/artifacts/llama_swiglu/provenance_tracking_backward.html)
-- [Llama 验证结果](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_result.json)
-- [Llama 静态节点映射](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_node_mappings.json)
-- [Llama Perfetto trace](docs/triton_experimental/artifacts/llama_swiglu/llama_swiglu_timeline_trace.json)
-- [代表性模型验证矩阵](docs/triton_experimental/artifacts/validation/model_validation_result.json)
-- [ComboKernel level 0/1 A/B 结果](docs/triton_experimental/artifacts/validation/combo_level1_result.json)
-- [全部产物索引](docs/triton_experimental/artifacts/README.md)
+- [主交付文档](docs/provenance_delivery.md)：官网契约、设计与验收边界。
+- [PR diff 逐段讲解](docs/pr_diff_walkthrough.md)：修改前后代码框、调用栈、测试与原始补丁。
+- [新手入门](docs/beginner_guide.md)：FX、Inductor IR 与静态 / 运行时追踪基础。
+- [演示产物索引](docs/triton_experimental/artifacts/README.md)：HTML、mapping、源码栈和 timeline。
+- [文档总索引](docs/README.md)：开发者复现方法、技术参考与历史研究。
+- [PyTorch 官方 provenance 文档][official]与 [tlparse 社区仓](https://github.com/pytorch/tlparse)。
 
-HTML 需要下载到本地浏览器打开。timeline trace JSON 可载入 Perfetto。forward 与
-backward 必须分别阅读：两个页面的 FX `GraphModule` 都显示 `def forward`，这是 FX 的
-统一图入口命名，不表示 backward 页面执行的是模型前向。
-
-## 文件树
-
-```text
-.
-├── README.md
-└── docs
-    ├── README.md
-    ├── provenance_delivery.md
-    ├── pr_diff_walkthrough.md
-    ├── diffs
-    │   └── triton_experimental_provenance_f030beadb_4845c9289.patch
-    ├── beginner_guide.md
-    ├── technical_reference.md
-    ├── history_summary.md
-    └── triton_experimental
-        ├── README.md
-        ├── scripts
-        │   ├── README.md
-        │   └── *.py
-        └── artifacts
-            ├── README.md
-            ├── llama_swiglu
-            ├── static_smoke
-            ├── timeline
-            └── validation
-```
-
-文件树按“学习文档、当前交付、复现脚本、验收产物”收束。完全重复的 Llama forward
-兼容 HTML 已删除；需求变更前的分散演示文档合并到历史摘要，原始细节仍可从 Git 历史
-提交 `5ace897` 恢复。
-
-## 文档语言与原始产物
-
-说明性 Markdown 文档统一使用中文。源码标识、配置项、kernel 名、JSON schema 和
-`tlparse` 自动生成 HTML 保留社区原始英文格式，以保证证据可复现并与社区工具对齐。
+[official]: https://docs.pytorch.org/docs/2.13/user_guide/torch_compiler/torch.compiler_inductor_provenance.html
+[config-source]: https://github.com/pytorch/pytorch/blob/8e86e0a23e3679c2bf3406cf0837fcb6297a5d9b/torch/_inductor/config.py
