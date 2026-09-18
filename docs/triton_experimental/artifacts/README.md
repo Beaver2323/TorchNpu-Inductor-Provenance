@@ -1,8 +1,9 @@
 # 验收产物索引
 
-> 最后更新：2026-09-02 00:03 CST（UTC+08:00）
+> 最后更新：2026-09-16 00:35 CST（UTC+08:00）
 >
-> 原始实测日期为 2026-08-27 至 2026-09-01，以各结果 JSON 为准；更新时间不代表重跑全部历史用例。
+> 历史实测日期为 2026-08-27 至 2026-09-01；2026-09-16 新增最小静态/timeline 配对重跑。
+> 以各结果 JSON 为准，更新时间不代表重跑全部历史用例。
 
 ## 目录
 
@@ -10,6 +11,7 @@
 | --- | --- | --- |
 | [`llama_swiglu/`](./llama_swiglu/) | forward/backward HTML、mapping、kernel stack、timeline 和综合结果 | 当前主演示 |
 | [`static_smoke/`](./static_smoke/) | 三操作静态 level 1/2 结果和三栏页面 | 最小静态证据 |
+| [`static_smoke/timeline_20260916/`](./static_smoke/timeline_20260916/) | 同次生成的最小静态 HTML、Perfetto trace、mapping 和结果 | 2026-09-16 推理前向重跑 PASS；既有隔离 wheel |
 | [`timeline/`](./timeline/) | forward/backward 与 rsplit 的 result/trace | 最小运行时证据 |
 | [`validation/`](./validation/) | 代表性模型矩阵、provenance A/B 与 ComboKernel 门禁 | 边界证据 |
 

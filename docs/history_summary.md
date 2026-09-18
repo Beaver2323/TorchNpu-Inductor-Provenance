@@ -1,6 +1,6 @@
 # 需求变更前的历史研究摘要
 
-> 最后更新：2026-08-31 19:51 CST（UTC+08:00）
+> 最后更新：2026-09-18（CST，UTC+08:00）；实验日期仍以各条记录为准。
 >
 > 本文仅保存历史结论，不属于当前 `triton_experimental` 交付验收。
 
@@ -21,6 +21,19 @@ backward 调查分别维护多篇演示文档。需求收束后，这些页面�
 | 2026-08-20 | FlexAttention template | forward template kernel 可关联 `flex_attention`、score 与 mask 来源节点 | 历史专项 |
 | 2026-08-21 | 默认 BlockMask | `block_mask=None` 的 forward 数值和 provenance 页面通过 | 历史专项 |
 | 2026-08-21 | 默认 BlockMask backward | 反向图和 dK/dV 候选生成；哨兵限界修复后仍阻塞于 BishengIR 长编译 | 未完成，不计入 PASS |
+| 2026-08-25 | extern/aclnn 双 mm | 两次底层同名 mm 通过不同 wrapper / flow 关联到各自源码栈 | 历史专项，不等于当前 extern 已验收 |
+| 2026-08-25 | MLIR 双融合 kernel | 设备来源栈从 0/2 到 2/2，分别指向不同模型源码段 | 已退出当前范围 |
+| 2026-08-25 | DVM mlir_fusion | 两个 dvm_* kernel 的来源栈从 0/2 到 2/2 | 已退出当前范围 |
+| 2026-08-25 | DVM graph_fusion | 逻辑 key、host launch 与真实 AIVEC 名称通过 flow 桥接，2/2 栈 | 已退出当前范围 |
+| 2026-08-25 | CATLASS 双 mm | 同一个底层模板符号的两次调用通过 handle / marker 区分，2/2 栈 | 已退出当前范围 |
+| 2026-08-26 | DVM matmul template | 调试模式区分两次模板 launch 的运行时名称，消除第二次误取第一次 stack | 已退出当前范围 |
+
+上述 8 月 25—26 日记录使用 PyTorch `2.14.0a0+git8e86e0a`、当时的 torch_npu
+`83cc452` 工作树和 Ascend910B2，属于需求收束前的实验，不能外推为当前
+`triton_experimental` 的能力。
+完整工作时间线见 [Tracking 交接快照](./work_records/tracking_handoff_20260918.md)，
+各旧文档的合并去向见[归档来源清单](./work_records/source_inventory.json)。
+CPU 入门的独立脚本、HTML 和 mapping 已精选保留在[CPU 演示](./cpu/README.md)。
 
 ## 为什么不再保留分散页面
 

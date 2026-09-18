@@ -1,0 +1,30 @@
+/home/z50063656/Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/runtime/torch_npu/dynamo/__init__.py:182: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+RUNTIME {"cwd": "/home/z50063656/tmp", "python": "/home/z50063656/envs/Tracking/bin/python", "torch": "2.14.0a0+git8e86e0a", "torch_file": "/home/z50063656/Tracking/src/pytorch/torch/__init__.py", "torch_npu": "2.14.0a0+gitde350aa", "torch_npu_file": "/home/z50063656/Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/runtime/torch_npu/__init__.py", "handler_module": "torch_npu.profiler._inductor_profiler", "profiler_init_sha256": "ea2ea374c7602e51cf07299f6f610e4caa41b4bfd4abf350ea03b003e8f8cead", "adapter_sha256": "e3fef16ad99688a432e99b54885d56e2e307ffb80f55d2fe30bedbf12d58e4d5", "scope": "isolated de350aa native wheel plus Python-only API metadata fix; not full 7b8795bb9/CI 2.15 validation"}
+TEST ["/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/test/profiler/test_inductor_profiler.py", "TestInductorProfiler.test_inductor_trace_handler_public_api", "-v"]
+test_inductor_trace_handler_public_api (__main__.TestInductorProfiler.test_inductor_trace_handler_public_api) ... FAIL
+
+======================================================================
+FAIL: test_inductor_trace_handler_public_api (__main__.TestInductorProfiler.test_inductor_trace_handler_public_api)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/z50063656/Tracking/src/pytorch/torch/testing/_internal/common_utils.py", line 3829, in wrapper
+    method(*args, **kwargs)
+  File "/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/test/profiler/test_inductor_profiler.py", line 73, in test_inductor_trace_handler_public_api
+    self.assertEqual(
+  File "/home/z50063656/Tracking/src/pytorch/torch/testing/_internal/common_utils.py", line 4879, in assertEqual
+    raise error_metas.pop()[0].to_error(  # type: ignore[index]
+AssertionError: String comparison failed: 'torch_npu.profiler._inductor_profiler' != 'torch_npu.profiler'
+- torch_npu.profiler._inductor_profiler
++ torch_npu.profiler
+
+
+To execute this test, run the following from the base repo dir:
+    python test/profiler/test_inductor_profiler.py TestInductorProfiler.test_inductor_trace_handler_public_api
+
+This message can be suppressed by setting PYTORCH_PRINT_REPRO_ON_FAILURE=0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.025s
+
+FAILED (failures=1)

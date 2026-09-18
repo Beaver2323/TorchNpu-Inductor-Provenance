@@ -1,0 +1,2 @@
+LINK_RESPONSE [{"id": 4351353, "number": "4909", "title": "[需求] 为 triton_experimental 后端补齐 Inductor provenance 来源追踪"}]
+LINKED_ISSUES [{"number": "4909", "title": "[需求] 为 triton_experimental 后端补齐 Inductor provenance 来源追踪", "html_url": "https://gitcode.com/Ascend/pytorch/issues/4909"}]

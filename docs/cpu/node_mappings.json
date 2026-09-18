@@ -1,0 +1,43 @@
+{
+  "cppCodeToPost": {
+    "cpp_fused_add_mul_relu_0:1": [
+      "mul",
+      "relu",
+      "add"
+    ]
+  },
+  "postToCppCode": {
+    "add": [
+      "cpp_fused_add_mul_relu_0:1"
+    ],
+    "mul": [
+      "cpp_fused_add_mul_relu_0:1"
+    ],
+    "relu": [
+      "cpp_fused_add_mul_relu_0:1"
+    ]
+  },
+  "postToPre": {
+    "add": [
+      "added"
+    ],
+    "mul": [
+      "mul"
+    ],
+    "relu": [
+      "activated"
+    ]
+  },
+  "preToPost": {
+    "activated": [
+      "relu"
+    ],
+    "added": [
+      "add"
+    ],
+    "mul": [
+      "mul"
+    ]
+  },
+  "version": 2.0
+}

@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "time_utc": "2026-09-15T16:35:17.203280+00:00",
+  "model": "relu(x + 1) * 2",
+  "scope": "inference forward only",
+  "shape": [
+    4096
+  ],
+  "backend": "triton_experimental",
+  "torch": "2.14.0a0+git8e86e0a",
+  "torch_npu": "2.14.0a0+git83cc452",
+  "triton": "3.2.0",
+  "torch_module": "/home/z50063656/Tracking/src/pytorch/torch/__init__.py",
+  "torch_npu_module": "/home/z50063656/Tracking/triton_experimental_delivery/wheel_target_20260827_v10/torch_npu/__init__.py",
+  "visible_devices": "6",
+  "device": "Ascend910B2",
+  "force_disable_caches": true,
+  "max_abs_diff": 0.0,
+  "kernel_to_post": {
+    "triton_unk_fused_add_mul_relu_0:1": [
+      "mul",
+      "relu",
+      "add"
+    ]
+  },
+  "event_count": 47,
+  "device_kernel_name": "triton_unk_fused_add_mul_relu_0",
+  "device_kernel_stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/triton_experimental/scripts/static_smoke_timeline_probe.py\", line 33, in forward\n    return activated * 2\n           ^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/triton_experimental/scripts/static_smoke_timeline_probe.py\", line 32, in forward\n    activated = torch.relu(added)\n                ^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/triton_experimental/scripts/static_smoke_timeline_probe.py\", line 31, in forward\n    added = x + 1\n            ^^^^^\n"
+  ],
+  "trace": "trace.json",
+  "html": "provenance_tracking.html",
+  "tlparse_pages": [
+    "provenance_tracking_-_0_0_0.html",
+    "provenance_tracking_-_-_-_-.html"
+  ],
+  "selected_tlparse_page": "provenance_tracking_-_0_0_0.html",
+  "script_sha256": "df0dbe898f1363fa5953841c19b481e2f6beb15f9a6f0e7e548aa065185ed894",
+  "note": "Existing isolated validation wheel; not latest PR full regression."
+}

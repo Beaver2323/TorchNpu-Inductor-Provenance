@@ -1,6 +1,9 @@
 # 文档索引
 
-> 最后更新：2026-09-11（CST，UTC+08:00）
+> 最后更新：2026-09-18（CST，UTC+08:00）
+
+先看[当前状态与工作记录](./work_records/README.md)：源码 PR !46073 已关联需求 #4909，
+HEAD `195830924`，基线 `ec693356f`。本文中的历史验证不替代当前 CI。
 
 ## 推荐阅读顺序
 
@@ -10,10 +13,13 @@
 3. [`triton_experimental` 交付说明](./triton_experimental/README.md)：当前正式范围、
    实现、验证与演示。
 4. [PR diff 逐段讲解](./pr_diff_walkthrough.md)：固定 BASE/HEAD 的改动解释、代码框、
-   框架调用链与模型源码栈，以及测试覆盖和 rebase 说明。
+   框架调用链与模型源码栈，完整覆盖 21 个非测试文件；测试仅保留覆盖导航。
 5. [技术参考](./technical_reference.md)：需求变更前后的详细技术研究。
 6. [历史研究摘要](./history_summary.md)：CPU、早期普通 NPU、cache、FlexAttention 和
    默认 BlockMask 的历史结论。
+
+只想了解扩大模块验证时遇到了什么问题、解决到了哪里，先看
+[模块验证工作总结（通俗版）](./module_validation_summary.md)，文末附可直接用于工作汇报的总结。
 
 ## 当前交付资料
 
@@ -21,8 +27,14 @@
 | --- | --- | --- |
 | 主交付 | [`provenance_delivery.md`](./provenance_delivery.md) | 对照官网和社区源码说明设计与 NPU 对齐结论 |
 | diff 导读 | [`pr_diff_walkthrough.md`](./pr_diff_walkthrough.md) | 结合实际源码解释每项功能修改和调用栈 |
-| 实现补丁 | [固定版本 unified diff](./diffs/triton_experimental_provenance_f030beadb_4845c9289.patch) | 3 份实现文件的完整差异，供离线审阅 |
+| 非测试完整补丁 | [当前 PR](./diffs/triton_experimental_provenance_ec693356f_195830924_non_tests.patch) / [历史讲解版](./diffs/triton_experimental_provenance_f030beadb_dbc0db52f_non_tests.patch) | 均覆盖 21 个非测试文件，含 PNG 二进制内容；分别固定 ec693356f→195830924 和 f030beadb→dbc0db52f |
 | 总体说明 | [`triton_experimental/README.md`](./triton_experimental/README.md) | 范围、实现和验收 |
+| 模块验证总结 | [`module_validation_summary.md`](./module_validation_summary.md) | 用通俗语言说明实际难点、处理结果和未完成范围 |
+| CI / rebase 核查 | [`pr_46073_ci_20260916.md`](./pr_46073_ci_20260916.md) | 9 月 16 日三组失败及后续进展；9 月 18 日 #68280 已触发，尚无最终通过结论 |
+| 失败引入来源 | [`pr_46073_origin_analysis.md`](./pr_46073_origin_analysis.md) | 最新 master rebase、三个问题的引入提交、CI wheel 源码与三版本签名对照 |
+| 本 PR 最小修复 | [`pr_46073_api_fix.md`](./pr_46073_api_fix.md) | 公开 API 元数据已修复并推送；聚焦回归通过、完整本地检查仍有既有失败 |
+| 工作记录 | [`work_records/README.md`](./work_records/README.md) | Tracking 有效记录归档、需求 issue、版本时间线和原始证据索引 |
+| CPU 入门基线 | [`cpu/README.md`](./cpu/README.md) | CPU 脚本、独立三栏 HTML、mapping / stack 及页面阅读说明 |
 | 复现脚本 | [`triton_experimental/scripts/`](./triton_experimental/scripts/README.md) | 静态、timeline、rsplit、combo、Llama 与 A/B 探针 |
 | 验收产物 | [`triton_experimental/artifacts/`](./triton_experimental/artifacts/README.md) | HTML、mapping、trace 与结构化结果 |
 | forward 演示 | [三栏 HTML](./triton_experimental/artifacts/llama_swiglu/provenance_tracking_forward.html) | 完整 pre-grad→post-grad→代码联动 |

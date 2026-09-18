@@ -1,0 +1,24 @@
+{
+  "url": "https://pytorch-package.obs.cn-north-4.myhuaweicloud.com/pta/torch/master/20260902/torch-2.15.0.dev20260902%2Bcpu-cp310-cp310-manylinux_2_28_aarch64.whl",
+  "sha256": "241ae9f724120c022627cbc3454e15500895d11a270102bc4477d731566f72c2",
+  "bytes": 159044502,
+  "purpose": "source inspection only, NOT installed",
+  "files": [
+    {
+      "path": "torch/version.py",
+      "sha256": "03a5d0e48fad5d101190487eba59d89714eb281939a10bfdb8a35a4e4b5f7453"
+    },
+    {
+      "path": "torch/_inductor/codegen/triton.py",
+      "sha256": "0da488653ae8cf91e6caa7f9759388cecafac54047b83ae199cb4614ecce1983"
+    },
+    {
+      "path": "torch/autograd/profiler.py",
+      "sha256": "41472cdd2dcecb6d88c2395c8a22d96b6ef332d8d407fd3ea5915db73809ccb3"
+    },
+    {
+      "path": "torch/profiler/profiler.py",
+      "sha256": "48829e86a5a28480b5c6e36529206efee393aace7fbc315020cbb7ced2b6b43e"
+    }
+  ]
+}

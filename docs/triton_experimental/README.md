@@ -1,6 +1,6 @@
 # `triton_experimental` Inductor 来源追踪交付指南
 
-> 最后更新：2026-09-11（CST，UTC+08:00）
+> 最后更新：2026-09-18（CST，UTC+08:00）
 
 本文说明 `torch_npu/_inductor/triton_experimental` 后端的 Inductor
 provenance（来源追踪）是什么、如何实现、如何运行，以及当前已经验证到什么程度。
@@ -15,10 +15,12 @@ provenance（来源追踪）是什么、如何实现、如何运行，以及当�
 - 当前 worktree 的 `origin` 指向官方仓，`fork` 指向开发 fork；交付时应把分支 push
   到 `fork`，再向 `origin` 发起 PR。
 - 源码已推送到开发 fork 的 `codex/triton-experimental-provenance-delivery` 分支，
-  当前提交为 `4845c9289`，官方基线为 `f030beadb`，对应
+  当前交付 HEAD 为 `195830924`，官方基线为 `ec693356f`，对应
   [PR !46073](https://gitcode.com/Ascend/pytorch/merge_requests/46073)。
-  2026-09-11 rebase 后静态检查通过；本页原有 wheel、HTML 和 trace 是原版本实测证据，
-  尚未据新 HEAD 重跑 NPU 端到端验证。
+  需求单为 [#4909](https://gitcode.com/Ascend/pytorch/issues/4909)。
+  2026-09-18 rebase 后补丁等价性和 API 聚焦检查通过，完整流水 #68280 已触发；
+  本页原有 wheel、HTML 和 trace 是原版本实测证据，不是新 HEAD 的验收。
+  详见[工作记录](../work_records/README.md)。
 - [架构师个人预合入/历史参考仓](https://gitcode.com/rmch/npu_inductor_2.13.0)
   是历史参考，
   不是目标仓或 fork。
@@ -294,6 +296,9 @@ python /home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/t
 timeline、forward 三栏映射和 backward post-grad→kernel 映射通过；backward
 pre-grad→生成代码的覆盖遵循社区 PyTorch 的现有边界。ConvNeXt 和 Transformer 的后端
 边界未混入 PASS 计数。
+
+扩大模块验证时遇到的问题、解决办法和仍然存在的限制，见
+[模块验证工作总结（通俗版）](../module_validation_summary.md)。
 
 ## 9. 生成静态 tlparse 页面
 

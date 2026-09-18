@@ -1,0 +1,61 @@
+{
+  "kind": "source contract reproduction, NOT a full NPU execution",
+  "ci_torch_revision": "3c73a854d2797ba5d8057db91d52ff836a331790",
+  "ci_actual_load_call": "self.indexing(index, block_ptr=True, tma_compatibility_checker=tma_checker, allow_reduction_invariant_indexing=True)",
+  "indexing_ast_identical_all_three": true,
+  "indexing_signature_identical_all_three": true,
+  "latest_base_pr_indexing_ast_identical": true,
+  "rows": [
+    {
+      "label": "original_base",
+      "revision": "f030beadb051d882c0dd697f54f8aeac8c5a5f7d",
+      "old_call_binds": true,
+      "ci_call_error": "indexing() got an unexpected keyword argument 'allow_reduction_invariant_indexing'",
+      "public_handler": false,
+      "signature": "(self, index, *, copy_shape=None, dense_indexing=False, override_mask=None, block_ptr=False, tma_compatibility_checker=None, mask_constant_index=False)"
+    },
+    {
+      "label": "latest_base",
+      "revision": "2a9b559fb237dde85fce6bb72cba931fd6d38548",
+      "old_call_binds": true,
+      "ci_call_error": "indexing() got an unexpected keyword argument 'allow_reduction_invariant_indexing'",
+      "public_handler": false,
+      "signature": "(self, index, *, copy_shape=None, dense_indexing=False, override_mask=None, block_ptr=False, tma_compatibility_checker=None, mask_constant_index=False)"
+    },
+    {
+      "label": "rebased_pr",
+      "revision": "7b8795bb9045e83ce293cfb682eb98aab1fd3a8f",
+      "old_call_binds": true,
+      "ci_call_error": "indexing() got an unexpected keyword argument 'allow_reduction_invariant_indexing'",
+      "public_handler": true,
+      "signature": "(self, index, *, copy_shape=None, dense_indexing=False, override_mask=None, block_ptr=False, tma_compatibility_checker=None, mask_constant_index=False)"
+    }
+  ],
+  "handler_module": "torch_npu.profiler._inductor_profiler",
+  "handler_module_passes_public_rule": false,
+  "ci_profiler_contains_deprecation": true,
+  "ci_wheel_sources_exactly_match_git": {
+    "torch/_inductor/codegen/triton.py": true,
+    "torch/autograd/profiler.py": true,
+    "torch/profiler/profiler.py": true
+  },
+  "upstream_changes": {
+    "indexing": {
+      "commit": "626ea913a1bf400ad1cf329787bbd91cd28c4075",
+      "ancestor_of_ci_wheel": false,
+      "ci_nightly_snapshot": "461e8d2656f270ab5af65e61fe4c9ca226f4df92",
+      "ci_snapshot_is_ancestor": true
+    },
+    "profiler": {
+      "commit": "4111829138f27e997b04d8fecb6390c9aa52b53d",
+      "ancestor_of_ci_wheel": false,
+      "ci_nightly_snapshot": "644e799e34e0cc1a844b844beddf9ddd18d184d7",
+      "ci_snapshot_is_ancestor": true
+    }
+  },
+  "ci_torch_revision_contains_old_annotation_test": false,
+  "ci_torch_revision_contains_new_deprecation_test": true,
+  "before_indexing_snapshot_has_keyword": false,
+  "before_profiler_snapshot_has_old_test": true,
+  "after_profiler_snapshot_has_old_test": false
+}

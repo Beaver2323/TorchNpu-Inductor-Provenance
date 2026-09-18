@@ -1,6 +1,6 @@
 # TorchNPU Inductor 来源追踪
 
-> 最后更新：2026-09-11（CST，UTC+08:00）
+> 最后更新：2026-09-18（CST，UTC+08:00）
 
 本仓库存放 TorchInductor Provenance Tracking（来源追踪）在昇腾 NPU 上的调研文档、
 复现脚本和验收产物。当前正式范围只覆盖
@@ -17,15 +17,31 @@ timeline trace/result 与复现脚本作为配套证据。本仓不是源码交�
 - 开发 fork：`https://gitcode.com/gcw_3ffySSwy/pytorch`
 - 源码交付分支：`codex/triton-experimental-provenance-delivery`
 - 源码 PR：[Ascend/pytorch !46073](https://gitcode.com/Ascend/pytorch/merge_requests/46073)
-- 源码交付提交：`4845c9289`，2026-09-11 rebase 到官方提交 `f030beadb`
+- 需求 issue：[Ascend/pytorch #4909](https://gitcode.com/Ascend/pytorch/issues/4909)，已正式关联 PR
+- 当前源码 HEAD：`195830924`，2026-09-18 rebase 基线为官方 master `ec693356f`
 - 工作流参考：`https://gitcode.com/AllenGuanC/inductor-meta-worktree`
 
 新增[PR diff 逐段讲解](docs/pr_diff_walkthrough.md)：修改前后代码框、静态与运行时
-调用链、真实 mapping / 模型源码栈、测试对应关系和可下载的实现补丁。
-历史演示产物保留原来的运行版本；本次 rebase 的静态检查通过，尚无更新后 HEAD 的
-NPU 端到端复测结果。
+调用链、真实 mapping / 模型源码栈、测试覆盖导航和可下载的完整非测试补丁。
+历史逐段讲解固定在 `f030beadb → dbc0db52f`；另提供当前
+[`ec693356f → 195830924` 完整非测试补丁](docs/diffs/triton_experimental_provenance_ec693356f_195830924_non_tests.patch)
+和新增公开 API 修复说明。测试文件按要求不展开。
+
+## 最新工作与记录
+
+- [统一工作记录入口](docs/work_records/README.md)：需求变更、历史交接、CI 归因、修复、rebase、推送和 issue 关联。
+- 当前 PR 已包含上游 `13570cf9d` 的 PyTorch 2.15 indexing / expand 参数兼容修复。
+- 本地公开 API 聚焦回归通过；完整规范检查仍有 46 个既有导出名称问题，
+  **不是 46 个 NPU 算子失败**，详见[验证说明和原始日志](docs/work_records/README.md#本地-46-项失败的准确含义)。
+- 9 月 18 日本次只读查询时，完整流水 #68280 仍在运行；没有将旧演示或本地 2.14
+  元数据验证当作当前 HEAD 的全量 2.15 验收。
+- [CPU 入门与三栏演示](docs/cpu/README.md)和[同次采集的 NPU HTML / Perfetto trace](docs/triton_experimental/artifacts/static_smoke/timeline_20260916/README.md)均可直接下载阅读。
+
+本仓只交付文档、演示及精选证据，不包含 wheel、完整源码副本、共享环境或构建缓存。
 
 ## 当前结论
+
+下表“已验证”指各产物记载的历史实验版本；当前 PR 的状态以[工作记录](docs/work_records/README.md)及对应 CI 为准。
 
 | 能力 | 状态 | 说明 |
 | --- | --- | --- |
@@ -38,7 +54,7 @@ NPU 端到端复测结果。
 | backward pre-grad→生成代码全覆盖 | 社区边界 | 社区 PyTorch 的 backward 节点可能缺少 `from_node`，不承诺每个节点都形成完整三段链 |
 | AOTInductor `kernel_information.json` | 未验收 | 当前 910B2 和共享 NPU AOTI/lazy/ABI 基线不满足验收前提 |
 
-验证环境为 PyTorch `release/2.14`、匹配的 `torch_npu` wheel、Triton Ascend
+历史验证环境为 PyTorch `release/2.14`、匹配的 `torch_npu` wheel、Triton Ascend
 `release/3.2.2`、CANN 9.0.1 和 Ascend 910B2。
 
 ## 用户使用方法
@@ -305,10 +321,14 @@ backward 必须分别阅读：两个页面的 FX `GraphModule` 都显示 `def fo
     ├── provenance_delivery.md
     ├── pr_diff_walkthrough.md
     ├── diffs
-    │   └── triton_experimental_provenance_f030beadb_4845c9289.patch
+    │   └── *_non_tests.patch（历史讲解版 / 当前 PR 版）
     ├── beginner_guide.md
     ├── technical_reference.md
     ├── history_summary.md
+    ├── module_validation_summary.md
+    ├── pr_46073_*.md
+    ├── cpu（CPU 入门脚本、HTML 和 mapping）
+    ├── work_records（交接、需求、修复报告和精选原始日志）
     └── triton_experimental
         ├── README.md
         ├── scripts
@@ -322,7 +342,7 @@ backward 必须分别阅读：两个页面的 FX `GraphModule` 都显示 `def fo
             └── validation
 ```
 
-文件树按“学习文档、当前交付、复现脚本、验收产物”收束。完全重复的 Llama forward
+文件树按“学习文档、当前交付、复现脚本、验收产物、工作记录”收束。完全重复的 Llama forward
 兼容 HTML 已删除；需求变更前的分散演示文档合并到历史摘要，原始细节仍可从 Git 历史
 提交 `5ace897` 恢复。
 

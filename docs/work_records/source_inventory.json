@@ -1,0 +1,395 @@
+{
+  "archived_at": "2026-09-18 CST",
+  "repository": "https://github.com/Beaver2323/TorchNpu-Inductor-Provenance",
+  "branch": "main",
+  "source_pr_head": "195830924122a99e8f97bb85bb6be514d87af6f0",
+  "records": [
+    {
+      "source": "Tracking/MAIN_THREAD_HANDOFF.md",
+      "destination": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "8b46a1c65d7ca9ba90529c87618d5ee3abb940ead5746eb496632eff6e9099bf",
+      "published_sha256": "e51e7ff466dada1f624b51bbf67cfb66e8fb0d9faf07160265db193ed79532de"
+    },
+    {
+      "source": "Tracking/需求变更.md",
+      "destination": "docs/work_records/requirements_change.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "5796309ac0957038901490d81ce7b81802a2550d2d8e777a66013be70f0a1596",
+      "published_sha256": "4bfe5cf83d6bcbec59464db6ba8dfaa3580b0e198a5c35ef0108a11a72319090"
+    },
+    {
+      "source": "Tracking/triton_experimental_migration/README.md",
+      "destination": "docs/work_records/migration_note.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "f07455420b52f7262fda34b3642da6d54ae9ce08c838aaacbd7c8517247289ee",
+      "published_sha256": "a7a19c26425041e8bbd664b0ffefdcf069545dcccedaab645095334a96768046"
+    },
+    {
+      "source": "Tracking/issues/test_correct_module_names_inductor_trace_handler/复现报告.md",
+      "destination": "docs/work_records/api_public_binding/复现报告.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "adcc29d376a4bd199861e37c218cb458bc8274bdb4c4d09ceec4c5499871894b",
+      "published_sha256": "e6ad4f6f41ab6576129665115bd0a6296222e4af26deb0feca9cd5c8433742e5"
+    },
+    {
+      "source": "Tracking/issues/test_correct_module_names_inductor_trace_handler/根因分析.md",
+      "destination": "docs/work_records/api_public_binding/根因分析.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "298ad1f3037895ea5a28a40f6c3f16575620f64ffc245c7e1409f059c6294be0",
+      "published_sha256": "120a3af1cbca3d697bc1e1d6332d274d557c50c80cc35e871a4b7aae327fc5b4"
+    },
+    {
+      "source": "Tracking/issues/test_correct_module_names_inductor_trace_handler/修复验证报告.md",
+      "destination": "docs/work_records/api_public_binding/修复验证报告.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "6b125961bdade1177f033e0fb4c9b035eddaa57654a97d9e82c209e1ff8a43d4",
+      "published_sha256": "f951667195ae78618c0c4f35490db02c9233926417f40844f63aac1f46bf098c"
+    },
+    {
+      "source": "Tracking/issues/test_correct_module_names_inductor_trace_handler/代码合入描述.md",
+      "destination": "docs/work_records/api_public_binding/代码合入描述.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "0244cb7a4249cd34baba0d6f8cb9288e102f56746b9da878fbbc24c2065cdfba",
+      "published_sha256": "29e2903972b89b7ac47bab1a6e1b0e90b4319ae1048a3bfaa8a62ec4b963bb0e"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_verify_20260916.b2PVBM/README.md",
+      "destination": "docs/work_records/20260916/build_and_ci.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "bd896d7520d4ec9ff75c7e24705762f5538e93142c3f7d6144ca926aaa665910",
+      "published_sha256": "e26748d864dcd8c199730fb5dea91a76e64e80e5e33021cec15a8325d6f8b316"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_origin_20260916.7sterg/README.md",
+      "destination": "docs/work_records/20260916/origin_investigation.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "cdb1e4d828d5c592804938d2079cd4f2d5f12c867800c74933bdb212904b8c43",
+      "published_sha256": "a01601994ae2d10e8fe88baeaf1126a7b5961dfcce1d5bd65d1ef71253ec164d"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/README.md",
+      "destination": "docs/work_records/20260916/api_fix_run.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "f03e561eb733b60b953d4effde2cf292e4eaaadb68f6d41faf756639d639b542",
+      "published_sha256": "06e76b66fa55ef4fd365589f28a3207dbaaf419350352d04005ef09c3e9c89e2"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/README.md",
+      "destination": "docs/work_records/20260918/README.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "1268415601913493901894951cec0b98fe705d47e584391acf06470cd437f416",
+      "published_sha256": "d32f67bd6b53b9845e2f3d1df3d6c1df0c9b283e21a350b9ac3090d42e4b791f"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/provenance_requirement_issue.md",
+      "destination": "docs/work_records/20260918/provenance_requirement_issue.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "d41509d4e9f69394e12c5c48408cc35175ca3554de9b0068079d989b3190c42b",
+      "published_sha256": "a12ecb26e57c587bb94247c15a6f5a71b4432cfb6045bb46b5020064c3a340aa"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_origin_20260916.7sterg/ci_wheel_manifest.json",
+      "destination": "docs/work_records/20260916/origin/ci_wheel_manifest.json",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "5463acab760a6a50ff65d0d1d9ea2ac7a07982d68d7a8c57f2cbea7bec3bb5ee",
+      "published_sha256": "5463acab760a6a50ff65d0d1d9ea2ac7a07982d68d7a8c57f2cbea7bec3bb5ee"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_origin_20260916.7sterg/origin_contracts.json",
+      "destination": "docs/work_records/20260916/origin/origin_contracts.json",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "e052965d87cfd468740f9f4139e893eaaffe7471acfe3ea238d114acefe885fe",
+      "published_sha256": "e052965d87cfd468740f9f4139e893eaaffe7471acfe3ea238d114acefe885fe"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_origin_20260916.7sterg/rebase_range_diff.txt",
+      "destination": "docs/work_records/20260916/origin/rebase_range_diff.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "043a5c97e6e1eff9a01457deacb42dab5194d73827378e42019503f0960e2085",
+      "published_sha256": "043a5c97e6e1eff9a01457deacb42dab5194d73827378e42019503f0960e2085"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/result.json",
+      "destination": "docs/work_records/20260916/api_fix/result.json",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "84a29090de85b41202df7ecb87c4c2c72283970af86416ccb5f936e19570cf9d",
+      "published_sha256": "84a29090de85b41202df7ecb87c4c2c72283970af86416ccb5f936e19570cf9d"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/push_record.json",
+      "destination": "docs/work_records/20260916/api_fix/push_record.json",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "5ac617602208179b5c2479918e300be82ae0934200623fe44810e1c556901769",
+      "published_sha256": "5ac617602208179b5c2479918e300be82ae0934200623fe44810e1c556901769"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/fix.patch",
+      "destination": "docs/work_records/20260916/api_fix/fix.patch",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "e177eb5811f9ac56b2ba3938dab4cab8ff1bca4c61842853d58381abd5c6e6b1",
+      "published_sha256": "e177eb5811f9ac56b2ba3938dab4cab8ff1bca4c61842853d58381abd5c6e6b1"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/before_metadata.log",
+      "destination": "docs/work_records/20260916/api_fix/before_metadata.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "fee77b8be5623cdaf81c429321acb25cc00b03170e035b3fe719c1b5f28d7327",
+      "published_sha256": "fee77b8be5623cdaf81c429321acb25cc00b03170e035b3fe719c1b5f28d7327"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/after_metadata.log",
+      "destination": "docs/work_records/20260916/api_fix/after_metadata.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "28e10b80b9e6cca6f8b5733e009776d54891fb914f6a76c013c5decc744ff0cb",
+      "published_sha256": "28e10b80b9e6cca6f8b5733e009776d54891fb914f6a76c013c5decc744ff0cb"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/before_public.log",
+      "destination": "docs/work_records/20260916/api_fix/before_public.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "1724c549e781ba36813d2bee11a80f15e1f4032de1a57b5247f9907c57ecb475",
+      "published_sha256": "1724c549e781ba36813d2bee11a80f15e1f4032de1a57b5247f9907c57ecb475"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/after_public.log",
+      "destination": "docs/work_records/20260916/api_fix/after_public.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "409240d472caa49253893ec0a1af8fc1aad25a41a27075ee8275e135a2bff833",
+      "published_sha256": "409240d472caa49253893ec0a1af8fc1aad25a41a27075ee8275e135a2bff833"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/pre_push_metadata.log",
+      "destination": "docs/work_records/20260916/api_fix/pre_push_metadata.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "324b70823168bb255f99062a4e772a8a65a7fe38e6fb01fe096910519dd170ec",
+      "published_sha256": "324b70823168bb255f99062a4e772a8a65a7fe38e6fb01fe096910519dd170ec"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/result.json",
+      "destination": "docs/work_records/20260918/result.json",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "1c68c094b749791e261244bc490813d68bddebeabfdcce071ff4d96b928dd253",
+      "published_sha256": "1c68c094b749791e261244bc490813d68bddebeabfdcce071ff4d96b928dd253"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/pre_push_metadata.log",
+      "destination": "docs/work_records/20260918/pre_push_metadata.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "28e10b80b9e6cca6f8b5733e009776d54891fb914f6a76c013c5decc744ff0cb",
+      "published_sha256": "28e10b80b9e6cca6f8b5733e009776d54891fb914f6a76c013c5decc744ff0cb"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/pre_push_public.log",
+      "destination": "docs/work_records/20260918/pre_push_public.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "69a90d127e8db255b04b4e6944b52773841f6f6c593888e4bee086651f11843d",
+      "published_sha256": "69a90d127e8db255b04b4e6944b52773841f6f6c593888e4bee086651f11843d"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/range_diff.log",
+      "destination": "docs/work_records/20260918/range_diff.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "9234d1b0659695daeffc72194714280e8f6cd66cadec7f653012fd9ffbe629a2",
+      "published_sha256": "9234d1b0659695daeffc72194714280e8f6cd66cadec7f653012fd9ffbe629a2"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/push.log",
+      "destination": "docs/work_records/20260918/push.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "7317470515f5b6b81f3814cddc3ec1842df6a8d9cb9b4044e44169e730f8aed1",
+      "published_sha256": "7317470515f5b6b81f3814cddc3ec1842df6a8d9cb9b4044e44169e730f8aed1"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/trigger_ci.log",
+      "destination": "docs/work_records/20260918/trigger_ci.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "2c1c08026da48a64d01eb3bdf3ddceaa935d37c50234689391c6965efc1a7bd8",
+      "published_sha256": "2c1c08026da48a64d01eb3bdf3ddceaa935d37c50234689391c6965efc1a7bd8"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/create_issue.log",
+      "destination": "docs/work_records/20260918/create_issue.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "4e374c0311770a349a235d594335781807a1f559d8e530314a24ea8b5d6bb564",
+      "published_sha256": "4e374c0311770a349a235d594335781807a1f559d8e530314a24ea8b5d6bb564"
+    },
+    {
+      "source": "Tracking/triton_experimental_delivery/pr_rebase_20260918.xErqjW/link_issue.log",
+      "destination": "docs/work_records/20260918/link_issue.txt",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "ce8976aa3873c78bdc3e6bba30181b9981f82e7ab9087a063d55aa91b6e680ad",
+      "published_sha256": "ce8976aa3873c78bdc3e6bba30181b9981f82e7ab9087a063d55aa91b6e680ad"
+    },
+    {
+      "source": "Tracking/cpu_provenance_visualization_demo.md",
+      "destination": "docs/cpu/README.md",
+      "action": "归档并补充阅读提示（CPU 文档另修复迁移链接）",
+      "source_sha256": "bf25ab2a1750e32a4e4460d6110f3884cc83149d5543a9f098a8865ead9884c1",
+      "published_sha256": "159dccf9a65a467a26e048fee5f21fb8befb28e4555ed216fe7a5b10c01612af"
+    },
+    {
+      "source": "Tracking/cpu_provenance_demo.py",
+      "destination": "docs/cpu/cpu_provenance_demo.py",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "0e1373192f941668efff03abcb3bc8ce365211eb76423debc09d85351ed942c7",
+      "published_sha256": "0e1373192f941668efff03abcb3bc8ce365211eb76423debc09d85351ed942c7"
+    },
+    {
+      "source": "Tracking/cpu_provenance_tlparse/provenance_tracking_-_0_0_0.html",
+      "destination": "docs/cpu/provenance_tracking.html",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "917505b2d61b656d444a33898a85f23d70840054e4949ec34d8b0f6a5b94403a",
+      "published_sha256": "917505b2d61b656d444a33898a85f23d70840054e4949ec34d8b0f6a5b94403a"
+    },
+    {
+      "source": "Tracking/cpu_provenance_tlparse/-_0_0_0/inductor_provenance_tracking_node_mappings_13.json",
+      "destination": "docs/cpu/node_mappings.json",
+      "action": "CPU JSON 仅补末尾换行，数据不变（发布检查另验证）",
+      "source_sha256": "8c5e06754ee903f43ebe5585b8b1047d52ea7148bcea65e8fbc0140c2dd8fad9",
+      "published_sha256": "d75806754a28c79276d9fa6f8bc98b209ee203b6728a6727d0a9e235da5f8c75"
+    },
+    {
+      "source": "Tracking/cpu_provenance_tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_14.json",
+      "destination": "docs/cpu/kernel_stack_traces.json",
+      "action": "CPU JSON 仅补末尾换行，数据不变（发布检查另验证）",
+      "source_sha256": "4b2f1b678b2c5c5bce9099435f5244a33255db2cc6a48821504d693f9b87e4d1",
+      "published_sha256": "20eb07b49eabd82d5eed7367ddbc5ccd75bda0229e4db082823863c61cbc1836"
+    },
+    {
+      "source": "Tracking/cpu_provenance_tlparse/-_0_0_0/inductor_provenance_tracking_kernel_stack_traces_14_readable.html",
+      "destination": "docs/cpu/kernel_stack_readable.html",
+      "action": "原始证据逐字节保留",
+      "source_sha256": "baef3dbe850c03a22bba63bfd3ef6ae66fcaae3892665db43c1fb9e78fb77694",
+      "published_sha256": "baef3dbe850c03a22bba63bfd3ef6ae66fcaae3892665db43c1fb9e78fb77694"
+    },
+    {
+      "source": "Tracking/inductor_provenance_npu_beginner_guide.md",
+      "destination": "docs/beginner_guide.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "1bcd4c25944383225d7d9fa23e86865ea5cb234c3b653ca28e91e57c0e5270ed"
+    },
+    {
+      "source": "Tracking/inductor_provenance_npu_research.md",
+      "destination": "docs/technical_reference.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "a53684c5ad3e0ae0479690a744118e6d892bdc0c8f3668c11f214c36635bc168"
+    },
+    {
+      "source": "Tracking/npu_inductor_baseline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "953bb1cc2bf055310d98706b938624109afda96ab7cecc5da852678326bd8dda"
+    },
+    {
+      "source": "Tracking/npu_provenance_baseline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "4e6f508ad5e42873e0ea4ab0e1ea209d613a5ad8566a09294cdf639b4df0ee52"
+    },
+    {
+      "source": "Tracking/npu_provenance_visualization_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "b10790f36143ccb0858bf06585241897927ced52c9eda71239f3799b653cfe78"
+    },
+    {
+      "source": "Tracking/npu_provenance_cache_hit_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "6c7976afc6125ec0a9bfea27af4a05058f47ec3d93409f71410b2df02e01fe30"
+    },
+    {
+      "source": "Tracking/npu_template_provenance_visualization_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "bd4db6311a5121010c1200710104f098a3a52e8cb253aa800a1edd673d16da5d"
+    },
+    {
+      "source": "Tracking/npu_default_block_mask_provenance_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "94430ed9fc268a5f7af18f2bede95666f0bd42ce3cf7fd89af133065ef7981ec"
+    },
+    {
+      "source": "Tracking/npu_default_block_mask_backward_investigation.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "9469fd9ce820c0d88fb2e78e214e9276d09a9a4bd906ac198272b2ad643681c6"
+    },
+    {
+      "source": "Tracking/npu_backward_provenance_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "5d870f27c315527ddf1ea5a84f0cfbc2f39e6921328fca412adda4c0bbdd4a10"
+    },
+    {
+      "source": "Tracking/npu_provenance_timeline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "a8f273016a3b9112288c337afd834750b9aa42b24526e5d6507745a0cb271cab"
+    },
+    {
+      "source": "Tracking/npu_extern_provenance_timeline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "695b97c535ced0d17792fc547890a25e99aff953140833bfddbb01ddfdee7e96"
+    },
+    {
+      "source": "Tracking/npu_mlir_provenance_timeline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "015789b7abac22c93c5e422df7213ed991d43e32635f7d9462851d1f9164b170"
+    },
+    {
+      "source": "Tracking/npu_dvm_provenance_timeline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "e9ae7fccaa5b2e73edb586101ed009343a80fc6e130c56eabd0057b20fbccb16"
+    },
+    {
+      "source": "Tracking/npu_dvm_graph_fusion_provenance_timeline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "5ccd5cdec9ce473d34ac03376279d2038a1fabd473c02c056dc93f983c2cf909"
+    },
+    {
+      "source": "Tracking/npu_dvm_template_provenance_timeline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "ef40d3626d7c494628de66ac285f51020ad6136a82d1cec7a2bd7c8bd9dca4d9"
+    },
+    {
+      "source": "Tracking/npu_catlass_provenance_timeline_demo.md",
+      "destination": "docs/history_summary.md",
+      "additional_context": "docs/work_records/tracking_handoff_20260918.md",
+      "action": "已有同主题有效文档或历史摘要；合并保留结论，不再复制重复页面或恢复已退出验收的后端目录",
+      "source_sha256": "b6e106efdbe4d9ff76d4fbbdf4da4b228285223fa86ff587522d74e770484c61"
+    }
+  ],
+  "excluded": [
+    "共享环境与安装目录",
+    "wheel / native 构建产物",
+    "源码仓与依赖镜像",
+    "编译缓存、临时 tlparse 全量输出",
+    "凭据与临时认证脚本",
+    "Pass 项目的误建参考补丁",
+    "远端 CI 的全量原始日志（保留公共链接与中文归因）"
+  ]
+}

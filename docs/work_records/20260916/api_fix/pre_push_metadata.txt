@@ -1,0 +1,10 @@
+/home/z50063656/Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/runtime/torch_npu/dynamo/__init__.py:182: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+RUNTIME {"cwd": "/home/z50063656/tmp", "python": "/home/z50063656/envs/Tracking/bin/python", "torch": "2.14.0a0+git8e86e0a", "torch_file": "/home/z50063656/Tracking/src/pytorch/torch/__init__.py", "torch_npu": "2.14.0a0+gitde350aa", "torch_npu_file": "/home/z50063656/Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/runtime/torch_npu/__init__.py", "handler_module": "torch_npu.profiler", "profiler_init_sha256": "1ec815a37c9d44ac3a6eb813a323fc3d6ebf13c746d79fc8ef538e6eb79d9295", "adapter_sha256": "e3fef16ad99688a432e99b54885d56e2e307ffb80f55d2fe30bedbf12d58e4d5", "scope": "isolated de350aa native wheel plus Python-only API metadata fix; not full 7b8795bb9/CI 2.15 validation"}
+TEST ["/home/z50063656/Tracking/worktrees/torch_npu_triton_provenance_delivery/test/profiler/test_inductor_profiler.py", "TestInductorProfiler.test_inductor_trace_handler_public_api", "-v"]
+test_inductor_trace_handler_public_api (__main__.TestInductorProfiler.test_inductor_trace_handler_public_api) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.027s
+
+OK

@@ -1,0 +1,365 @@
+/home/z50063656/Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/runtime/torch_npu/dynamo/__init__.py:182: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+RUNTIME {"cwd": "/home/z50063656/tmp", "python": "/home/z50063656/envs/Tracking/bin/python", "torch": "2.14.0a0+git8e86e0a", "torch_file": "/home/z50063656/Tracking/src/pytorch/torch/__init__.py", "torch_npu": "2.14.0a0+gitde350aa", "torch_npu_file": "/home/z50063656/Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/runtime/torch_npu/__init__.py", "handler_module": "torch_npu.profiler", "profiler_init_sha256": "1ec815a37c9d44ac3a6eb813a323fc3d6ebf13c746d79fc8ef538e6eb79d9295", "adapter_sha256": "e3fef16ad99688a432e99b54885d56e2e307ffb80f55d2fe30bedbf12d58e4d5", "scope": "isolated de350aa native wheel plus Python-only API metadata fix; not full 7b8795bb9/CI 2.15 validation"}
+TEST ["/home/z50063656/Tracking/triton_experimental_delivery/pr_verify_20260916.b2PVBM/source/test/npu/test_public_bindings.py", "TestPublicBindings.test_correct_module_names", "-v"]
+test_correct_module_names (__main__.TestPublicBindings.test_correct_module_names)
+An API is considered public, if  its  `__module__` starts with `torch.` ... /home/z50063656/Tracking/triton_experimental_delivery/pr_verify_20260916.b2PVBM/source/test/npu/test_public_bindings.py:874: UserWarning: if you are debugging UT file in clone repo, please recursively update the torchair submodule
+  warnings.warn("if you are debugging UT file in clone repo, please recursively update the torchair submodule")
+/home/z50063656/envs/Tracking/lib/python3.11/pkgutil.py:92: DeprecationWarning: `torch.distributed._shard.checkpoint` will be deprecated, use `torch.distributed.checkpoint` instead
+  __import__(info.name)
+/home/z50063656/envs/Tracking/lib/python3.11/pkgutil.py:92: DeprecationWarning: `torch.distributed._sharded_tensor` will be deprecated, use `torch.distributed._shard.sharded_tensor` instead
+  __import__(info.name)
+/home/z50063656/envs/Tracking/lib/python3.11/pkgutil.py:92: DeprecationWarning: `torch.distributed._sharding_spec` will be deprecated, use `torch.distributed._shard.sharding_spec` instead
+  __import__(info.name)
+/home/z50063656/Tracking/src/pytorch/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/home/z50063656/envs/Tracking/lib/python3.11/importlib/__init__.py:126: DeprecationWarning: `torch._functorch.pytree_hacks` is deprecated and will be removed in a future release. Please `use torch.utils._pytree` instead.
+  return _bootstrap._gcd_import(name[level:], package, level)
+W0918 09:57:11.026000 20144 /home/z50063656/Tracking/src/pytorch/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+/home/z50063656/Tracking/triton_experimental_delivery/pr_verify_20260916.b2PVBM/source/test/npu/test_public_bindings.py:935: FutureWarning: `torch.distributed.reduce_op` is deprecated, please use `torch.distributed.ReduceOp` instead
+  if not (isinstance(obj, (Callable, torch.dtype)) or inspect.isclass(obj)):
+/home/z50063656/envs/Tracking/lib/python3.11/inspect.py:298: FutureWarning: `torch.distributed.reduce_op` is deprecated, please use `torch.distributed.ReduceOp` instead
+  return isinstance(object, type)
+2026-09-18 09:57:11,529 - torch_npu.env - INFO - get env ASCEND_RT_VISIBLE_DEVICES = 6
+tabulate is not installed. Proceeding without it.
+2026-09-18 09:57:11,616 - Flight Recorder - WARNING - tabulate is not installed. Proceeding without it.
+/home/z50063656/Tracking/src/pytorch/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/home/z50063656/Tracking/src/pytorch/torch/testing/_internal/distributed/distributed_utils.py:20: UserWarning: Device capability of mock_process_group unspecified, assuming `cpu` and the current accelerator. Please specify it via the `devices` argument of `register_backend`.
+  dist.Backend.register_backend("mock_process_group", create_mock_pg)
+/home/z50063656/Tracking/src/pytorch/torch/jit/_script.py:1643: FutureWarning: `torch.jit.interface` is deprecated. Please use `torch.compile` instead.
+  warnings.warn(
+/home/z50063656/Tracking/src/pytorch/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/home/z50063656/Tracking/src/pytorch/torch/jit/_script.py:365: FutureWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+2026-09-18 09:57:13,073 - torch_npu.env - INFO - get env PYTORCH_TESTING_DEVICE_FOR_CUSTOM = privateuse1
+2026-09-18 09:57:13,073 - torch_npu.env - INFO - get env PYTORCH_TESTING_DEVICE_EXCEPT_FOR = cuda,cpu
+/home/z50063656/envs/Tracking/lib/python3.11/site-packages/triton/runtime/autotuner.py:110: DeprecationWarning: warmup, rep, and use_cuda_graph parameters are deprecated. See https://github.com/triton-lang/triton/pull/4496 for details.
+  warnings.warn(("warmup, rep, and use_cuda_graph parameters are deprecated. See "
+/home/z50063656/Tracking/src/pytorch/torch/utils/hipify/constants.py:11: FutureWarning: hipify's constants.py is no longer used as of version 2.0.0
+  warnings.warn("hipify's constants.py is no longer used as of version 2.0.0", FutureWarning)
+2026-09-18 09:57:13,786 - torch_npu.env - INFO - get env TORCH_DEVICE_BACKEND_AUTOLOAD = 0
+2026-09-18 09:57:14,024 - torch_npu.env - INFO - get env LD_LIBRARY_PATH = /usr/local/Ascend/cann9.0.1/cann-9.0.1/lib64:/usr/local/Ascend/cann9.0.1/cann-9.0.1/lib64/plugin/opskernel:/usr/local/Ascend/cann9.0.1/cann-9.0.1/lib64/plugin/nnengine:/usr/local/Ascend/cann9.0.1/cann-9.0.1/opp/built-in/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64:/usr/local/Ascend/driver/lib64:/usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64/driver:/usr/local/Ascend/driver/lib64:/usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64/driver
+2026-09-18 09:57:14,694 - torch_npu._inductor.config - INFO - [_obtain_and_limit_cube_vector_core_num] obtain from device properties, cube_core_num=24, vector_core_num=48
+2026-09-18 09:57:14,694 - torch_npu._inductor.config - INFO - [_obtain_and_limit_cube_vector_core_num] finished, cube_core_num=24, vector_core_num=48
+2026-09-18 09:57:14,694 - torch_npu._inductor.config - INFO - for torch/inductor, compile_threads=32; for torch_npu/inductor, precompile_thread_num=32
+W0918 09:57:15.153000 20144 /home/z50063656/Tracking/src/pytorch/torch/_inductor/decomposition.py:159] duplicate decomp: aten.erf.default
+2026-09-18 09:57:15,243 - torch_npu._inductor.config - INFO - [fastA setting] fastA autotune off
+/home/z50063656/Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/runtime/torch_npu/contrib/transfer_to_npu.py:422: ImportWarning: 
+    *************************************************************************************************************
+    The torch.Tensor.cuda and torch.nn.Module.cuda are replaced with torch.Tensor.npu and torch.nn.Module.npu now..
+    The torch.cuda.DoubleTensor is replaced with torch.npu.FloatTensor cause the double type is not supported now..
+    The backend in torch.distributed.init_process_group set to hccl now..
+    The torch.cuda.* and torch.cuda.amp.* are replaced with torch.npu.* and torch.npu.amp.* now..
+    The device parameters have been replaced with npu in the function below:
+    torch.logspace, torch.randint, torch.hann_window, torch.rand, torch.full_like, torch.ones_like, torch.rand_like, torch.randperm, torch.arange, torch.frombuffer, torch.normal, torch._empty_per_channel_affine_quantized, torch.empty_strided, torch.empty_like, torch.scalar_tensor, torch.tril_indices, torch.bartlett_window, torch.ones, torch.sparse_coo_tensor, torch.randn, torch.kaiser_window, torch.tensor, torch.triu_indices, torch.as_tensor, torch.zeros, torch.randint_like, torch.full, torch.eye, torch._sparse_csr_tensor_unsafe, torch.empty, torch._sparse_coo_tensor_unsafe, torch.blackman_window, torch.zeros_like, torch.range, torch.sparse_csr_tensor, torch.randn_like, torch.from_file, torch._cudnn_init_dropout_state, torch._empty_affine_quantized, torch.linspace, torch.hamming_window, torch.empty_quantized, torch._pin_memory, torch.load, torch.set_default_device, torch.get_device_module, torch.sparse_compressed_tensor, torch.Tensor.new_empty, torch.Tensor.new_empty_strided, torch.Tensor.new_full, torch.Tensor.new_ones, torch.Tensor.new_tensor, torch.Tensor.new_zeros, torch.Tensor.to, torch.Tensor.pin_memory, torch.nn.Module.to, torch.nn.Module.to_empty
+    *************************************************************************************************************
+    
+  warnings.warn(msg, ImportWarning)
+/home/z50063656/Tracking/triton_experimental_delivery/pr_api_fix_20260916.ebZYKd/runtime/torch_npu/contrib/transfer_to_npu.py:341: RuntimeWarning: torch.jit.script and torch.jit.script_method will be disabled by transfer_to_npu, which currently does not support them. If you need to enable them, please do not use transfer_to_npu.
+  warnings.warn(msg, RuntimeWarning)
+FAIL
+
+======================================================================
+FAIL: test_correct_module_names (__main__.TestPublicBindings.test_correct_module_names)
+An API is considered public, if  its  `__module__` starts with `torch.`
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/z50063656/Tracking/src/pytorch/torch/testing/_internal/common_utils.py", line 3829, in wrapper
+    method(*args, **kwargs)
+  File "/home/z50063656/Tracking/src/pytorch/torch/testing/_internal/common_utils.py", line 2146, in wrapper
+    fn(*args, **kwargs)
+  File "/home/z50063656/Tracking/triton_experimental_delivery/pr_verify_20260916.b2PVBM/source/test/npu/test_public_bindings.py", line 1030, in test_correct_module_names
+    self.assertTrue(not failure_list, msg)
+AssertionError: False is not true : All the APIs below do not meet our guidelines for public API from pytorch/wiki/Public-API-definition-and-documentation.
+Make sure that everything that is public is expected (in particular that the module has a properly populated `__all__` attribute) and that everything that is supposed to be public does look public (it does not start with `_` and has a `__module__` that is properly populated).
+
+Full list:
+# torch.ao.quantization.experimental.adaround_fake_quantize.Any:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`typing`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_fake_quantize`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_fake_quantize` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_fake_quantize`
+# torch.ao.quantization.experimental.adaround_fake_quantize.FakeQuantize:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.ao.quantization.fake_quantize`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_fake_quantize`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_fake_quantize` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_fake_quantize`
+# torch.ao.quantization.experimental.adaround_fake_quantize.MinMaxObserver:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.ao.quantization.observer`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_fake_quantize`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_fake_quantize` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_fake_quantize`
+# torch.ao.quantization.experimental.adaround_fake_quantize.is_per_tensor:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.ao.quantization.utils`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_fake_quantize`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_fake_quantize` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_fake_quantize`
+# torch.ao.quantization.experimental.adaround_optimization.AdaptiveRoundingLoss:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.ao.quantization.experimental.adaround_loss`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_optimization`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_optimization` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_optimization`
+# torch.ao.quantization.experimental.adaround_optimization.AdaroundFakeQuantizer:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.ao.quantization.experimental.adaround_fake_quantize`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_optimization`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_optimization` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_optimization`
+# torch.ao.quantization.experimental.adaround_optimization.Any:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`typing`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_optimization`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_optimization` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_optimization`
+# torch.ao.quantization.experimental.adaround_optimization.Callable:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`collections.abc`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_optimization`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_optimization` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_optimization`
+# torch.ao.quantization.experimental.adaround_optimization.DataLoader:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.utils.data.dataloader`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_optimization`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_optimization` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_optimization`
+# torch.ao.quantization.experimental.adaround_optimization.DataParallel:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.nn.parallel.data_parallel`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_optimization`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_optimization` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_optimization`
+# torch.ao.quantization.experimental.adaround_optimization.MinMaxObserver:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.ao.quantization.observer`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_optimization`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_optimization` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_optimization`
+# torch.ao.quantization.experimental.adaround_optimization.TensorDataset:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.utils.data.dataset`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.adaround_optimization`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.adaround_optimization` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.adaround_optimization`
+# torch.ao.quantization.experimental.fake_quantize.Any:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`typing`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.fake_quantize`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.fake_quantize` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.fake_quantize`
+# torch.ao.quantization.experimental.fake_quantize.Callable:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`collections.abc`) is not within the torch library or does not start with the submodule where it is defined (`torch.ao.quantization.experimental.fake_quantize`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.ao.quantization.experimental.fake_quantize` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.ao.quantization.experimental.fake_quantize`
+# torch.distributed.checkpoint.examples.async_checkpointing_example.Future:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`concurrent.futures._base`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.checkpoint.examples.async_checkpointing_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.checkpoint.examples.async_checkpointing_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.checkpoint.examples.async_checkpointing_example`
+# torch.distributed.examples.memory_tracker_example.MemoryTracker:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed._tools.memory_tracker`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.examples.memory_tracker_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.examples.memory_tracker_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.examples.memory_tracker_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.ColwiseParallel:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.parallel.style`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.CommDebugMode:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.debug`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.DeviceMesh:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.device_mesh`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.MLPModule:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.testing._internal.distributed._tensor.common_dtensor`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.MLPStacked:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.testing._internal.distributed._tensor.common_dtensor`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.ModelArgs:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.testing._internal.distributed._tensor.common_dtensor`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.RowwiseParallel:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.parallel.style`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.Transformer:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.testing._internal.distributed._tensor.common_dtensor`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.checkpoint:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.utils.checkpoint`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.comm_mode_features_example.parallelize_module:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.parallel.api`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.comm_mode_features_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.comm_mode_features_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.comm_mode_features_example`
+# torch.distributed.tensor.examples.flex_attention_cp.BlockMask:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.nn.attention.flex_attention`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.flex_attention_cp.DTensor:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.flex_attention_cp.Partial:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.placement_types`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.flex_attention_cp.Shard:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.placement_types`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.flex_attention_cp.create_block_mask:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.nn.attention.flex_attention`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.flex_attention_cp.distribute_tensor:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.flex_attention_cp.flex_attention:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.nn.attention.flex_attention`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.flex_attention_cp.init_device_mesh:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.device_mesh`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.flex_attention_cp.lru_cache:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`functools`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.flex_attention_cp`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.flex_attention_cp` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.flex_attention_cp`
+# torch.distributed.tensor.examples.torchrec_sharding_example.ChunkStorageMetadata:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.checkpoint.metadata`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.DTensor:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.DeviceMesh:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.device_mesh`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.Replicate:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.placement_types`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.Shard:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.placement_types`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.TensorProperties:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.checkpoint.metadata`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.TensorStorageMetadata:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.checkpoint.metadata`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.cached_property:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`functools`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.init_device_mesh:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.device_mesh`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.distributed.tensor.examples.torchrec_sharding_example.visualize_sharding:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`torch.distributed.tensor.debug`) is not within the torch library or does not start with the submodule where it is defined (`torch.distributed.tensor.examples.torchrec_sharding_example`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.distributed.tensor.examples.torchrec_sharding_example` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.distributed.tensor.examples.torchrec_sharding_example`
+# torch.fx.experimental.shape_inference.infer_symbol_values.defaultdict:
+  - Is public: it is an attribute that does not start with `_` on a module that does not have `__all__` defined
+  - Does NOT look public: because its `__module__` attribute (`collections`) is not within the torch library or does not start with the submodule where it is defined (`torch.fx.experimental.shape_inference.infer_symbol_values`)
+  - You can do either of these two things to fix this problem:
+    - To make it NOT public: either define a `__all__` for `torch.fx.experimental.shape_inference.infer_symbol_values` or add a `_` at the beginning of the name
+    - To make it look public: make sure the `__module__` is properly set and points to a submodule of `torch.fx.experimental.shape_inference.infer_symbol_values`
+
+To execute this test, run the following from the base repo dir:
+    python test/npu/test_public_bindings.py TestPublicBindings.test_correct_module_names
+
+This message can be suppressed by setting PYTORCH_PRINT_REPRO_ON_FAILURE=0
+
+----------------------------------------------------------------------
+Ran 1 test in 15.395s
+
+FAILED (failures=1)
+tabulate is not installed, please pip install tabulate to use this utility

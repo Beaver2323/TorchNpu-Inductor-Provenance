@@ -1,0 +1,463 @@
+[
+ {
+  "ph": "X",
+  "name": "TorchDynamo Cache Lookup",
+  "pid": 3965524,
+  "tid": 3965524,
+  "ts": "1789490113463659.070",
+  "dur": 61.99,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "triton_unk_fused_add_mul_relu_0",
+  "pid": 3965524,
+  "tid": 3965524,
+  "ts": "1789490113464006.670",
+  "dur": 23.39,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "Torch-Compiled Region: 0/0",
+  "pid": 3965524,
+  "tid": 3965524,
+  "ts": "1789490113463726.670",
+  "dur": 336.16,
+  "cat": "cpu_op",
+  "args": {
+   "Sequence number": -1,
+   "Fwd thread id": 0
+  }
+ },
+ {
+  "ph": "X",
+  "name": "Dequeue@triton_unk_fused_add_mul_relu_0",
+  "pid": 3965524,
+  "tid": 3967276,
+  "ts": "1789490113464040.810",
+  "dur": 71.2,
+  "cat": "dequeue",
+  "args": {
+   "correlation_id": 25847
+  }
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 25847,
+  "pid": 3965524,
+  "tid": 3967276,
+  "ts": "1789490113464040.810",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "X",
+  "name": "Enqueue@triton_unk_fused_add_mul_relu_0",
+  "pid": 3965524,
+  "tid": 3965524,
+  "ts": "1789490113464009.270",
+  "dur": 18.5,
+  "cat": "enqueue",
+  "args": {
+   "correlation_id": 25847
+  }
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "enqueue_to_dequeue",
+  "id": 25847,
+  "pid": 3965524,
+  "tid": 3965524,
+  "ts": "1789490113464009.270",
+  "cat": "async_task_queue"
+ },
+ {
+  "ph": "M",
+  "name": "process_name",
+  "pid": 3965524,
+  "tid": 0,
+  "args": {
+   "name": "Python"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "process_labels",
+  "pid": 3965524,
+  "tid": 0,
+  "args": {
+   "labels": "CPU"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "process_sort_index",
+  "pid": 3965524,
+  "tid": 0,
+  "args": {
+   "sort_index": 0
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_name",
+  "pid": 3965524,
+  "tid": 3965524,
+  "args": {
+   "name": "Thread 3965524"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_sort_index",
+  "pid": 3965524,
+  "tid": 3965524,
+  "args": {
+   "sort_index": 3965524
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_name",
+  "pid": 3965524,
+  "tid": 3967276,
+  "args": {
+   "name": "Thread 3967276"
+  }
+ },
+ {
+  "ph": "M",
+  "name": "thread_sort_index",
+  "pid": 3965524,
+  "tid": 3967276,
+  "args": {
+   "sort_index": 3967277
+  }
+ },
+ {
+  "name": "triton_unk_fused_add_mul_relu_0",
+  "pid": 4060696998,
+  "tid": 46,
+  "ts": "1789490113464116.630",
+  "dur": 1.44,
+  "ph": "X",
+  "args": {
+   "Model Id": 4294967295,
+   "Task Type": "KERNEL_AIVEC",
+   "Physic Stream Id": 46,
+   "Task Id": 25680,
+   "Batch Id": 0,
+   "Subtask Id": 4294967295,
+   "connection_id": 3,
+   "stack": [
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/triton_experimental/scripts/static_smoke_timeline_probe.py\", line 33, in forward\n    return activated * 2\n           ^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/triton_experimental/scripts/static_smoke_timeline_probe.py\", line 32, in forward\n    activated = torch.relu(added)\n                ^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/TorchNpu-Inductor-Provenance/docs/triton_experimental/scripts/static_smoke_timeline_probe.py\", line 31, in forward\n    added = x + 1\n            ^^^^^\n"
+   ]
+  }
+ },
+ {
+  "name": "HostToDevice12884901888",
+  "pid": 4060696998,
+  "tid": 46,
+  "ph": "f",
+  "cat": "HostToDevice",
+  "id": "12884901888",
+  "ts": "1789490113464116.630",
+  "bp": "e"
+ },
+ {
+  "name": "process_name",
+  "pid": 4060696998,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "name": "Ascend Hardware"
+  }
+ },
+ {
+  "name": "process_labels",
+  "pid": 4060696998,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "labels": "NPU 6"
+  }
+ },
+ {
+  "name": "process_sort_index",
+  "pid": 4060696998,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 13
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 4060696998,
+  "tid": 46,
+  "ph": "M",
+  "args": {
+   "name": "Stream 46"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 4060696998,
+  "tid": 46,
+  "ph": "M",
+  "args": {
+   "sort_index": 46
+  }
+ },
+ {
+  "name": "process_labels",
+  "pid": 4060696831,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "labels": "CPU"
+  }
+ },
+ {
+  "name": "process_sort_index",
+  "pid": 4060696831,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 7
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 4060696831,
+  "tid": 3965524,
+  "ph": "M",
+  "args": {
+   "name": "Thread 3965524"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 4060696831,
+  "tid": 3965524,
+  "ph": "M",
+  "args": {
+   "sort_index": 3965524
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 4060696831,
+  "tid": 3967276,
+  "ph": "M",
+  "args": {
+   "name": "Thread 3967276"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 4060696831,
+  "tid": 3967276,
+  "ph": "M",
+  "args": {
+   "sort_index": 3967276
+  }
+ },
+ {
+  "name": "HostToDevice12884901888",
+  "pid": 4060696831,
+  "tid": 3967276,
+  "ph": "s",
+  "cat": "HostToDevice",
+  "id": "12884901888",
+  "ts": "1789490113464053.650"
+ },
+ {
+  "name": "AI Core Freq",
+  "pid": 4060697030,
+  "tid": 0,
+  "ts": "1789490113408352.000",
+  "ph": "C",
+  "args": {
+   "MHz": 1800
+  }
+ },
+ {
+  "name": "AI Core Freq",
+  "pid": 4060697030,
+  "tid": 0,
+  "ts": "1789490113557075.000",
+  "ph": "C",
+  "args": {
+   "MHz": 1800
+  }
+ },
+ {
+  "name": "process_name",
+  "pid": 4060697030,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "name": "AI Core Freq"
+  }
+ },
+ {
+  "name": "process_labels",
+  "pid": 4060697030,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "labels": "NPU 6"
+  }
+ },
+ {
+  "name": "process_sort_index",
+  "pid": 4060697030,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 14
+  }
+ },
+ {
+  "name": "process_name",
+  "pid": 4060697542,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "name": "Overlap Analysis"
+  }
+ },
+ {
+  "name": "process_labels",
+  "pid": 4060697542,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "labels": "NPU 6"
+  }
+ },
+ {
+  "name": "process_sort_index",
+  "pid": 4060697542,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 30
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 4060697542,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "name": "Communication"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 4060697542,
+  "tid": 0,
+  "ph": "M",
+  "args": {
+   "sort_index": 0
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 4060697542,
+  "tid": 1,
+  "ph": "M",
+  "args": {
+   "name": "Communication(Not Overlapped)"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 4060697542,
+  "tid": 1,
+  "ph": "M",
+  "args": {
+   "sort_index": 1
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 4060697542,
+  "tid": 2,
+  "ph": "M",
+  "args": {
+   "name": "Computing"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 4060697542,
+  "tid": 2,
+  "ph": "M",
+  "args": {
+   "sort_index": 2
+  }
+ },
+ {
+  "name": "thread_name",
+  "pid": 4060697542,
+  "tid": 3,
+  "ph": "M",
+  "args": {
+   "name": "Free"
+  }
+ },
+ {
+  "name": "thread_sort_index",
+  "pid": 4060697542,
+  "tid": 3,
+  "ph": "M",
+  "args": {
+   "sort_index": 3
+  }
+ },
+ {
+  "name": "Computing",
+  "pid": 4060697542,
+  "tid": 2,
+  "ts": "1789490113464116.630",
+  "dur": 1.44,
+  "ph": "X",
+  "args": {}
+ },
+ {
+  "ph": "s",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1789490113464116630,
+  "pid": 3965524,
+  "tid": 3965524,
+  "ts": "1789490113464006.670",
+  "cat": "async_npu"
+ },
+ {
+  "ph": "f",
+  "bp": "e",
+  "name": "torch_to_npu",
+  "id": 1789490113464116630,
+  "pid": 4060696998,
+  "tid": 46,
+  "ts": "1789490113464116.630",
+  "cat": "async_npu"
+ }
+]

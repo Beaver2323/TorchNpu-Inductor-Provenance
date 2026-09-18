@@ -1,0 +1,1 @@
+{"preToPost": {"added": ["add"], "activated": ["relu"], "mul": ["mul"]}, "postToPre": {"add": ["added"], "relu": ["activated"], "mul": ["mul"]}, "cppCodeToPost": {"triton_unk_fused_add_mul_relu_0:1": ["mul", "relu", "add"]}, "postToCppCode": {"mul": ["triton_unk_fused_add_mul_relu_0:1"], "relu": ["triton_unk_fused_add_mul_relu_0:1"], "add": ["triton_unk_fused_add_mul_relu_0:1"]}}

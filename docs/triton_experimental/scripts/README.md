@@ -1,12 +1,13 @@
 # 复现脚本
 
-> 最后更新：2026-09-02 00:03 CST（UTC+08:00）
+> 最后更新：2026-09-16 00:35 CST（UTC+08:00）
 
 所有测试必须从 `/home/z50063656/tmp` 启动，避免在 torch_npu 源码树中导入 `torch`。
 
 | 脚本 | 用途 |
 | --- | --- |
 | `static_probe.py` | 最小静态 provenance level 1/2 验证 |
+| `static_smoke_timeline_probe.py` | 同次生成最小 add/relu/mul 模型的静态 HTML 与 Perfetto trace |
 | `timeline_probe.py` | 最小 forward/backward timeline 验证 |
 | `rsplit_timeline_probe.py` | rsplit partial/combine 独立来源验证 |
 | `llama_swiglu_demo.py` | Llama 风格动态形状、前反向、静态与 timeline 综合演示 |

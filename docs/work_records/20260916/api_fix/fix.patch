@@ -1,0 +1,45 @@
+diff --git a/test/profiler/test_inductor_profiler.py b/test/profiler/test_inductor_profiler.py
+index bc4a41fda..286b2a4b9 100644
+--- a/test/profiler/test_inductor_profiler.py
++++ b/test/profiler/test_inductor_profiler.py
+@@ -1,6 +1,7 @@
+ import gzip
+ import json
+ import math
++import pickle
+ import tempfile
+ import unittest
+ from pathlib import Path
+@@ -64,6 +65,19 @@ def _parameter_grads(model):
+ 
+ 
+ class TestInductorProfiler(TestCase):
++    def test_inductor_trace_handler_public_api(self):
++        self.assertIn("inductor_trace_handler", torch_npu.profiler.__all__)
++        self.assertIs(
++            torch_npu.profiler.inductor_trace_handler, inductor_trace_handler
++        )
++        self.assertEqual(
++            inductor_trace_handler.__module__, "torch_npu.profiler"
++        )
++        self.assertIs(
++            pickle.loads(pickle.dumps(inductor_trace_handler)),
++            inductor_trace_handler,
++        )
++
+     def test_normalize_dict_root_and_tail_flows(self):
+         trace = {
+             "traceEvents": [
+diff --git a/torch_npu/profiler/__init__.py b/torch_npu/profiler/__init__.py
+index 87a64c34b..f9cea6068 100644
+--- a/torch_npu/profiler/__init__.py
++++ b/torch_npu/profiler/__init__.py
+@@ -21,6 +21,8 @@ from .experimental_config import (
+ from ._non_intrusive_profile import _NonIntrusiveProfile
+ from ._inductor_profiler import inductor_trace_handler
+ 
++inductor_trace_handler.__module__ = __name__
++
+ __all__ = [
+     "profile",
+     "ProfilerActivity",

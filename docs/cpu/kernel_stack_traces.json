@@ -1,0 +1,7 @@
+{
+  "cpp_fused_add_mul_relu_0:1": [
+    "  File \"/home/z50063656/Tracking/cpu_provenance_demo.py\", line 10, in forward\n    return activated * 2.0\n           ^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/Tracking/cpu_provenance_demo.py\", line 9, in forward\n    activated = torch.relu(added)\n                ^^^^^^^^^^^^^^^^^\n",
+    "  File \"/home/z50063656/Tracking/cpu_provenance_demo.py\", line 8, in forward\n    added = x + y\n            ^^^^^\n"
+  ]
+}
